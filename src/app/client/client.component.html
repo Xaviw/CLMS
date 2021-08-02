@@ -1,0 +1,53 @@
+<nz-layout>
+  <nz-header>
+    <div class="logo flex-center">
+      <img src="../../assets/images/computer.png" alt="机房管理系统" />
+      <span>机房管理系统</span>
+    </div>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzCollapsible>
+      <ul nz-menu nzTheme="dark" nzMode="inline">
+        <li nz-menu-item>
+          <i nz-icon nzType="home"></i>
+          <span>首页</span>
+        </li>
+        <li nz-submenu nzTitle="用户管理" nzIcon="user">
+          <ul>
+            <li nz-menu-item>教师管理</li>
+            <li nz-menu-item>学生管理</li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Team" nzIcon="team">
+          <ul>
+            <li nz-menu-item>Team 1</li>
+            <li nz-menu-item>Team 2</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout>
+      <nz-content>
+        <nz-breadcrumb>
+          <nz-breadcrumb-item>User</nz-breadcrumb-item>
+          <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+        </nz-breadcrumb>
+        <div class="inner-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nz-content>
+      <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+    </nz-layout>
+  </nz-layout>
+
+  <!-- <nz-layout>
+    <nz-header>
+      <i
+        class="trigger"
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+        (click)="isCollapsed = !isCollapsed"
+      ></i>
+    </nz-header>
+  </nz-layout> -->
+</nz-layout>

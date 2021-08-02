@@ -16,10 +16,13 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@pages/*": ["src/app/client/pages/*"],
+      "@assets/*": ["src/assets/*"],
+      "@env/*": ["src/environments/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
