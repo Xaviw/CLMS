@@ -1,3 +1,4 @@
+import { environment } from '@env/environment';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -19,6 +20,11 @@ export class AuthInterceptor implements HttpInterceptor {
     //     },
     //   });
     // }
+    console.log(environment);
+    req = req.clone({
+      url: environment.api + req.url
+    })
+    console.log(req);
     return next.handle(req).pipe(
       tap(
         (event) => {

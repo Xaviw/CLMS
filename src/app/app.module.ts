@@ -7,12 +7,11 @@ import { NZ_I18N } from "ng-zorro-antd/i18n";
 import { zh_CN } from "ng-zorro-antd/i18n";
 import { registerLocaleData } from "@angular/common";
 import zh from "@angular/common/locales/zh";
-import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { IconsProviderModule } from "./icons-provider.module";
-import { NzLayoutModule } from "ng-zorro-antd/layout";
-import { NzMenuModule } from "ng-zorro-antd/menu";
+import { AuthInterceptor } from './utils/http-interceptors/auth-interceptor';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from "ng-zorro-antd/notification";
 
 registerLocaleData(zh);
 
@@ -21,14 +20,12 @@ registerLocaleData(zh);
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    // IconsProviderModule,
-    // NzLayoutModule,
-    // NzMenuModule
+    NzMessageModule,
+    NzNotificationModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN },{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
