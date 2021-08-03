@@ -1,9 +1,27 @@
-import { NgModule } from "@angular/core";
-import { NZ_ICONS, NzIconModule } from "ng-zorro-antd/icon";
+import { NgModule } from '@angular/core';
+import { NZ_ICONS, NzIconModule } from 'ng-zorro-antd/icon';
 
-import { HomeOutline } from "@ant-design/icons-angular/icons";
+import {
+  HomeOutline,
+  CalendarOutline,
+  DatabaseOutline,
+  ShoppingCartOutline,
+  ToolOutline,
+  AppstoreAddOutline,
+  BellOutline,
+  DownOutline,
+} from '@ant-design/icons-angular/icons';
 
-const icons = [HomeOutline];
+const icons = [
+  HomeOutline,
+  CalendarOutline,
+  DatabaseOutline,
+  ShoppingCartOutline,
+  ToolOutline,
+  AppstoreAddOutline,
+  BellOutline,
+  DownOutline,
+];
 
 @NgModule({
   imports: [NzIconModule],

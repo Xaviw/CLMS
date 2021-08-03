@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   systemName: '机房管理系统',
   secreteKey: '',
 };

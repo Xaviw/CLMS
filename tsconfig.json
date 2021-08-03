@@ -18,10 +18,12 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
+      "@env/*": ["src/environments/*"],
       "@app/*": ["src/app/*"],
-      "@pages/*": ["src/app/client/pages/*"],
       "@assets/*": ["src/assets/*"],
-      "@env/*": ["src/environments/*"]
+      "@pages/*": ["src/app/client/pages/*"],
+      "@types/*": ["src/app/types/*"],
+      "@utils/*": ["src/app/utils/*"]
     }
   },
   "angularCompilerOptions": {

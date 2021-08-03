@@ -1,11 +1,12 @@
 {
-    "angular.enable-strict-mode-prompt": false,
-    "htmlhint.options": {
-        // "attr-lowercase": ["*ngIf", "ngIf", "*ngFor", "ngFor", "ngSwitch", "ngModel"],
-        // "doctype-first": false,
-        "attr-lowercase": false
-    },
-    "editor.tabSize": 2,
-    "prettier.tabWidth": 2,
-    "prettier.semi": true
+  "angular.enable-strict-mode-prompt": false,
+  "htmlhint.options": {
+    // "attr-lowercase": ["*ngIf", "ngIf", "*ngFor", "ngFor", "ngSwitch", "ngModel"],
+    // "doctype-first": false,
+    "attr-lowercase": false
+  },
+  "editor.tabSize": 2,
+  "prettier.tabWidth": 2,
+  "prettier.semi": true,
+  "cSpell.words": ["CLMS", "appstore"]
 }

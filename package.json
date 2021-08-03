@@ -2,10 +2,10 @@
   "name": "clms",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "start:prod": "ng serve",
+    "start:dev": "ng serve --configuration=development",
+    "start:mock": "ng serve --configuration=mock",
+    "build:prod": "ng build"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +27,13 @@
     "@angular/cli": "~12.1.4",
     "@angular/compiler-cli": "~12.1.0",
     "@types/node": "^12.11.1",
+    "eslint-plugin-angular": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
     "typescript": "~4.3.2"
   }
 }

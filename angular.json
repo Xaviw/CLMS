@@ -59,10 +59,7 @@
                 "output": "/assets/"
               }
             ],
-            "styles": [
-              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
-              "src/styles.scss"
-            ],
+            "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css", "src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -88,6 +85,26 @@
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.mock.ts"
+                }
+              ],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -106,6 +123,9 @@
             },
             "development": {
               "browserTarget": "CLMS:build:development"
+            },
+            "mock": {
+              "browserTarget": "CLMS:build:mock"
             }
           },
           "defaultConfiguration": "development"
