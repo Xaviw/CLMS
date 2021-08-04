@@ -1,3 +1,4 @@
+import { Res } from '@app/types/commonTypes';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -8,9 +9,9 @@ export class ClientService {
 
   constructor(private http: HttpClient) { }
   
-  test() {
-    const url = '/user/login';
-    return this.http.get(url)
+  getMenu() {
+    const url = '/menu';
+    return this.http.post(url, {})
   }
 
 }

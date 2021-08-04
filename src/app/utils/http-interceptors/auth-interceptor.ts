@@ -25,10 +25,11 @@ export class AuthInterceptor implements HttpInterceptor {
     })
     return next.handle(req).pipe(
       tap(
-        (event) => {
-          if (event instanceof HttpResponse) {
-            // 这里是返回，可通过event.body获取返回内容
-            // event.body
+        (res) => {
+          if (res instanceof HttpResponse) {
+            return res.clone({body: res.body.data})
+          } else {
+            return res
           }
         },
         (error) => {

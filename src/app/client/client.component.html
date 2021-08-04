@@ -21,37 +21,23 @@
   <nz-layout>
     <nz-sider nzCollapsible nzTheme="light">
       <ul nz-menu nzMode="inline">
-        <li nz-menu-item (click)="test()">
-          <i nz-icon nzType="home"></i>
-          <span>首页</span>
-        </li>
-        <li nz-submenu nzTitle="系统管理" nzIcon="user">
-          <ul>
-            <li nz-menu-item>教师管理</li>
-            <li nz-menu-item>学生管理</li>
-            <li nz-menu-item>权限管理</li>
-          </ul>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="calendar" nzTheme="outline"></i>
-          <span>课程表</span>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="database" nzTheme="outline"></i>
-          <span>机房信息</span>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="appstore-add" nzTheme="outline"></i>
-          <span>机房申请</span>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
-          <span>采购申请</span>
-        </li>
-        <li nz-menu-item>
-          <i nz-icon nzType="tool" nzTheme="outline"></i>
-          <span>设备报修</span>
-        </li>
+        <ng-container *ngFor="let menu of menus">
+          <!-- 二级菜单 -->
+          <ng-container *ngIf="menu.children; else singleMenu">
+            <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.icon">
+              <ul>
+                <li *ngFor="let subMenu of menu.children" nz-menu-item [routerLink]="subMenu.link">{{subMenu.name}}</li>
+              </ul>
+            </li>
+          </ng-container>
+          <!-- 一级菜单 -->
+          <ng-template #singleMenu>
+            <li nz-menu-item [routerLink]="menu.link">
+              <i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
+              <span>{{menu.name}}</span>
+            </li>
+          </ng-template>
+        </ng-container>
       </ul>
     </nz-sider>
     <nz-layout>

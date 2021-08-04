@@ -15,13 +15,12 @@ const routes: Routes = [
     component: ClientComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'index',
-        pathMatch: 'full',
-      },
-      {
         path: 'index',
         loadChildren: () => import('./pages/index/index.module').then((m) => m.IndexModule),
+      },
+      {
+        path: 'teacher-manage',
+        loadChildren: () => import('./pages/teacher-manage/teacher-manage.module').then((m) => m.TeacherManageModule),
       },
       {
         path: '**',

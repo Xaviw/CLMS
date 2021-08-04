@@ -2,9 +2,9 @@
   "name": "clms",
   "version": "0.0.0",
   "scripts": {
-    "start:prod": "ng serve",
-    "start:dev": "ng serve --configuration=development",
-    "start:mock": "ng serve --configuration=mock",
+    "start:prod": "ng serve --open",
+    "start:dev": "ng serve --configuration=development --open",
+    "start:mock": "ng serve --configuration=mock --open",
     "build:prod": "ng build"
   },
   "private": true,

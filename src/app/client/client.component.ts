@@ -1,3 +1,4 @@
+import { Res } from '@app/types/commonTypes';
 import { ClientService } from './client.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,13 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./client.component.scss'],
 })
 export class ClientComponent implements OnInit {
+  menus:any;
   constructor(private service: ClientService) {}
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.getMenu();
+  }
   
-  test() {
-    this.service.test().subscribe(res => {
-      console.log('res', res);
+  getMenu() {
+    this.service.getMenu().subscribe((res:any) => {
+      console.log('res: ', res);
+      this.menus = res.data;
+      console.log('this.menus: ', this.menus);
     })
   }
 }
