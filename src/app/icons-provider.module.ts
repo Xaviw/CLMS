@@ -10,6 +10,10 @@ import {
   AppstoreAddOutline,
   BellOutline,
   DownOutline,
+  UserOutline,
+  EyeOutline,
+  EyeInvisibleOutline,
+  LockOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -21,6 +25,10 @@ const icons = [
   AppstoreAddOutline,
   BellOutline,
   DownOutline,
+  UserOutline,
+  EyeOutline,
+  EyeInvisibleOutline,
+  LockOutline,
 ];
 
 @NgModule({

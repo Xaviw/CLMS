@@ -1,3 +1,41 @@
-<p>
-  login works!
-</p>
+<div class="background flex-center scroll">
+  <div class="login-area flex-center">
+    <h1>{{ systemName }}</h1>
+    <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="帐号不能为空！">
+          <nz-input-group nzPrefixIcon="user">
+            <input type="text" nz-input formControlName="userName" placeholder="请输入帐号" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="密码不能为空！">
+          <nz-input-group nzPrefixIcon="lock">
+            <input
+              [type]="showPwd ? 'text' : 'password'"
+              nz-input
+              formControlName="password"
+              placeholder="请输入密码"
+            />
+            <i
+              nz-icon
+              [nzType]="showPwd ? 'eye' : 'eye-invisible'"
+              nzTheme="outline"
+              (click)="showPwd = !showPwd"
+              class="flex-center"
+            ></i>
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <div nz-row class="login-form-margin" nzJustify="end">
+        <div nz-col [nzSpan]="12" style="text-align: right">
+          <label nz-checkbox formControlName="remember">
+            <span>记住此账号</span>
+          </label>
+        </div>
+      </div>
+      <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">登录</button>
+    </form>
+  </div>
+</div>
