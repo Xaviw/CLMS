@@ -1,4 +1,4 @@
-import { IconsProviderModule } from './../icons-provider.module';
+import { IconsProviderModule } from '../../shared/icons-provider.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login.component';

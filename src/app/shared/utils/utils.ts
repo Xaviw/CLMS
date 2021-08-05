@@ -1,4 +1,4 @@
-import { formControls } from '@app/types/commonTypes';
+import { formControls } from '@app/shared/types/commonTypes';
 
 export function validateForm(form: formControls): void {
   for (const i in form) {

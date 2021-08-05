@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Res } from '@app/types/commonTypes';
-import { validateForm } from '@app/utils/utils';
+import { Res } from '@app/shared/types/commonTypes';
+import { validateForm } from '@shared/utils/utils';
 import { LoginService } from './login.service';
 import { environment } from '@env/environment';
 

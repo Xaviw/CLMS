@@ -21,9 +21,10 @@
       "@env/*": ["src/environments/*"],
       "@app/*": ["src/app/*"],
       "@assets/*": ["src/assets/*"],
-      "@pages/*": ["src/app/client/pages/*"],
-      "@types/*": ["src/app/types/*"],
-      "@utils/*": ["src/app/utils/*"]
+      "@core/*": ["src/app/core/*"],
+      "@pages/*": ["src/app/pages/*"],
+      "@layout/*": ["src/app/layout/*"],
+      "@shared/*": ["src/app/shared/*"]
     }
   },
   "angularCompilerOptions": {
