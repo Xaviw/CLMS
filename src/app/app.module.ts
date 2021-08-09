@@ -1,16 +1,17 @@
-import { PagesRoutingModule } from './pages/pages-routing.module';
+import { LayoutModule } from './layout/layout.module';
+import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_CN } from 'ng-zorro-antd/i18n';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/net/auth-interceptor';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PagesModule } from './pages/pages.module';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthInterceptor } from './shared/utils/http-interceptors/auth-interceptor';
-import { LayoutModule } from './layout/layout.module';
 
 registerLocaleData(zh);
 
@@ -19,10 +20,11 @@ registerLocaleData(zh);
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    // LayoutModule,
     HttpClientModule,
+    CoreModule,
     SharedModule,
-    PagesRoutingModule,
+    LayoutModule,
+    PagesModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: zh_CN },

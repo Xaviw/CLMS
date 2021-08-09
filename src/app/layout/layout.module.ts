@@ -18,7 +18,7 @@ const COMPONENTS = [LayoutBasicComponent, LayoutBlankComponent];
     CommonModule,
     FormsModule,
     RouterModule,
-    // IconsProviderModule,
+    IconsProviderModule,
     NzLayoutModule,
     NzMenuModule,
     NzBreadCrumbModule,

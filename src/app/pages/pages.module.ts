@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
+import { SharedModule } from './../shared/shared.module';
+import { NgModule, Type } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { environment } from '@env/environment';
-
-// layout
 import { LayoutBasicComponent } from '../layout/basic/basic.component';
 import { LayoutBlankComponent } from '../layout/blank/blank.component';
 
+const COMPONENTS: Array<Type<null>> = [];
+
 const routes: Routes = [
+  // Basic Layout 基础布局
   {
     path: '',
     component: LayoutBasicComponent,
@@ -26,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  imports: [SharedModule, RouterModule.forRoot(routes)],
+  declarations: [...COMPONENTS],
 })
-export class PagesRoutingModule {}
+export class PagesModule {}
