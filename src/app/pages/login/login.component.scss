@@ -1,5 +1,6 @@
 .login-form {
-  max-width: 300px;
+  padding: 20px 40px;
+  width: 100%;
 }
 
 .login-form-margin {
@@ -14,9 +15,15 @@
   width: 100%;
 }
 
-.ant-input-affix-wrapper {
+.ant-input-affix-wrapper,
+.login-form-button {
   font-size: 18px;
   height: 48px;
+}
+
+h1 {
+  font-weight: bold;
+  letter-spacing: 5px;
 }
 
 .view {
@@ -36,10 +43,13 @@
 }
 
 .block {
-  width: 400px;
+  width: 800px;
   height: 500px;
   background-color: #fff;
-  flex-direction: column;
   border-radius: 5px;
   z-index: 10;
+  > div {
+    flex: 1;
+    flex-direction: column;
+  }
 }

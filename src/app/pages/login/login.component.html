@@ -1,15 +1,12 @@
 <div class="view flex-center">
-  <div>
-    <div class="block flex-center">
-      <img src="../../../assets/images/Computer display_Two Color.svg" alt="机房管理系统" />
-    </div>
-    <div class="block flex-center">
+  <div class="flex-center block">
+    <div class="flex-center">
       <h1>{{ systemName }}</h1>
       <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
         <nz-form-item>
           <nz-form-control nzErrorTip="帐号不能为空！">
             <nz-input-group nzPrefixIcon="user">
-              <input type="text" nz-input formControlName="userName" placeholder="请输入帐号" />
+              <input type="text" nz-input formControlName="code" placeholder="请输入帐号" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -39,8 +36,13 @@
             </label>
           </div>
         </div>
-        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">登录</button>
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="submitForm()">
+          登录
+        </button>
       </form>
+    </div>
+    <div class="flex-center">
+      <img src="../../../assets/images/Computer display_Two Color.svg" alt="机房管理系统" />
     </div>
   </div>
 </div>

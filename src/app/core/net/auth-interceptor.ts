@@ -21,15 +21,16 @@ export class AuthInterceptor implements HttpInterceptor {
     //   });
     // }
     req = req.clone({
-      url: environment.api + req.url
-    })
+      url: environment.api + req.url,
+    });
     return next.handle(req).pipe(
       tap(
         (res) => {
+          console.log(res);
           if (res instanceof HttpResponse) {
-            return res.clone({body: res.body.data})
+            return res.clone({ body: res.body?.data });
           } else {
-            return res
+            return res;
           }
         },
         (error) => {
@@ -41,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 break;
               case 401:
                 this.message.error('登录信息已失效，请重新登录！');
-                this.router.navigate(['/index/login']);
+                this.router.navigate(['/blank/login']);
                 break;
               case 403:
                 this.message.error('禁止访问！');

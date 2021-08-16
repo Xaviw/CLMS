@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      userName: [null, [Validators.required]],
+      code: [null, [Validators.required]],
       password: [null, [Validators.required]],
       remember: [true],
     });
@@ -28,8 +28,8 @@ export class LoginComponent implements OnInit {
   submitForm(): void {
     validateForm(this.loginForm.controls);
     if (this.loginForm.valid) {
-      const { userName, password } = this.loginForm.value;
-      this.service.login({ userName, password }).subscribe((res: Res) => {
+      const { code, password } = this.loginForm.value;
+      this.service.login({ code, password }).subscribe((res: Res) => {
         console.log('res: ', res);
       });
     }
