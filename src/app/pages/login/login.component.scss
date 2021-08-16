@@ -19,19 +19,27 @@
   height: 48px;
 }
 
-.background {
-  height: 100vh;
-  background-image: url('../../../assets/images/LoginBackground.jpg');
+.view {
+  background-image: url('../../../assets/images/pexels-pixabay-267507.jpg');
+  background-repeat: round;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    filter: blur(3px);
+  }
 }
 
-.login-area {
+.block {
+  width: 400px;
+  height: 500px;
+  background-color: #fff;
   flex-direction: column;
-  padding: 2rem;
-  background-color: rgba($color: #ffffff, $alpha: 0.6);
-  h1 {
-    line-height: 2.5;
-  }
-  > form {
-    min-width: 300px;
-  }
+  border-radius: 5px;
+  z-index: 10;
 }
