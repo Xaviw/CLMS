@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { zh_CN } from 'ng-zorro-antd/i18n';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { DefaultInterceptor } from './core/net/default-interceptor';
+import { DefaultInterceptor } from './core/interceptor/default-interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PagesModule } from './pages/pages.module';

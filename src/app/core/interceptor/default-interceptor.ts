@@ -1,3 +1,4 @@
+import { _local } from '@app/shared/utils/Storage';
 import { environment } from '@env/environment';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -12,15 +13,14 @@ export class DefaultInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // 添加Token
-    // const token = this.storage.retrieve('token');
-    // if (token) {
-    //   // 如果有token，就添加
-    //   req = req.clone({
-    //     setHeaders: {
-    //       Authorization: `Bearer ${token.access_token}`,
-    //     },
-    //   });
-    // }
+    const token = _local.get('token');
+    if (token) {
+      req = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
 
     // 添加统一API前缀
     req = req.clone({

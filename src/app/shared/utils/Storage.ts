@@ -1,8 +1,8 @@
 const _local = {
   //存储,可设置过期时间
   set(key: string, value: any, expires?: number) {
-    let params = { value, expires };
     if (expires) {
+      let params = { value, expires };
       let data = Object.assign(params, { startTime: new Date().getTime() });
       localStorage.setItem(key, JSON.stringify(data));
     } else {
@@ -20,7 +20,7 @@ const _local = {
     if (res && res.startTime) {
       let date = new Date().getTime();
       // 如果大于就是过期了，如果小于或等于就还没过期
-      if (date - new Date(res.startTime).getTime() > res.expires!) {
+      if (date - Number(res.startTime) > res.expires!) {
         localStorage.removeItem(key);
         return false;
       } else {

@@ -1,5 +1,7 @@
+import { CommonRequestService } from './../../core/services/commonRequest.service';
 import { CacheService } from './../../core/services/cache.service';
 import { Component, OnInit } from '@angular/core';
+import { pageRoute } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'layout-basic',
@@ -7,8 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./basic.component.scss'],
 })
 export class LayoutBasicComponent implements OnInit {
-  menus: any;
-  constructor() {}
+  menus: pageRoute[] = [];
+  constructor(private commonRequest: CommonRequestService, private cacheService: CacheService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.commonRequest.getUserInfo().subscribe((res) => {
+      this.menus = res.routes;
+      this.cacheService.userInfo = res;
+    });
+  }
 }

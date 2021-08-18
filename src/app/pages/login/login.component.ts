@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { code, password } = this.loginForm.value;
       this.service.login({ code, password }).subscribe((res: Res) => {
-        _local.set('token', res.data.token);
+        _local.set('token', res.data.token, res.data.expires);
         this.router.navigateByUrl('/index');
       });
     }

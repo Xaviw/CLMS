@@ -24,7 +24,7 @@
         <ng-container *ngFor="let menu of menus">
           <!-- 二级菜单 -->
           <ng-container *ngIf="menu.children?.length; else singleMenu">
-            <li nz-submenu [nzTitle]="menu.text" [nzIcon]="menu.icon">
+            <li nz-submenu [nzTitle]="menu.text" [nzIcon]="menu.icon!">
               <ul>
                 <li *ngFor="let subMenu of menu.children" nz-menu-item [routerLink]="subMenu.link" nzMatchRouter>
                   {{ subMenu.text }}
@@ -35,7 +35,7 @@
           <!-- 一级菜单 -->
           <ng-template #singleMenu>
             <li nz-menu-item [routerLink]="menu.link" nzMatchRouter>
-              <i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
+              <i nz-icon [nzType]="menu.icon!" nzTheme="outline"></i>
               <span>{{ menu.text }}</span>
             </li>
           </ng-template>
