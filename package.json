@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start:prod": "ng serve --open",
-    "start:dev": "ng serve --configuration=development --open --port=41001",
-    "start:mock": "ng serve --configuration=mock --open --port=41001",
+    "start:dev": "ng serve --configuration=development --open --port=12345",
+    "start:mock": "ng serve --configuration=mock --open --port=12345",
     "build:prod": "ng build"
   },
   "private": true,

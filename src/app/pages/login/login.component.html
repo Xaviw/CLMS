@@ -2,7 +2,7 @@
   <div class="flex-center block">
     <div class="flex-center">
       <h1>{{ systemName }}</h1>
-      <form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+      <form nz-form [formGroup]="loginForm" class="login-form">
         <nz-form-item>
           <nz-form-control nzErrorTip="帐号不能为空！">
             <nz-input-group nzPrefixIcon="user">
@@ -36,7 +36,7 @@
             </label>
           </div>
         </div>
-        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="submitForm()">
+        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="login()">
           登录
         </button>
       </form>

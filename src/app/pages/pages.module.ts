@@ -15,7 +15,7 @@ const routes: Routes = [
     data: {},
     children: [
       { path: '', redirectTo: 'index', pathMatch: 'full' },
-      // { path: 'index', loadChildren: () => import('').then((m) => m) },
+      { path: 'index', loadChildren: () => import('./index/index.module').then((m) => m.IndexModule) },
     ],
   },
   // Blank Layout 空白布局

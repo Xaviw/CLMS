@@ -7,10 +7,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class DefaultInterceptor implements HttpInterceptor {
   constructor(private router: Router, private message: NzMessageService, private notification: NzNotificationService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+    // 添加Token
     // const token = this.storage.retrieve('token');
     // if (token) {
     //   // 如果有token，就添加
@@ -20,17 +21,16 @@ export class AuthInterceptor implements HttpInterceptor {
     //     },
     //   });
     // }
+
+    // 添加统一API前缀
     req = req.clone({
       url: environment.api + req.url,
     });
     return next.handle(req).pipe(
       tap(
         (res) => {
-          console.log(res);
-          if (res instanceof HttpResponse) {
-            return res.clone({ body: res.body?.data });
-          } else {
-            return res;
+          if (res instanceof HttpResponse && res.body.code !== 0) {
+            this.message.error(res.body.msg);
           }
         },
         (error) => {

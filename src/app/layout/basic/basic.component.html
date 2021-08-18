@@ -23,18 +23,20 @@
       <ul nz-menu nzMode="inline">
         <ng-container *ngFor="let menu of menus">
           <!-- 二级菜单 -->
-          <ng-container *ngIf="menu.children; else singleMenu">
-            <li nz-submenu [nzTitle]="menu.name" [nzIcon]="menu.icon">
+          <ng-container *ngIf="menu.children?.length; else singleMenu">
+            <li nz-submenu [nzTitle]="menu.text" [nzIcon]="menu.icon">
               <ul>
-                <li *ngFor="let subMenu of menu.children" nz-menu-item [routerLink]="subMenu.link">{{subMenu.name}}</li>
+                <li *ngFor="let subMenu of menu.children" nz-menu-item [routerLink]="subMenu.link" nzMatchRouter>
+                  {{ subMenu.text }}
+                </li>
               </ul>
             </li>
           </ng-container>
           <!-- 一级菜单 -->
           <ng-template #singleMenu>
-            <li nz-menu-item [routerLink]="menu.link">
+            <li nz-menu-item [routerLink]="menu.link" nzMatchRouter>
               <i nz-icon [nzType]="menu.icon" nzTheme="outline"></i>
-              <span>{{menu.name}}</span>
+              <span>{{ menu.text }}</span>
             </li>
           </ng-template>
         </ng-container>
