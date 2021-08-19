@@ -6,34 +6,31 @@ nz-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 1.5rem;
   color: #fff;
+  font-weight: bold;
+  font-size: 1.5rem;
   .logo {
     img {
       width: 2rem;
     }
     span {
-      font-weight: bold;
+      margin-left: 10px;
       letter-spacing: 3px;
     }
   }
-  span {
-    margin-left: 0.5rem;
+  .right {
+    span {
+      font-size: 1rem;
+      margin-left: 20px;
+      nz-avatar {
+        margin-left: 10px;
+      }
+    }
   }
 }
 
 nz-content {
-  margin: 0 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-nz-breadcrumb {
-  margin: 10px 0;
-}
-
-.inner-content {
-  flex: 1;
+  margin: 16px 16px 10px 16px;
   background: #fff;
 }
 
@@ -43,5 +40,5 @@ nz-footer {
 
 .ant-layout-footer,
 .ant-layout-header {
-  padding: 10px 26px;
+  padding: 0 26px;
 }

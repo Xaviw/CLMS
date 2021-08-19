@@ -1,3 +1,4 @@
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { LayoutBlankComponent } from './blank/blank.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -24,6 +25,7 @@ const COMPONENTS = [LayoutBasicComponent, LayoutBlankComponent];
     NzBreadCrumbModule,
     NzDropDownModule,
     NzButtonModule,
+    NzAvatarModule,
   ],
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],

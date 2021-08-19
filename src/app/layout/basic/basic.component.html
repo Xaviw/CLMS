@@ -4,11 +4,11 @@
       <img src="../../assets/images/computer.png" alt="机房管理系统" />
       <span>机房管理系统</span>
     </div>
-    <div class="right">
+    <div class="right flex-center">
       <i nz-icon nzType="bell" nzTheme="outline"></i>
-      <span nz-dropdown [nzDropdownMenu]="menu">
-        {{ 'xxx' }}
-        <i nz-icon nzType="down" nzTheme="outline"></i>
+      <span nz-dropdown [nzDropdownMenu]="menu" class="flex-center">
+        {{ userInfo?.name }}
+        <nz-avatar nzSize="large" nzIcon="user" [nzSrc]=""></nz-avatar>
       </span>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
@@ -44,13 +44,7 @@
     </nz-sider>
     <nz-layout>
       <nz-content>
-        <nz-breadcrumb>
-          <nz-breadcrumb-item>User</nz-breadcrumb-item>
-          <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
-        </nz-breadcrumb>
-        <div class="inner-content">
-          <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
       </nz-content>
       <nz-footer>计算机科学与技术学院 ©2022 20180000 xxx</nz-footer>
     </nz-layout>

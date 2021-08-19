@@ -1,5 +1,4 @@
 import { AuthGuard } from './../core/guard/auth.guard';
-import { LoginComponent } from './login/login.component';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule, Type } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -20,6 +19,7 @@ const routes: Routes = [
         path: 'index',
         loadChildren: () => import('./index/index.module').then((m) => m.IndexModule),
         data: {
+          title: '首页', // 页面标题，默认系统名字
           needLogin: true, // 访问是否需要登录，true才设置
           skipPermission: true, // 访问是否无需鉴权，true才设置
         },
@@ -28,6 +28,7 @@ const routes: Routes = [
         path: 'page-setup',
         loadChildren: () => import('./page-setup/page-setup.module').then((m) => m.PageSetupModule),
         data: {
+          title: '页面设置',
           needLogin: true,
         },
       },
@@ -40,7 +41,13 @@ const routes: Routes = [
     canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: '/index', pathMatch: 'full' },
-      { path: 'login', loadChildren: () => import('@pages/login/login.module').then((m) => m.LoginModule) },
+      {
+        path: 'login',
+        loadChildren: () => import('@pages/login/login.module').then((m) => m.LoginModule),
+        data: {
+          title: '登录',
+        },
+      },
     ],
   },
   { path: '**', redirectTo: '/index' },

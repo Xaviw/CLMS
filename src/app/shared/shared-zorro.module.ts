@@ -1,3 +1,4 @@
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -67,4 +68,6 @@ export const SHARED_ZORRO_MODULES = [
   NzUploadModule,
   NzNotificationModule,
   NzMessageModule,
+  NzLayoutModule,
+  NzAvatarModule,
 ];

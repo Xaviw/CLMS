@@ -1,15 +1,17 @@
+import { environment } from './../../../environments/environment.mock';
 import { clearCache } from '@app/shared/utils/utils';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { _session, _local } from '@app/shared/utils/Storage';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivateChild {
-  constructor(private router: Router, private message: NzMessageService) {}
+  constructor(private router: Router, private message: NzMessageService, private title: Title) {}
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -23,6 +25,8 @@ export class AuthGuard implements CanActivateChild {
     const skipPermission = Boolean(childRoute.data?.skipPermission);
     // 是否拥有页面权限
     const hasPermission = JSON.stringify(_session.get('routes')).indexOf(state.url) !== -1;
+    // 页面标题
+    const title = childRoute.data?.title || environment.systemName;
 
     // 已登录状态前往登录页，跳转首页
     if (state.url === '/blank/login' && isLogin) {
@@ -30,25 +34,38 @@ export class AuthGuard implements CanActivateChild {
       return this.router.parseUrl('/index');
     }
 
-    if (!needLogin) {
-      // 不需要登录直接跳转
-      return true;
+    if (isLogin && !hasPermission && !skipPermission) {
+      // 需要登录，已登录、无权限，跳转首页
+      return this.router.parseUrl('/index');
+    } else if (!isLogin && needLogin) {
+      // 未登录，跳转登录页
+      this.message.error('登录信息已失效，请重新登录！');
+      clearCache();
+      return this.router.parseUrl('/blank/login');
     } else {
-      if (isLogin && skipPermission) {
-        // 需要登陆，不需要校验权限，直接跳转
-        return true;
-      } else if (isLogin && hasPermission) {
-        // 需要登陆，已登录、有权限，直接跳转
-        return true;
-      } else if (isLogin && !hasPermission) {
-        // 需要登录，已登录、无权限，跳转首页
-        return this.router.parseUrl('/index');
-      } else {
-        // 未登录，跳转登录页
-        this.message.error('登录信息已失效，请重新登录！');
-        clearCache();
-        return this.router.parseUrl('/blank/login');
-      }
+      this.title.setTitle(title);
+      return true;
     }
+
+    // if (!needLogin) {
+    //   // 不需要登录直接跳转
+    //   return true;
+    // } else {
+    //   if (isLogin && skipPermission) {
+    //     // 需要登陆，不需要校验权限，直接跳转
+    //     return true;
+    //   } else if (isLogin && hasPermission) {
+    //     // 需要登陆，已登录、有权限，直接跳转
+    //     return true;
+    //   } else if (isLogin && !hasPermission) {
+    //     // 需要登录，已登录、无权限，跳转首页
+    //     return this.router.parseUrl('/index');
+    //   } else {
+    //     // 未登录，跳转登录页
+    //     this.message.error('登录信息已失效，请重新登录！');
+    //     clearCache();
+    //     return this.router.parseUrl('/blank/login');
+    //   }
+    // }
   }
 }
