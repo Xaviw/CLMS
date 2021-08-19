@@ -1,3 +1,4 @@
+import { AuthGuard } from './../core/guard/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule, Type } from '@angular/core';
@@ -12,19 +13,37 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutBasicComponent,
-    data: {},
+    canActivateChild: [AuthGuard],
     children: [
       { path: '', redirectTo: 'index', pathMatch: 'full' },
-      { path: 'index', loadChildren: () => import('./index/index.module').then((m) => m.IndexModule) },
+      {
+        path: 'index',
+        loadChildren: () => import('./index/index.module').then((m) => m.IndexModule),
+        data: {
+          needLogin: true, // 访问是否需要登录，true才设置
+          skipPermission: true, // 访问是否无需鉴权，true才设置
+        },
+      },
+      {
+        path: 'page-setup',
+        loadChildren: () => import('./page-setup/page-setup.module').then((m) => m.PageSetupModule),
+        data: {
+          needLogin: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局
   {
     path: 'blank',
     component: LayoutBlankComponent,
-    children: [{ path: 'login', loadChildren: () => import('@pages/login/login.module').then((m) => m.LoginModule) }],
+    canActivateChild: [AuthGuard],
+    children: [
+      { path: '', redirectTo: '/index', pathMatch: 'full' },
+      { path: 'login', loadChildren: () => import('@pages/login/login.module').then((m) => m.LoginModule) },
+    ],
   },
-  { path: '**', redirectTo: 'index' },
+  { path: '**', redirectTo: '/index' },
 ];
 
 @NgModule({

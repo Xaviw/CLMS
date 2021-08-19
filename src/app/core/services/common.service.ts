@@ -7,7 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 @Injectable({
   providedIn: 'root',
 })
-export class CommonRequestService {
+export class CommonService {
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
   // 请求用户信息

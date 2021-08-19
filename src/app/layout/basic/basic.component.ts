@@ -1,7 +1,7 @@
-import { CommonRequestService } from './../../core/services/commonRequest.service';
-import { CacheService } from './../../core/services/cache.service';
+import { CommonService } from '../../core/services/common.service';
 import { Component, OnInit } from '@angular/core';
 import { pageRoute } from '@app/shared/types/commonTypes';
+import { _session } from '@app/shared/utils/Storage';
 
 @Component({
   selector: 'layout-basic',
@@ -10,12 +10,16 @@ import { pageRoute } from '@app/shared/types/commonTypes';
 })
 export class LayoutBasicComponent implements OnInit {
   menus: pageRoute[] = [];
-  constructor(private commonRequest: CommonRequestService, private cacheService: CacheService) {}
+  constructor(private commonService: CommonService) {}
 
   ngOnInit() {
-    this.commonRequest.getUserInfo().subscribe((res) => {
-      this.menus = res.routes;
-      this.cacheService.userInfo = res;
-    });
+    this.menus = _session.get('routes');
+    if (!this.menus) {
+      this.commonService.getUserInfo().subscribe((res) => {
+        this.menus = res.routes;
+        _session.set('userInfo', res.user);
+        _session.set('routes', res.routes);
+      });
+    }
   }
 }

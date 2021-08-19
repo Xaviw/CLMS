@@ -1,3 +1,4 @@
+import { CacheService } from './../services/cache.service';
 import { _local } from '@app/shared/utils/Storage';
 import { environment } from '@env/environment';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -6,10 +7,16 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { clearCache } from '@app/shared/utils/utils';
 
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private message: NzMessageService, private notification: NzNotificationService) {}
+  constructor(
+    private router: Router,
+    private message: NzMessageService,
+    private notification: NzNotificationService,
+    private cache: CacheService,
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // 添加Token
@@ -42,6 +49,7 @@ export class DefaultInterceptor implements HttpInterceptor {
                 break;
               case 401:
                 this.message.error('登录信息已失效，请重新登录！');
+                clearCache();
                 this.router.navigate(['/blank/login']);
                 break;
               case 403:
