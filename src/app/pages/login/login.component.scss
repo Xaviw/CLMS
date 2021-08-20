@@ -3,9 +3,9 @@
   width: 100%;
 }
 
-.login-form-margin {
-  margin-bottom: 16px;
-}
+// .login-form-margin {
+//   margin-bottom: 16px;
+// }
 
 .login-form-forgot {
   float: right;
@@ -27,7 +27,7 @@ h1 {
 }
 
 .view {
-  background-image: url('../../../assets/images/pexels-pixabay-267507.jpg');
+  background-image: url('../../../assets/images/login_background.jpg');
   background-repeat: round;
   position: relative;
   &::after {
@@ -51,5 +51,14 @@ h1 {
   > div {
     flex: 1;
     flex-direction: column;
+  }
+}
+
+.reminder {
+  color: #1890ff;
+  font-size: 0.8rem;
+  margin-bottom: 24px;
+  i {
+    margin-right: 5px;
   }
 }

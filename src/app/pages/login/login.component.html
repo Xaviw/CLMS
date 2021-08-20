@@ -29,20 +29,22 @@
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
-        <!-- <div nz-row class="login-form-margin" nzJustify="end">
-          <div nz-col [nzSpan]="12" style="text-align: right">
-            <label nz-checkbox formControlName="remember">
-              <span>记住我</span>
-            </label>
-          </div>
-        </div> -->
-        <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'" (click)="login()">
-          登录
-        </button>
+        <div nz-row nzJustify="end">
+          <span
+            class="reminder flex-center"
+            nzTooltipTitle="请联系管理员重置密码"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+          >
+            <i nz-icon nzType="question-circle" nzTheme="twotone"></i>
+            忘记密码？
+          </span>
+        </div>
+        <button nz-button class="login-form-button" [nzType]="'primary'" (click)="login()">登录</button>
       </form>
     </div>
     <div class="flex-center">
-      <img src="../../../assets/images/Computer display_Two Color.svg" alt="机房管理系统" />
+      <img src="../../../assets/images/login_illustrations.svg" alt="机房管理系统" />
     </div>
   </div>
 </div>

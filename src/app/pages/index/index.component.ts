@@ -1,4 +1,3 @@
-import { CommonService } from './../../core/services/common.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

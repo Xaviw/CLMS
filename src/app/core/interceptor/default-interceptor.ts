@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { clearCache } from '@app/shared/utils/utils';
@@ -15,10 +15,15 @@ export class DefaultInterceptor implements HttpInterceptor {
     private router: Router,
     private message: NzMessageService,
     private notification: NzNotificationService,
-    private cache: CacheService,
+    public cache: CacheService,
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
+    // 请求开始，开启Loading动画
+    setTimeout(() => {
+      this.cache.loading.next(true);
+    });
+
     // 添加Token
     const token = _local.get('token');
     if (token) {
@@ -33,15 +38,18 @@ export class DefaultInterceptor implements HttpInterceptor {
     req = req.clone({
       url: environment.api + req.url,
     });
+
     return next.handle(req).pipe(
       tap(
+        // 错误code统一处理
         (res) => {
           if (res instanceof HttpResponse && res.body.code !== 0) {
             this.message.error(res.body.msg);
+            throw HttpErrorResponse;
           }
         },
+        // 错误状态码统一处理
         (error) => {
-          // 统一处理所有的http错误
           if (error instanceof HttpErrorResponse) {
             switch (error.status) {
               case 400:
@@ -80,6 +88,17 @@ export class DefaultInterceptor implements HttpInterceptor {
           }
         },
       ),
+      map((res) => {
+        // 正确请求直接返回data
+        if (res instanceof HttpResponse && res.body.code === 0) {
+          return res.clone({ body: res.body?.data });
+        }
+        return res;
+      }),
+      finalize(() => {
+        // 请求结束，关闭Loading动画
+        this.cache.loading.next(false);
+      }),
     );
   }
 }

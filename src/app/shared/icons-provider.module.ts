@@ -16,6 +16,7 @@ import {
   LockOutline,
   SettingOutline,
   AuditOutline,
+  QuestionCircleTwoTone,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -33,6 +34,7 @@ const icons = [
   LockOutline,
   SettingOutline,
   AuditOutline,
+  QuestionCircleTwoTone,
 ];
 
 @NgModule({

@@ -3,5 +3,5 @@ export const environment = {
   systemName: '机房管理系统',
   secreteKey: '',
   api: 'https://easydoc.net/mock/L0dgSwLM',
-  avatarServer: '',
+  avatarPath: '../assets/images/',
 };

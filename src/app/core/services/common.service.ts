@@ -13,25 +13,6 @@ export class CommonService {
   // 请求用户信息
   getUserInfo() {
     const url = '/user/info';
-    return this._post(url, {});
-  }
-
-  _get(url: string) {
-    return this.http.get<Res>(url).pipe(
-      map((res: Res) => {
-        if (res.code === 0) {
-          return res?.data;
-        }
-      }),
-    );
-  }
-  _post(url: string, param: Object) {
-    return this.http.post<Res>(url, param).pipe(
-      map((res: Res) => {
-        if (res.code === 0) {
-          return res?.data;
-        }
-      }),
-    );
+    return this.http.post(url, {});
   }
 }
