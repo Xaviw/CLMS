@@ -10,7 +10,9 @@ interface formControls {
 }
 interface pageRoute {
   link?: string;
-  text: string;
+  title: string;
+  key: string;
+  isLeaf: boolean;
   icon?: string;
   function?: string[];
   children?: pageRoute[];

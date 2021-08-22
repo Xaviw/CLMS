@@ -1,22 +1,19 @@
 // 基础布局样式
 $header-height: 50px;
-$left-width: 300px;
+$left-width: 250px;
 .layout {
   height: 100%;
-  // width: 100%;
   background-color: #fff;
   display: flex;
   flex-direction: column;
 
   & > .header {
     height: $header-height;
-    line-height: $header-height;
     border-bottom: 1px solid #eee;
     padding: 0 10px;
 
     & > .right {
       height: $header-height;
-      line-height: $header-height;
       float: right;
       padding: 0 10px;
     }
@@ -24,51 +21,34 @@ $left-width: 300px;
 
   & > .container {
     flex: 1;
-    // height: 100%;
     display: flex;
     flex-direction: row;
-    // overflow: hidden;
+    overflow: hidden;
 
     & > .left {
       width: $left-width;
       display: flex;
       flex-direction: column;
 
-      // & > .find {
-      //   height: $header-height;
-      //   line-height: $header-height;
-      //   display: flex;
-      //   align-items: center;
-      //   /*实现水平居中*/
-      //   justify-content: center;
-      //   border-bottom: 1px solid #eee;
-      // }
+      & > .handle {
+        height: $header-height;
+        border-bottom: 1px solid #eee;
+      }
 
-      // & > .handle {
-      //   height: $header-height;
-      //   line-height: $header-height;
-      //   border-bottom: 1px solid #eee;
-      // }
-
-      // & > .tree {
-      //   padding-bottom: 10px;
-      //   height: 100%;
-      //   flex: 1;
-      //   overflow: hidden;
-      // }
+      & > .tree {
+        height: 100%;
+        flex: 1;
+      }
     }
 
     & > .right {
       flex: 1;
       border-left: 1px solid #eee;
-      // overflow: hidden;
     }
   }
 
   & > .footer {
     height: $header-height;
-    line-height: $header-height;
-    padding: 0 10px;
     border-top: 1px solid #eee;
   }
 }
@@ -81,11 +61,12 @@ $left-width: 300px;
 .view_scroll {
   height: 100%;
   width: 100%;
-  overflow: auto;
+  overflow: overlay;
 }
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
+  padding: 10px;
 }
 ::-webkit-scrollbar-track {
   background: 0 0;
@@ -107,4 +88,24 @@ $left-width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.reminder {
+  color: #1890ff;
+  font-size: 0.8rem;
+  margin-bottom: 24px;
+  cursor: help;
+  i {
+    margin-right: 5px;
+  }
+}
+
+.padding {
+  padding: 10px;
+}
+.padding-x {
+  padding: 0 10px;
+}
+.padding-y {
+  padding: 10px 0;
 }

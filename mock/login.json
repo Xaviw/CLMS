@@ -1,0 +1,120 @@
+{
+  "code": 0,
+  "msg": "成功",
+  "data": {
+    "token": "1234567890",
+    "user": {
+      "account": "20176578",
+      "name": "夏巍",
+      "avatar": "20176578.png"
+    },
+    "routes": [
+      {
+        "title": "首页",
+        "link": "/index",
+        "icon": "home",
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "系统设置",
+        "icon": "setting",
+        "key": "1",
+        "isLeaf": false,
+        "children": [
+          {
+            "title": "页面设置",
+            "link": "/page-setup",
+            "function": [11111, 22222, 44444],
+            "key": "1",
+            "isLeaf": true
+          },
+          {
+            "title": "权限设置",
+            "link": "/permission-setup",
+            "function": [55555, 66666],
+            "key": "1",
+            "isLeaf": true
+          },
+          {
+            "title": "系统设置",
+            "link": "/system-setup",
+            "function": [777777],
+            "key": "1",
+            "isLeaf": true
+          }
+        ]
+      },
+      {
+        "title": "课程设置",
+        "link": "/course-setup",
+        "icon": "audit",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "用户管理",
+        "icon": "user",
+        "key": "1",
+        "isLeaf": false,
+        "children": [
+          {
+            "title": "教师管理",
+            "link": "/teacher-manage",
+            "function": [],
+            "key": "1",
+            "isLeaf": true
+          },
+          {
+            "title": "学生管理",
+            "link": "/student-manage",
+            "function": [],
+            "key": "1",
+            "isLeaf": true
+          }
+        ]
+      },
+      {
+        "title": "课程表",
+        "link": "/course-schedule",
+        "icon": "calendar",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "机房信息",
+        "link": "/computer-lab",
+        "icon": "database",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "机房申请",
+        "link": "/lab-apply",
+        "icon": "appstore-add",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "采购申请",
+        "link": "/shop-apply",
+        "icon": "shopping-cart",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      },
+      {
+        "title": "设备报修",
+        "link": "/repair-apply",
+        "icon": "tool",
+        "function": [],
+        "key": "1",
+        "isLeaf": true
+      }
+    ]
+  }
+}

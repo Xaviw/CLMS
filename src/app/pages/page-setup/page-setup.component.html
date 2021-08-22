@@ -1,12 +1,116 @@
 <div class="layout">
   <div class="container">
     <div class="left">
-      <div class="layout">
-        <div class="container">
-          <!-- <nz-tree [nzData]="pages" nzDraggable nzBlockNode (nzOnDrop)="changePageOrder($event)"></nz-tree> -->
+      <div class="handle padding-x" nz-row nzJustify="space-between" nzAlign="middle">
+        <nz-button-group>
+          <button nz-button nzType="primary" (click)="addPageDrawer.add()">添加</button>
+          <button
+            nz-button
+            nzType="primary"
+            nzDanger
+            [disabled]="!activePage"
+            nz-popconfirm
+            nzPopconfirmTitle="确认删除所选层级下所有页面?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deletePage()"
+          >
+            删除
+          </button>
+          <button nz-button [disabled]="!activePage" (click)="updatePage()">修改</button>
+        </nz-button-group>
+        <i
+          nz-icon
+          nzType="info-circle"
+          nzTheme="twotone"
+          nz-tooltip
+          nzTooltipPlacement="bottom"
+          nzTooltipTitle="拖动节点调整页面顺序"
+        ></i>
+      </div>
+      <div class="tree padding">
+        <div class="view_scroll">
+          <nz-tree
+            [nzData]="pages"
+            nzDraggable
+            nzBlockNode
+            nzShowIcon
+            (nzOnDrop)="adjustPageOrder($event)"
+            (nzClick)="pageClick($event)"
+          ></nz-tree>
         </div>
       </div>
     </div>
-    <div class="right"></div>
+    <div class="right">
+      <div class="layout">
+        <div class="header padding-x" nz-row nzAlign="middle" nzJustify="end">
+          <button nz-button nzType="primary" [hidden]="!activePage">添加功能</button>
+        </div>
+        <div class="container">
+          <nz-empty
+            [nzNotFoundContent]="contentTpl"
+            class="view flex-center"
+            [hidden]="activePage"
+            style="flex-direction: column"
+          >
+            <ng-template #contentTpl>
+              <span> 请先选择对应页面！ </span>
+            </ng-template>
+          </nz-empty>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- 新增页面抽屉 -->
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="addPageDrawer.visible"
+  (nzOnClose)="addPageDrawer.close()"
+  [nzBodyStyle]="{ padding: 0 }"
+  nzWidth="300px"
+  nzPlacement="right"
+  [nzTitle]="isUpdate ? '修改页面' : '添加页面'"
+>
+  <div class="layout" *nzDrawerContent>
+    <div class="container">
+      <div class="view_scroll padding">
+        <div [hidden]="isUpdate">
+          <div style="margin-bottom: 24px">当前上层菜单：{{ activePage?.title ?? '--' }}</div>
+          <label nz-checkbox [(ngModel)]="isTopLevel" [nzDisabled]="topLevelDisabled" style="margin-bottom: 24px">
+            设为顶层菜单
+          </label>
+        </div>
+        <form nz-form [formGroup]="pageAddForm" nzLayout="vertical">
+          <nz-form-item>
+            <nz-form-label nzFor="title" nzRequired>页面名称：</nz-form-label>
+            <nz-form-control nzErrorTip="页面名称不能为空！">
+              <input nz-input formControlName="title" id="title" placeholder="请输入页面名称" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="link" nzRequired>页面路径：</nz-form-label>
+            <nz-form-control nzErrorTip="页面路径不能为空！">
+              <input nz-input formControlName="link" id="link" placeholder="请输入页面路径" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="icon">页面图标：</nz-form-label>
+            <nz-form-control>
+              <div nz-row nzAlign="middle">
+                <input nz-input formControlName="icon" id="icon" nz-col nzSpan="20" placeholder="请输入图标名称" />
+                <i nz-icon [nzType]="pageAddForm.controls.icon.value" nz-col nzSpan="4"></i>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+    <div class="footer padding-x" nz-row nzAlign="middle" nzJustify="end">
+      <nz-button-group>
+        <button nz-button nzType="primary" (click)="addPage()">添加</button>
+        <button nz-button (click)="cancelAdd()">取消</button>
+      </nz-button-group>
+    </div>
+  </div>
+</nz-drawer>
