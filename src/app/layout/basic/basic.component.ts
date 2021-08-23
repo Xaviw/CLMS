@@ -49,4 +49,8 @@ export class LayoutBasicComponent implements OnInit {
       this.router.navigate(['/blank/login']);
     });
   }
+
+  menuClick(e: any) {
+    console.log(e);
+  }
 }

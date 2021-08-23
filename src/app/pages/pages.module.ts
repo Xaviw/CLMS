@@ -32,6 +32,14 @@ const routes: Routes = [
           needLogin: true,
         },
       },
+      {
+        path: 'permission-setup',
+        loadChildren: () => import('./permission-setup/permission-setup.module').then((m) => m.PermissionSetupModule),
+        data: {
+          title: '权限设置',
+          needLogin: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局

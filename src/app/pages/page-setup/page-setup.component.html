@@ -16,7 +16,7 @@
           >
             删除
           </button>
-          <button nz-button [disabled]="!activePage" (click)="updatePage()">修改</button>
+          <button nz-button [disabled]="!activePage" (click)="addPageDrawer.update()">修改</button>
         </nz-button-group>
         <i
           nz-icon
@@ -24,8 +24,9 @@
           nzTheme="twotone"
           nz-tooltip
           nzTooltipPlacement="bottom"
-          nzTooltipTitle="拖动节点调整页面顺序"
+          [nzTooltipTitle]="titleTemplate"
         ></i>
+        <ng-template #titleTemplate> 拖动节点调整页面顺序<br />页面层级请勿超过四级 </ng-template>
       </div>
       <div class="tree padding">
         <div class="view_scroll">
@@ -43,19 +44,41 @@
     <div class="right">
       <div class="layout">
         <div class="header padding-x" nz-row nzAlign="middle" nzJustify="end">
-          <button nz-button nzType="primary" [hidden]="!activePage">添加功能</button>
+          <button nz-button nzType="primary" [hidden]="!activePage?.origin?.isLeaf">添加功能</button>
         </div>
         <div class="container">
-          <nz-empty
-            [nzNotFoundContent]="contentTpl"
-            class="view flex-center"
-            [hidden]="activePage"
-            style="flex-direction: column"
-          >
-            <ng-template #contentTpl>
-              <span> 请先选择对应页面！ </span>
-            </ng-template>
-          </nz-empty>
+          <!-- 功能列表 -->
+          <div class="view_scroll padding" [hidden]="!activePage?.origin?.isLeaf">
+            <nz-table #pageFunctionTable [nzData]="pageFunctions" nzShowPagination="false">
+              <thead>
+                <tr>
+                  <th nzAlign="center">Code</th>
+                  <th nzAlign="center">名称</th>
+                  <th nzAlign="center">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let i of pageFunctionTable.data">
+                  <td nzAlign="center">{{ i.code }}</td>
+                  <td nzAlign="center">{{ i.name }}</td>
+                  <td nzAlign="center">
+                    <button
+                      nz-button
+                      nzType="link"
+                      nz-popconfirm
+                      nzPopconfirmTitle="确认删除该功能?"
+                      nzPopconfirmPlacement="bottom"
+                      (nzOnConfirm)="deleteFunction()"
+                    >
+                      删除
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+          <!-- 空状态显示 -->
+          <app-empty *ngIf="!activePage?.origin?.isLeaf" info="请先选择对应页面！"></app-empty>
         </div>
       </div>
     </div>
@@ -108,7 +131,8 @@
     </div>
     <div class="footer padding-x" nz-row nzAlign="middle" nzJustify="end">
       <nz-button-group>
-        <button nz-button nzType="primary" (click)="addPage()">添加</button>
+        <button nz-button nzType="primary" (click)="addPage()" *ngIf="!isUpdate">添加</button>
+        <button nz-button nzType="primary" (click)="updatePage()" *ngIf="isUpdate">修改</button>
         <button nz-button (click)="cancelAdd()">取消</button>
       </nz-button-group>
     </div>

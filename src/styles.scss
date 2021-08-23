@@ -1,6 +1,6 @@
 // 基础布局样式
 $header-height: 50px;
-$left-width: 250px;
+$left-width: 300px;
 .layout {
   height: 100%;
   background-color: #fff;
@@ -64,9 +64,9 @@ $left-width: 250px;
   overflow: overlay;
 }
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-  padding: 10px;
+  width: 5px;
+  // height: 5px;
+  // padding: 5px;
 }
 ::-webkit-scrollbar-track {
   background: 0 0;

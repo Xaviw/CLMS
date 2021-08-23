@@ -23,4 +23,17 @@ interface userInfo {
   avatar?: string;
 }
 
-export { Res, formControls, pageRoute, userInfo };
+interface pageFunction {
+  code: string;
+  name: string;
+  id: string;
+}
+
+interface role {
+  title: string;
+  key: string;
+  isLeaf?: boolean;
+  permissions?: string[];
+}
+
+export { Res, formControls, pageRoute, userInfo, pageFunction, role };

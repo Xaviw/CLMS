@@ -15,4 +15,14 @@ export class CommonService {
     const url = '/user/info';
     return this.http.post(url, {});
   }
+
+  getAllPages() {
+    const url = '/page/getAllRouterInfo';
+    return this.http.post(url, null);
+  }
+
+  getPageFunctions(param: string) {
+    const url = '/page/functions';
+    return this.http.post(url, param);
+  }
 }

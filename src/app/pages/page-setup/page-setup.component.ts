@@ -1,7 +1,8 @@
+import { CommonService } from './../../core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PageSetupService } from './page-setup.service';
-import { pageRoute, formControls } from '@app/shared/types/commonTypes';
+import { pageRoute, pageFunction } from '@app/shared/types/commonTypes';
 import { Component, OnInit } from '@angular/core';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -14,9 +15,16 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 })
 export class PageSetupComponent implements OnInit {
   pages: pageRoute[] = []; // 完整页面数据
+  pageFunctions: pageFunction[] = []; // 页面功能数据
   // 添加页面表单Control
   pageAddForm: FormGroup = this.fb.group({
     parentPage: [null],
+    title: [null, [Validators.required]],
+    link: [null, [Validators.required]],
+    icon: [null],
+  });
+  // 添加功能表单Control
+  functionAddForm: FormGroup = this.fb.group({
     title: [null, [Validators.required]],
     link: [null, [Validators.required]],
     icon: [null],
@@ -30,6 +38,7 @@ export class PageSetupComponent implements OnInit {
     return this._isTopLevel;
   }
   set isTopLevel(v: Boolean) {
+    this._isTopLevel = v;
     if (v) {
       this.pageAddForm.controls.parentPage.patchValue('-1');
     } else {
@@ -49,7 +58,7 @@ export class PageSetupComponent implements OnInit {
         this.topLevelDisabled = this.isTopLevel = false;
       } else {
         this.pageAddForm.controls.parentPage.patchValue('-1');
-        this.topLevelDisabled = true;
+        this.topLevelDisabled = this.isTopLevel = true;
       }
     },
     update: () => {
@@ -68,7 +77,19 @@ export class PageSetupComponent implements OnInit {
     },
   };
 
-  constructor(private service: PageSetupService, private fb: FormBuilder) {}
+  // 添加功能抽屉
+  addFunctionDrawer = {
+    visible: false, // 是否显示
+    // 打开时设置上层页面id
+    open: () => {
+      this.addFunctionDrawer.visible = true;
+    },
+    close() {
+      this.visible = false;
+    },
+  };
+
+  constructor(private service: PageSetupService, private fb: FormBuilder, private common: CommonService) {}
 
   ngOnInit() {
     this.getAllPages();
@@ -76,7 +97,7 @@ export class PageSetupComponent implements OnInit {
 
   // 获取完整菜单
   getAllPages() {
-    this.service.getAllPages().subscribe((res) => {
+    this.common.getAllPages().subscribe((res) => {
       this.pages = res as pageRoute[];
     });
   }
@@ -94,6 +115,15 @@ export class PageSetupComponent implements OnInit {
       this.pageAddForm.controls.parentPage.patchValue(e.keys?.[0]);
     } else {
       this.activePage = undefined;
+    }
+    if (e.node?.origin.isLeaf) {
+      // 叶子节点=>加载功能
+      this.common.getPageFunctions(e.node.key).subscribe((res) => {
+        this.pageFunctions = res as pageFunction[];
+      });
+    } else if (e.node) {
+      // 父节点=>展开
+      e.node.isExpanded = !e.node.isExpanded;
     }
   }
 
@@ -114,4 +144,7 @@ export class PageSetupComponent implements OnInit {
 
   // 修改页面
   updatePage() {}
+
+  // 删除功能
+  deleteFunction() {}
 }

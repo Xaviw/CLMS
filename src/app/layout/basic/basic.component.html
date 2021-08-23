@@ -20,27 +20,36 @@
   </nz-header>
   <nz-layout>
     <nz-sider nzCollapsible nzTheme="light">
-      <ul nz-menu nzMode="inline">
-        <ng-container *ngFor="let menu of menus">
-          <!-- 二级菜单 -->
-          <ng-container *ngIf="!menu.isLeaf; else singleMenu">
-            <li nz-submenu [nzTitle]="menu.title" [nzIcon]="menu.icon!">
-              <ul>
-                <li *ngFor="let subMenu of menu.children" nz-menu-item [routerLink]="subMenu.link" nzMatchRouter>
-                  {{ subMenu.title }}
-                </li>
-              </ul>
-            </li>
-          </ng-container>
-          <!-- 一级菜单 -->
-          <ng-template #singleMenu>
-            <li nz-menu-item [routerLink]="menu.link" nzMatchRouter>
-              <i nz-icon [nzType]="menu.icon!" nzTheme="outline"></i>
-              <span>{{ menu.title }}</span>
-            </li>
+      <div class="view_scroll" style="height: calc(100% - 48px)">
+        <ul nz-menu nzMode="inline" (nzClick)="menuClick($event)">
+          <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
+          <ng-template #menuTpl let-menus>
+            <ng-container *ngFor="let menu of menus">
+              <li
+                *ngIf="menu.isLeaf"
+                nz-menu-item
+                [nzPaddingLeft]="menu.level * 24"
+                nzMatchRouter
+                [routerLink]="menu.link"
+              >
+                <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+                <span>{{ menu.title }}</span>
+              </li>
+              <li
+                *ngIf="!menu.isLeaf"
+                nz-submenu
+                [nzPaddingLeft]="menu.level * 24"
+                [nzTitle]="menu.title"
+                [nzIcon]="menu.icon"
+              >
+                <ul>
+                  <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"> </ng-container>
+                </ul>
+              </li>
+            </ng-container>
           </ng-template>
-        </ng-container>
-      </ul>
+        </ul>
+      </div>
     </nz-sider>
     <nz-layout>
       <nz-content>

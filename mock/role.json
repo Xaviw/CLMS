@@ -1,0 +1,24 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "title": "管理员",
+      "key": "1",
+      "isLeaf": true,
+      "permissions": ["code1", "code2"]
+    },
+    {
+      "title": "教师",
+      "key": "2",
+      "isLeaf": true,
+      "permissions": ["code3", "code4"]
+    },
+    {
+      "title": "学生",
+      "key": "3",
+      "isLeaf": true,
+      "permissions": ["code5", "code6"]
+    }
+  ]
+}
