@@ -18,6 +18,8 @@ import {
   AuditOutline,
   QuestionCircleTwoTone,
   InfoCircleTwoTone,
+  SnippetsOutline,
+  BulbOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -37,6 +39,8 @@ const icons = [
   AuditOutline,
   QuestionCircleTwoTone,
   InfoCircleTwoTone,
+  SnippetsOutline,
+  BulbOutline,
 ];
 
 @NgModule({

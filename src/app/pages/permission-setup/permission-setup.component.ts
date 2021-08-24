@@ -2,7 +2,8 @@ import { CommonService } from './../../core/services/common.service';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { PermissionSetupService } from './permission-setup.service';
 import { Component, OnInit } from '@angular/core';
-import { role, pageRoute, pageFunction } from '@app/shared/types/commonTypes';
+import { role, pageRoute } from '@app/shared/types/commonTypes';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-permission-setup',
@@ -41,6 +42,7 @@ export class PermissionSetupComponent implements OnInit {
     this.service.getRoles().subscribe((res) => {
       (res as role[]).forEach((item: role) => {
         item.isLeaf = true;
+        item.icon = 'user';
       });
       this.roles = res as role[];
     });
@@ -62,11 +64,36 @@ export class PermissionSetupComponent implements OnInit {
 
   // 单击角色
   roleClick(e: NzFormatEmitEvent) {
-    console.log(e);
     if (this.activeRole !== e.node) {
       this.activeRole = e.node!;
     } else {
       this.activeRole = undefined;
     }
+  }
+
+  // 修改功能权限
+  modifyFunctionPermission(e: NzFormatEmitEvent, id: string) {
+    this.service
+      .setFunctionPermission({ roleId: this.activeRole?.key!, functionId: id })
+      .pipe(
+        tap((err) => {
+          // 修改出错，重新请求已有权限
+          this.getRoles();
+        }),
+      )
+      .subscribe();
+  }
+
+  // 修改功能权限
+  modifyPagePermission(e: NzFormatEmitEvent, id: string) {
+    this.service
+      .setPagePermission({ roleId: this.activeRole?.key!, pageId: id })
+      .pipe(
+        tap((err) => {
+          // 修改出错，重新请求已有权限
+          this.getRoles();
+        }),
+      )
+      .subscribe();
   }
 }

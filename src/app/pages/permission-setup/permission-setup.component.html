@@ -9,18 +9,18 @@
       </div>
       <div class="tree">
         <div class="view_scroll padding">
-          <nz-tree [nzData]="roles" nzBlockNode (nzClick)="roleClick($event)"></nz-tree>
+          <nz-tree [nzData]="roles" nzShowIcon nzBlockNode (nzClick)="roleClick($event)"></nz-tree>
         </div>
       </div>
     </div>
     <div class="right">
-      <div class="view_scroll padding">
+      <div class="view_scroll" style="padding: 20px 40px">
         <nz-table #nzTable [nzData]="pages" nzTableLayout="fixed" nzShowPagination="false">
           <thead>
             <tr>
               <th nzWidth="60px"></th>
               <th>名称</th>
-              <th nzWidth="60px">操作</th>
+              <th nzWidth="60px">权限</th>
             </tr>
           </thead>
           <tbody>
@@ -33,7 +33,7 @@
                     [nzExpand]="expandSet.has(page.key)"
                     (nzExpandChange)="onExpandChange(page.key, $event, page.isLeaf)"
                   ></td>
-                  <td>{{ page.title }}</td>
+                  <td><i nz-icon nzType="snippets" nzTheme="outline"></i>{{ page.title }}</td>
                   <td>
                     <label
                       nz-checkbox
@@ -43,13 +43,18 @@
                       nzTooltipTitle="请先选择角色！"
                       *ngIf="!activeRole"
                     ></label>
-                    <label nz-checkbox *ngIf="activeRole"></label>
+                    <label
+                      nz-checkbox
+                      *ngIf="activeRole"
+                      [ngModel]="activeRole.origin.permissions.includes(page.key)"
+                      (ngModelChange)="modifyFunctionPermission($event, page.key)"
+                    ></label>
                   </td>
                 </tr>
                 <tr [nzExpand]="expandSet.has(page.key)">
                   <table *ngIf="!page.isLeaf">
                     <tbody>
-                      <ng-container *ngTemplateOutlet="pageTpl; context: { $implicit: page.children }"> </ng-container>
+                      <ng-container *ngTemplateOutlet="pageTpl; context: { $implicit: page.children }"></ng-container>
                     </tbody>
                   </table>
                   <div *ngIf="page.isLeaf">
@@ -60,7 +65,7 @@
                             [ngStyle]="{ 'padding-left.px': page.level - 1 ? (page.level - 1) * 50 + 60 : 76 }"
                             style="width: auto"
                           >
-                            {{ item.name }}
+                            <i nz-icon nzType="bulb" nzTheme="outline"></i>{{ item.name }}
                           </td>
                           <td style="width: 60px">
                             <label
@@ -71,7 +76,12 @@
                               nzTooltipTitle="请先选择角色！"
                               *ngIf="!activeRole"
                             ></label>
-                            <label nz-checkbox *ngIf="activeRole"></label>
+                            <label
+                              nz-checkbox
+                              *ngIf="activeRole"
+                              [ngModel]="activeRole.origin.permissions.includes(item.id)"
+                              (ngModelChange)="modifyFunctionPermission($event, item.id)"
+                            ></label>
                           </td>
                         </tr>
                       </tbody>

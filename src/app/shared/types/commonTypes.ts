@@ -33,6 +33,7 @@ interface role {
   title: string;
   key: string;
   isLeaf?: boolean;
+  icon?: string;
   permissions?: string[];
 }
 
