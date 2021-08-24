@@ -13,12 +13,17 @@ import { role, pageRoute, pageFunction } from '@app/shared/types/commonTypes';
 export class PermissionSetupComponent implements OnInit {
   roles: role[] = []; // 角色数据
   activeRole: NzTreeNode | undefined; // 当前选中角色
-  pages: pageRoute[] = [];
-  pageFunctions: pageFunction[] = [];
-  expandSet = new Set<string>();
-  onExpandChange(id: string, checked: boolean): void {
+  pages: pageRoute[] = []; // 页面数据
+  pageFunctions = new Map(); // 页面功能数据
+  expandSet = new Set<string>(); // 已展开页面列表
+  // 展开页面触发
+  onExpandChange(id: string, checked: boolean, isLeaf: boolean): void {
     if (checked) {
       this.expandSet.add(id);
+      if (!this.pageFunctions.get(id) && isLeaf) {
+        this.getPageFunctions(id);
+        console.log(this.pageFunctions);
+      }
     } else {
       this.expandSet.delete(id);
     }
@@ -45,6 +50,13 @@ export class PermissionSetupComponent implements OnInit {
   getAllPages() {
     this.common.getAllPages().subscribe((res) => {
       this.pages = res as pageRoute[];
+    });
+  }
+
+  // 获取页面功能
+  getPageFunctions(param: string) {
+    this.common.getPageFunctions(param).subscribe((res) => {
+      this.pageFunctions.set(param, res);
     });
   }
 

@@ -16,11 +16,13 @@ export class CommonService {
     return this.http.post(url, {});
   }
 
+  // 获取所有页面
   getAllPages() {
     const url = '/page/getAllRouterInfo';
     return this.http.post(url, null);
   }
 
+  // 获取页面功能
   getPageFunctions(param: string) {
     const url = '/page/functions';
     return this.http.post(url, param);

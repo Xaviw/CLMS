@@ -31,7 +31,7 @@
                   <td
                     [ngStyle]="{ 'padding-left.px': page.level - 1 ? (page.level - 1) * 50 : false }"
                     [nzExpand]="expandSet.has(page.key)"
-                    (nzExpandChange)="onExpandChange(page.key, $event)"
+                    (nzExpandChange)="onExpandChange(page.key, $event, page.isLeaf)"
                   ></td>
                   <td>{{ page.title }}</td>
                   <td>
@@ -52,7 +52,31 @@
                       <ng-container *ngTemplateOutlet="pageTpl; context: { $implicit: page.children }"> </ng-container>
                     </tbody>
                   </table>
-                  <span *ngIf="page.isLeaf">123</span>
+                  <div *ngIf="page.isLeaf">
+                    <table>
+                      <tbody>
+                        <tr *ngFor="let item of pageFunctions.get(page.key)">
+                          <td
+                            [ngStyle]="{ 'padding-left.px': page.level - 1 ? (page.level - 1) * 50 + 60 : 76 }"
+                            style="width: auto"
+                          >
+                            {{ item.name }}
+                          </td>
+                          <td style="width: 60px">
+                            <label
+                              nz-checkbox
+                              nzDisabled
+                              nz-tooltip
+                              nzTooltipPlacement="left"
+                              nzTooltipTitle="请先选择角色！"
+                              *ngIf="!activeRole"
+                            ></label>
+                            <label nz-checkbox *ngIf="activeRole"></label>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </tr>
               </ng-container>
             </ng-template>
