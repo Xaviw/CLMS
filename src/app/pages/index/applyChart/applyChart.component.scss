@@ -1,0 +1,10 @@
+:host {
+  grid-area: span 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+}

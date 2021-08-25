@@ -1,14 +1,36 @@
-<div class="flex-between padding-y padding20-x">
+<div class="flex-between padding-y padding20-x header">
   <span class="title">{{ title }}</span>
-  <button nz-button nzType="primary" nzGhost nzSize="small">快捷设置</button>
+  <button
+    nz-button
+    nzType="primary"
+    nzGhost
+    nzSize="small"
+    nz-dropdown
+    nzTrigger="click"
+    [nzDropdownMenu]="menu"
+    *ngIf="settings"
+  >
+    快捷设置
+  </button>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item *ngFor="let item of settings" (click)="item.func()">{{ item.text }}</li>
+    </ul>
+  </nz-dropdown-menu>
 </div>
 <div class="flex-between padding-y padding20-x">
   <span class="quantity">{{ quantity }}{{ unit }}</span>
   <span *ngIf="info" class="quantity info">{{ info }}</span>
 </div>
 <div #cardElement class="flex-center padding"></div>
-<div class="flex-evenly padding">
-  <div class="flex-center" *ngFor="let item of chart">
+<div class="flex-evenly padding footer">
+  <div
+    class="flex-center"
+    *ngFor="let item of chart"
+    [nzTooltipTitle]="item.name + ':' + item.data + unit"
+    nzTooltipPlacement="top"
+    nz-tooltip
+  >
     <div class="legend" [ngStyle]="{ backgroundColor: item.color }"></div>
     <span>
       {{ item.name }}

@@ -1,7 +1,15 @@
 :host {
-  grid-area: auto;
+  grid-area: span 1;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+}
+
+.footer {
+  border-top: 1px solid #eee;
 }
 
 .title {

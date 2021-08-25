@@ -23,6 +23,20 @@ export class IndexComponent implements OnInit {
       color: '#95a5a6',
     },
   ];
+  labSettings = [
+    {
+      text: '开放全部机房',
+      func: this.openAllLab,
+    },
+    {
+      text: '关闭全部机房',
+      func: this.closeAllLab,
+    },
+    {
+      text: '全部维修完成',
+      func: this.allRepairSuccessful,
+    },
+  ];
   equipmentInfo = [
     {
       name: '正常',
@@ -57,7 +71,86 @@ export class IndexComponent implements OnInit {
       color: '#ffa502',
     },
   ];
+  labApplyData = [
+    {
+      name: '待审核',
+      value: 1,
+    },
+    {
+      name: '已通过',
+      value: 0,
+    },
+    {
+      name: '未通过',
+      value: 0,
+    },
+    {
+      name: '未完成',
+      value: 3,
+    },
+    {
+      name: '已完成',
+      value: 12,
+    },
+    {
+      name: '取消',
+      value: 5,
+    },
+  ];
+  shopApplyData = [
+    {
+      name: '待审核',
+      value: 2,
+    },
+    {
+      name: '已通过',
+      value: 24,
+    },
+    {
+      name: '未通过',
+      value: 1,
+    },
+    {
+      name: '未完成',
+      value: 10,
+    },
+    {
+      name: '已完成',
+      value: 14,
+    },
+    {
+      name: '取消',
+      value: 5,
+    },
+  ];
+  repairApplyData = [
+    {
+      name: '已提交',
+      value: 2,
+    },
+    {
+      name: '维修中',
+      value: 1,
+    },
+    {
+      name: '已完成',
+      value: 1,
+    },
+    {
+      name: '已取消',
+      value: 0,
+    },
+  ];
   constructor() {}
 
   ngOnInit() {}
+
+  // 开放全部机房
+  openAllLab() {}
+
+  // 关闭全部机房
+  closeAllLab() {}
+
+  // 全部维修完成
+  allRepairSuccessful() {}
 }

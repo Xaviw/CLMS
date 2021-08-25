@@ -66,7 +66,9 @@ export class InfoCardComponent implements OnInit {
         this.Chart.resize();
       });
 
-    this.init();
+    setTimeout(() => {
+      this.init();
+    });
   }
 
   init() {
@@ -97,7 +99,6 @@ export class InfoCardComponent implements OnInit {
       },
       series: this.series,
     };
-    console.log(option);
     this.Chart.setOption(option as echarts.EChartOption);
   }
 }
