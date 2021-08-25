@@ -45,7 +45,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         (res) => {
           if (res instanceof HttpResponse && res.body.code !== 0) {
             this.message.error(res.body.msg);
-            throw HttpErrorResponse;
+            // throw HttpErrorResponse;
           }
         },
         // 错误状态码统一处理

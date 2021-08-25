@@ -3,8 +3,20 @@
     <div class="left">
       <div class="handle padding-x" nz-row nzAlign="middle">
         <nz-button-group>
-          <button nz-button nzType="primary">添加角色</button>
-          <button nz-button nzType="primary" nzDanger>删除角色</button>
+          <button nz-button nzType="primary" (click)="roleModel.add()">添加</button>
+          <button nz-button [disabled]="!activeRole" (click)="roleModel.update()">修改</button>
+          <button
+            nz-button
+            nzType="primary"
+            nzDanger
+            [disabled]="!activeRole"
+            nz-popconfirm
+            nzPopconfirmTitle="确认删除该角色?"
+            nzPopconfirmPlacement="bottom"
+            (nzOnConfirm)="deleteRole()"
+          >
+            删除
+          </button>
         </nz-button-group>
       </div>
       <div class="tree">
@@ -96,3 +108,14 @@
     </div>
   </div>
 </div>
+
+<!-- 角色操作对话框 -->
+<nz-modal
+  [(nzVisible)]="roleModel.visible"
+  [nzTitle]="roleModel.mode ? '添加角色' : '修改角色'"
+  (nzOnCancel)="roleModel.cancel()"
+  (nzOnOk)="roleModel.mode ? roleModel.addRole() : roleModel.modifyRole()"
+  [nzOkLoading]="roleModel.loading"
+>
+  <input *nzModalContent nz-input placeholder="请输入角色名字" [(ngModel)]="roleModel.value" />
+</nz-modal>

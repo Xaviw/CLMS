@@ -89,6 +89,16 @@ $left-width: 300px;
   align-items: center;
   justify-content: center;
 }
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.flex-evenly {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
 
 .reminder {
   color: #1890ff;
@@ -104,8 +114,21 @@ $left-width: 300px;
   padding: 10px;
 }
 .padding-x {
-  padding: 0 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .padding-y {
-  padding: 10px 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.padding20 {
+  padding: 20px;
+}
+.padding20-x {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.padding20-y {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

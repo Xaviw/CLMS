@@ -17,6 +17,57 @@ export class PermissionSetupComponent implements OnInit {
   pages: pageRoute[] = []; // 页面数据
   pageFunctions = new Map(); // 页面功能数据
   expandSet = new Set<string>(); // 已展开页面列表
+  // 角色操作对话框
+  roleModel = {
+    visible: false, // 显示控制
+    loading: false, // 确认loading状态控制
+    value: '', // 文本框值
+    mode: true, // 当前模式，true=>添加，false=>修改
+    add: () => {
+      this.roleModel.visible = true;
+      this.roleModel.mode = true;
+    },
+    update: () => {
+      this.roleModel.visible = true;
+      this.roleModel.mode = false;
+      this.roleModel.value = this.activeRole?.origin.title!;
+    },
+    // 添加角色
+    addRole: () => {
+      this.roleModel.loading = true;
+      this.service
+        .addRole(this.roleModel.value)
+        .pipe(
+          tap((err) => {
+            this.roleModel.loading = false;
+          }),
+        )
+        .subscribe((res) => {
+          this.roleModel.loading = false;
+          this.getRoles();
+        });
+    },
+    // 修改角色
+    modifyRole: () => {
+      this.roleModel.loading = true;
+      this.service
+        .modifyRole(this.roleModel.value)
+        .pipe(
+          tap((err) => {
+            this.roleModel.loading = false;
+          }),
+        )
+        .subscribe((res) => {
+          this.roleModel.loading = false;
+          this.getRoles();
+        });
+    },
+    cancel: () => {
+      this.roleModel.visible = false;
+      this.roleModel.value = '';
+    },
+  };
+
   // 展开页面触发
   onExpandChange(id: string, checked: boolean, isLeaf: boolean): void {
     if (checked) {
@@ -84,7 +135,7 @@ export class PermissionSetupComponent implements OnInit {
       .subscribe();
   }
 
-  // 修改功能权限
+  // 修改页面权限
   modifyPagePermission(e: NzFormatEmitEvent, id: string) {
     this.service
       .setPagePermission({ roleId: this.activeRole?.key!, pageId: id })
@@ -95,5 +146,12 @@ export class PermissionSetupComponent implements OnInit {
         }),
       )
       .subscribe();
+  }
+
+  // 删除角色
+  deleteRole() {
+    this.service.deleteRole(this.activeRole?.key!).subscribe((res) => {
+      this.getRoles();
+    });
   }
 }

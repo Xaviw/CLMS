@@ -1,0 +1,17 @@
+<div class="flex-between padding-y padding20-x">
+  <span class="title">{{ title }}</span>
+  <button nz-button nzType="primary" nzGhost nzSize="small">快捷设置</button>
+</div>
+<div class="flex-between padding-y padding20-x">
+  <span class="quantity">{{ quantity }}{{ unit }}</span>
+  <span *ngIf="info" class="quantity info">{{ info }}</span>
+</div>
+<div #cardElement class="flex-center padding"></div>
+<div class="flex-evenly padding">
+  <div class="flex-center" *ngFor="let item of chart">
+    <div class="legend" [ngStyle]="{ backgroundColor: item.color }"></div>
+    <span>
+      {{ item.name }}
+    </span>
+  </div>
+</div>
