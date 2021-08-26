@@ -5,15 +5,13 @@
   padding: 10px;
   display: grid;
   gap: 20px;
-  grid-template-rows: 200px 400px 500px 500px 500px;
+  grid-template-rows: 200px 300px 400px 500px 500px;
   grid-template-columns: repeat(3, 1fr);
   & > * {
     background-color: #fff;
     box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-  }
-  .notice {
-    grid-area: 3 / 1 / 4 / 3;
+    min-width: 0;
   }
   .message {
     grid-area: 'auto';
@@ -27,4 +25,17 @@
   .curriculum {
     grid-area: 5 / 1 / 6 / 4;
   }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+  font-weight: bold;
+}
+
+.width {
+  min-width: 0;
 }

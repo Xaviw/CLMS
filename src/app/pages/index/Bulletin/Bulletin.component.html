@@ -1,0 +1,13 @@
+<div class="header">
+  <span>通知公告</span>
+  <button nz-button nzType="link" nzSize="small" routerLink="">查看更多</button>
+</div>
+<ul class="width">
+  <li class="flex-between" *ngFor="let item of data">
+    <span nz-typography nzEllipsis>{{ item.title }}</span>
+    <div>
+      <span>{{ item.createTime }}</span>
+      <span><i nz-icon nzType="eye" nzTheme="outline"></i>{{ item.views }}</span>
+    </div>
+  </li>
+</ul>

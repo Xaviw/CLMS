@@ -1,5 +1,5 @@
-<div class="flex-between padding-y padding20-x header">
-  <span class="title">{{ title }}</span>
+<div class="header">
+  <span>{{ title }}</span>
   <button
     nz-button
     nzType="primary"
@@ -22,7 +22,7 @@
   <span class="quantity">{{ quantity }}{{ unit }}</span>
   <span *ngIf="info" class="quantity info">{{ info }}</span>
 </div>
-<div #cardElement class="flex-center padding"></div>
+<div #cardElement class="chart flex-center padding"></div>
 <div class="flex-evenly padding footer">
   <div
     class="flex-center"

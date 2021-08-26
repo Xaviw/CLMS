@@ -17,7 +17,7 @@ interface series {
 @Component({
   selector: 'app-infoCard',
   templateUrl: './infoCard.component.html',
-  styleUrls: ['./infoCard.component.scss'],
+  styleUrls: ['./infoCard.component.scss', '../index.component.scss'],
 })
 export class InfoCardComponent implements OnInit {
   // 卡片标题

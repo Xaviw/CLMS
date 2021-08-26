@@ -4,16 +4,8 @@
   grid-template-rows: auto auto 1fr auto;
 }
 
-.header {
-  border-bottom: 1px solid #eee;
-}
-
 .footer {
   border-top: 1px solid #eee;
-}
-
-.title {
-  font-weight: bold;
 }
 
 .quantity {
@@ -29,4 +21,8 @@
   margin-right: 8px;
   width: 1rem;
   height: 1rem;
+}
+
+.chart {
+  min-width: 0;
 }

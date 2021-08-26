@@ -11,7 +11,7 @@ interface chart {
 @Component({
   selector: 'app-applyChart',
   templateUrl: './applyChart.component.html',
-  styleUrls: ['./applyChart.component.scss'],
+  styleUrls: ['./applyChart.component.scss', '../index.component.scss'],
 })
 export class ApplyChartComponent implements OnInit {
   // 标题
@@ -32,10 +32,8 @@ export class ApplyChartComponent implements OnInit {
     fromEvent(window, 'resize')
       .pipe(debounceTime(300))
       .subscribe((event) => {
-        console.log('event: ', event);
         this.Chart.resize();
       });
-
     setTimeout(() => {
       this.init();
     });
@@ -66,8 +64,11 @@ export class ApplyChartComponent implements OnInit {
         {
           name: this.title,
           type: 'pie',
-          radius: '60%',
+          radius: '70%',
           data: this.data,
+          labelLine: {
+            length: 5,
+          },
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
