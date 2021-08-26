@@ -20,6 +20,7 @@ import {
   InfoCircleTwoTone,
   SnippetsOutline,
   BulbOutline,
+  ContainerOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -41,6 +42,7 @@ const icons = [
   InfoCircleTwoTone,
   SnippetsOutline,
   BulbOutline,
+  ContainerOutline,
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@
   padding: 10px;
   display: grid;
   gap: 20px;
-  grid-template-rows: 200px 300px 400px 500px 500px;
+  grid-template-rows: 200px 340px 400px 500px 500px;
   grid-template-columns: repeat(3, 1fr);
   & > * {
     background-color: #fff;
@@ -31,9 +31,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 20px 10px 27px;
   border-bottom: 1px solid #eee;
   font-weight: bold;
+  position: relative;
+  &::before {
+    content: '';
+    width: 4px;
+    height: 1rem;
+    background-color: #1890ff;
+    position: absolute;
+    margin-left: -10px;
+  }
 }
 
 .width {

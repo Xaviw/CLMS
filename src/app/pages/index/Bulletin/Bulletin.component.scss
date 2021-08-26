@@ -3,3 +3,33 @@
   display: grid;
   grid-template-rows: auto 1fr;
 }
+
+.list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  .item {
+    flex: 1 1;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    > span {
+      font-weight: bold;
+      padding: 0 20px;
+      cursor: pointer;
+      i {
+        margin-right: 5px;
+      }
+      &:hover {
+        color: #1890ff;
+      }
+    }
+    > div {
+      padding: 5px 20px;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+}

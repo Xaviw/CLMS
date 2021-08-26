@@ -93,7 +93,7 @@ export class IndexComponent implements OnInit {
       value: 12,
     },
     {
-      name: '取消',
+      name: '已取消',
       value: 5,
     },
   ];
@@ -119,7 +119,7 @@ export class IndexComponent implements OnInit {
       value: 14,
     },
     {
-      name: '取消',
+      name: '已取消',
       value: 5,
     },
   ];

@@ -2,12 +2,14 @@
   <span>通知公告</span>
   <button nz-button nzType="link" nzSize="small" routerLink="">查看更多</button>
 </div>
-<ul class="width">
-  <li class="flex-between" *ngFor="let item of data">
-    <span nz-typography nzEllipsis>{{ item.title }}</span>
-    <div>
+<div class="list">
+  <div class="item" *ngFor="let item of data">
+    <span [routerLink]="" nz-typography nzEllipsis>
+      <i nz-icon nzType="container" nzTheme="outline"></i>{{ item.title }}
+    </span>
+    <div class="flex-between">
       <span>{{ item.createTime }}</span>
       <span><i nz-icon nzType="eye" nzTheme="outline"></i>{{ item.views }}</span>
     </div>
-  </li>
-</ul>
+  </div>
+</div>

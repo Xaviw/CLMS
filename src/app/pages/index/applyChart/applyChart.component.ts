@@ -69,6 +69,7 @@ export class ApplyChartComponent implements OnInit {
           labelLine: {
             length: 5,
           },
+          center: ['50%', '45%'],
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
