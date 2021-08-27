@@ -78,7 +78,7 @@
             </nz-table>
           </div>
           <!-- 空状态显示 -->
-          <app-empty *ngIf="!activePage?.origin?.isLeaf" info="请先选择对应页面！"></app-empty>
+          <empty *ngIf="!activePage?.origin?.isLeaf" info="请先选择对应页面！"></empty>
         </div>
       </div>
     </div>

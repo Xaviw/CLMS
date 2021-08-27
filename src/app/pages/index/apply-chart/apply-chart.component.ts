@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
@@ -9,11 +9,11 @@ interface chart {
 }
 
 @Component({
-  selector: 'app-applyChart',
-  templateUrl: './applyChart.component.html',
-  styleUrls: ['./applyChart.component.scss', '../index.component.scss'],
+  selector: 'apply-chart',
+  templateUrl: './apply-chart.component.html',
+  styleUrls: ['./apply-chart.component.scss', '../index.component.scss'],
 })
-export class ApplyChartComponent implements OnInit {
+export class ApplyChartComponent implements OnInit, AfterViewInit {
   // 标题
   @Input() title: string = '';
   // 详细地址

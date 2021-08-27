@@ -1,3 +1,4 @@
+import { ScheduleComponent } from './components/schedule/schedule.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
@@ -7,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { IconsProviderModule } from './icons-provider.module';
 
-const COMPONENTS: Array<Type<any>> = [EmptyComponent];
+const COMPONENTS: Array<Type<any>> = [EmptyComponent, ScheduleComponent];
 const DIRECTIVES: Array<Type<any>> = [];
 
 @NgModule({

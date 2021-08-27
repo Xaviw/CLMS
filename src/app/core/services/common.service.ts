@@ -27,4 +27,10 @@ export class CommonService {
     const url = '/page/functions';
     return this.http.post(url, param);
   }
+
+  // 获取课程表
+  getClassSchedule(param: any) {
+    const url = '/schedule';
+    return this.http.post(url, param);
+  }
 }

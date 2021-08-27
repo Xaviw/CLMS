@@ -1,4 +1,4 @@
-import { IndexService } from './../index.service';
+import { IndexService } from '../index.service';
 import { Component, OnInit } from '@angular/core';
 
 interface bulletin {
@@ -9,9 +9,9 @@ interface bulletin {
 }
 
 @Component({
-  selector: 'app-Bulletin',
-  templateUrl: './Bulletin.component.html',
-  styleUrls: ['./Bulletin.component.scss', '../index.component.scss'],
+  selector: 'bulletin',
+  templateUrl: './bulletin.component.html',
+  styleUrls: ['./bulletin.component.scss', '../index.component.scss'],
   providers: [IndexService],
 })
 export class BulletinComponent implements OnInit {

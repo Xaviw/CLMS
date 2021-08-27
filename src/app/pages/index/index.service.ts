@@ -11,4 +11,10 @@ export class IndexService {
     const url = '/bulletin';
     return this.http.get(url);
   }
+
+  // 获取自习排行榜
+  getRankList() {
+    const url = '/rank';
+    return this.http.get(url);
+  }
 }

@@ -1,0 +1,27 @@
+<div class="header">
+  <span class="title">自习排行榜</span>
+</div>
+<div class="top">
+  <div *ngFor="let item of rankList.slice(0, 3)">
+    <nz-avatar [nzSize]="50" nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+    <span>{{ item.count }}次</span>
+    <span>{{ item.name }}-{{ item.class }}</span>
+  </div>
+</div>
+<div class="list">
+  <cdk-virtual-scroll-viewport [itemSize]="50" class="view">
+    <div *cdkVirtualFor="let item of rankList.slice(3); let i = index" class="flex-between list-item">
+      <div>
+        <span>{{ i + 4 }}</span>
+        <span>{{ item.name }}</span>
+        <span>{{ item.class }}</span>
+      </div>
+      <span>{{ item.count }}次</span>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>
+<div class="footer padding">
+  <button nz-button nzType="link">我的位置</button>
+  <nz-divider nzType="vertical"></nz-divider>
+  <button nz-button nzType="link">回到顶部</button>
+</div>

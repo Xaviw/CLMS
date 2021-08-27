@@ -1,30 +1,34 @@
 .index {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: #f0f2f5;
-  padding: 10px;
   display: grid;
   gap: 20px;
-  grid-template-rows: 200px 340px 400px 500px 500px;
+  grid-template-rows: 200px 340px 400px 500px auto;
   grid-template-columns: repeat(3, 1fr);
-  & > * {
-    background-color: #fff;
-    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
-    border-radius: 4px;
-    min-width: 0;
+  & > *:not(.side) {
+    @extend .card-block;
   }
-  .message {
-    grid-area: 'auto';
+  & > *:not(info-card) {
+    display: grid;
+    grid-template-rows: auto 1fr;
   }
-  .lineChart {
-    grid-area: 4 / 1 / 5 / 3;
+  .side {
+    grid-area: 3 / 3 / 6 / 4;
+    display: grid;
+    grid-template-rows: 400px 1fr;
+    gap: 20px;
+    & > * {
+      @extend .card-block;
+    }
   }
-  .rankList {
-    grid-area: auto;
-  }
-  .curriculum {
-    grid-area: 5 / 1 / 6 / 4;
-  }
+}
+
+.card-block {
+  background-color: #fff;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  min-width: 0;
 }
 
 .header {
