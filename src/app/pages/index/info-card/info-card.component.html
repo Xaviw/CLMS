@@ -26,8 +26,8 @@
 <div class="flex-evenly padding footer">
   <div
     class="flex-center"
-    *ngFor="let item of chart"
-    [nzTooltipTitle]="item.name + ':' + item.data + unit"
+    *ngFor="let item of chartData"
+    [nzTooltipTitle]="item.name + ':' + item.value + unit"
     nzTooltipPlacement="top"
     nz-tooltip
   >

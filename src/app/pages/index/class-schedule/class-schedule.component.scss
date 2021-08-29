@@ -1,3 +1,11 @@
 :host {
   grid-area: 5 / 1 / 6 / 3;
 }
+
+:host ::ng-deep {
+  .ant-table-row {
+    & > td:first-of-type {
+      background-color: #fafafa;
+    }
+  }
+}

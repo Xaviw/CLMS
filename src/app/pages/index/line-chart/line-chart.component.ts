@@ -1,3 +1,4 @@
+import { IndexService } from './../index.service';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
@@ -5,19 +6,32 @@ import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
 import * as dayjs from 'dayjs';
 
+interface applyHistory {
+  date: string[];
+  total: number[];
+  men: number[];
+  women: number[];
+}
+
 @Component({
   selector: 'line-chart',
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss', '../index.component.scss'],
+  providers: [IndexService],
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
+  // 时间范围
   date: Date[] = [dayjs().subtract(7, 'd').toDate(), dayjs().toDate()];
+  // 数据
+  data: applyHistory | undefined;
   @ViewChild('chartElement') element!: ElementRef;
   Chart!: echarts.ECharts;
 
-  constructor() {}
+  constructor(private service: IndexService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getHistoryStatistic();
+  }
 
   ngAfterViewInit() {
     fromEvent(window, 'resize')
@@ -30,8 +44,19 @@ export class LineChartComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // 获取自习统计数据
+  getHistoryStatistic() {
+    const param = {
+      startTime: dayjs(this.date[0]).format('yyyy-MM-dd'),
+      endTime: dayjs(this.date[1]).format('yyyy-MM-dd'),
+    };
+    this.service.getHistoryStatistic(param).subscribe((res) => {
+      this.data = res as applyHistory;
+    });
+  }
+
   dateChange(e: NzFormatEmitEvent) {
-    console.log(e);
+    console.log('e: ', e);
   }
 
   init() {
@@ -69,7 +94,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
         {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          data: this.data?.date,
         },
       ],
       yAxis: [
@@ -102,7 +127,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
           emphasis: {
             focus: 'series',
           },
-          data: [90, 80, 100, 130, 30, 50, 50],
+          data: this.data?.total,
         },
         {
           name: '女',
@@ -128,7 +153,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
           emphasis: {
             focus: 'series',
           },
-          data: [50, 30, 40, 60, 20, 30, 20],
+          data: this.data?.women,
         },
         {
           name: '男',
@@ -154,7 +179,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
           emphasis: {
             focus: 'series',
           },
-          data: [40, 50, 60, 70, 10, 20, 30],
+          data: this.data?.men,
         },
       ],
     };

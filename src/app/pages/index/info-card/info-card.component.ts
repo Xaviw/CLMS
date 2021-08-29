@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
+import { IndexService } from '../index.service';
 
 interface setting {
   text: string;
@@ -10,7 +11,7 @@ interface setting {
 
 interface series {
   name: string;
-  data: number;
+  value: number;
   color: string;
 }
 
@@ -18,6 +19,7 @@ interface series {
   selector: 'info-card',
   templateUrl: './info-card.component.html',
   styleUrls: ['./info-card.component.scss', '../index.component.scss'],
+  providers: [IndexService],
 })
 export class InfoCardComponent implements OnInit {
   // 卡片标题
@@ -31,9 +33,9 @@ export class InfoCardComponent implements OnInit {
   // 设置相关
   @Input() settings: setting[] | undefined;
   // 图表相关
-  @Input() chart: series[] | undefined;
+  @Input() chartData: series[] | undefined;
   get series() {
-    return this.chart?.map((item) => {
+    return this.chartData?.map((item) => {
       return {
         name: item.name,
         type: 'bar',
@@ -47,7 +49,7 @@ export class InfoCardComponent implements OnInit {
         tooltip: {
           formatter: '{a}：{c}' + this.unit,
         },
-        data: [item.data],
+        data: [item.value],
       };
     });
   }
@@ -57,7 +59,9 @@ export class InfoCardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.chartData);
+  }
 
   ngAfterViewInit() {
     fromEvent(window, 'resize')
@@ -67,6 +71,7 @@ export class InfoCardComponent implements OnInit {
       });
 
     setTimeout(() => {
+      // console.log(this.chartData);
       this.init();
     });
   }
