@@ -19,18 +19,29 @@
   </nz-dropdown-menu>
 </div>
 <div class="flex-between padding-y padding20-x">
-  <span class="quantity">{{ quantity }}{{ unit }}</span>
-  <span *ngIf="info" class="quantity info">{{ info }}</span>
+  <span class="quantity">{{ chartData?.total }}{{ unit }}</span>
+  <span *ngIf="chartData?.info" class="quantity info">{{ chartData?.info }}</span>
 </div>
 <div #cardElement class="chart flex-center padding"></div>
 <div class="flex-evenly padding footer">
   <div
     class="flex-center"
-    *ngFor="let item of chartData"
-    [nzTooltipTitle]="item.name + ':' + item.value + unit"
+    *ngFor="let item of chartData?.data"
+    [nzTooltipTitle]="toolTemp"
     nzTooltipPlacement="top"
     nz-tooltip
   >
+    <ng-template #toolTemp>
+      <ng-container *ngIf="title === '用户信息'">
+        <span>{{ item.name }}：{{ item.value }}{{ unit }}</span
+        ><br />
+        <span>女：{{ item.women }}{{ unit }}（{{ ((item.women / item.value) * 100).toFixed(2) }}%）</span><br />
+        <span>男：{{ item.men }}{{ unit }}（{{ ((item.men / item.value) * 100).toFixed(2) }}%）</span>
+      </ng-container>
+      <ng-container *ngIf="title !== '用户信息'">
+        <span>{{ item.name }}：{{ item.value }}{{ unit }}</span>
+      </ng-container>
+    </ng-template>
     <div class="legend" [ngStyle]="{ backgroundColor: item.color }"></div>
     <span>
       {{ item.name }}

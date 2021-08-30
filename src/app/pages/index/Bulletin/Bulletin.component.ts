@@ -2,10 +2,13 @@ import { IndexService } from '../index.service';
 import { Component, OnInit } from '@angular/core';
 
 interface bulletin {
-  title: string;
-  id: string;
-  createTime: string;
-  views: number;
+  total: number;
+  data: Array<{
+    title: string;
+    id: string;
+    createTime: string;
+    views: number;
+  }>;
 }
 
 @Component({
@@ -15,7 +18,7 @@ interface bulletin {
   providers: [IndexService],
 })
 export class BulletinComponent implements OnInit {
-  data: bulletin[] = [];
+  data: bulletin | undefined;
   constructor(private service: IndexService) {}
 
   ngOnInit() {
@@ -24,8 +27,9 @@ export class BulletinComponent implements OnInit {
 
   // 获取公告
   getBulletin() {
-    this.service.getBulletin().subscribe((res) => {
-      this.data = res as bulletin[];
+    const param = { start: 0, count: 5 };
+    this.service.getBulletin(param).subscribe((res) => {
+      this.data = res as bulletin;
     });
   }
 }

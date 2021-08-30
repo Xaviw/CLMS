@@ -1,33 +1,15 @@
 <div class="index padding">
-  <info-card
-    title="机房信息"
-    [quantity]="labStatistic?.total ?? 0"
-    unit="间"
-    info="当前可用：{{ labStatistic?.free ?? '--' }}间"
-    [chartData]="labStatistic?.data"
-    [settings]="labSettings"
-  ></info-card>
-  <info-card
-    title="设备信息"
-    [quantity]="equipmentStatistic?.total ?? 0"
-    unit="件"
-    [chartData]="equipmentStatistic?.data"
-  ></info-card>
-  <info-card
-    title="用户信息"
-    [quantity]="userStatistic?.total ?? 0"
-    unit="人"
-    [chartData]="userStatistic?.data"
-    info="当前在线：{{ userStatistic?.online ?? '--' }}人"
-  ></info-card>
-  <!-- <apply-chart title="机房申请" viewDetail="" [data]="labApplyData"></apply-chart>
-  <apply-chart title="采购申请" viewDetail="" [data]="shopApplyData"></apply-chart>
-  <apply-chart title="设备报修" viewDetail="" [data]="repairApplyData"></apply-chart>
+  <info-card title="机房信息" unit="间" [chartData]="labStatistic" [settings]="labSettings"></info-card>
+  <info-card title="设备信息" unit="件" [chartData]="equipmentStatistic"></info-card>
+  <info-card title="用户信息" unit="人" [chartData]="userStatistic"></info-card>
+  <apply-chart title="机房申请" viewDetail="" [chartData]="labApplyData"></apply-chart>
+  <apply-chart title="采购申请" viewDetail="" [chartData]="shopApplyData"></apply-chart>
+  <apply-chart title="设备报修" viewDetail="" [chartData]="repairApplyData"></apply-chart>
   <bulletin></bulletin>
   <line-chart></line-chart>
   <class-schedule></class-schedule>
   <div class="side">
     <rank-list></rank-list>
     <ac-area></ac-area>
-  </div> -->
+  </div>
 </div>

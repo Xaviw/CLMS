@@ -103,13 +103,10 @@ export class PageSetupComponent implements OnInit {
   }
 
   // 调整菜单顺序
-  adjustPageOrder(e: NzFormatEmitEvent) {
-    console.log(e);
-  }
+  adjustPageOrder(e: NzFormatEmitEvent) {}
 
   // 单击菜单触发
   pageClick(e: NzFormatEmitEvent) {
-    console.log('e: ', e);
     if (this.activePage !== e.node) {
       this.activePage = e.node!;
       this.pageAddForm.controls.parentPage.patchValue(e.keys?.[0]);
@@ -130,7 +127,6 @@ export class PageSetupComponent implements OnInit {
   // 添加页面
   addPage() {
     validateForm(this.pageAddForm.controls);
-    console.log(this.pageAddForm.getRawValue());
   }
 
   // 取消添加

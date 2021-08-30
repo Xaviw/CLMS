@@ -19,7 +19,17 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
   // 详细地址
   @Input() viewDetail: string | undefined;
   // 数据
-  @Input() data: chart[] | undefined;
+  _chartData: chart[] | undefined;
+  @Input()
+  set chartData(v: chart[] | undefined) {
+    this._chartData = v;
+    if (this.element) {
+      this.init();
+    }
+  }
+  get chartData() {
+    return this._chartData;
+  }
 
   @ViewChild('chartElement') element!: ElementRef;
   Chart!: echarts.ECharts;
@@ -34,9 +44,6 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
       .subscribe((event) => {
         this.Chart.resize();
       });
-    setTimeout(() => {
-      this.init();
-    });
   }
 
   init() {
@@ -65,7 +72,7 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
           name: this.title,
           type: 'pie',
           radius: '70%',
-          data: this.data,
+          data: this.chartData,
           labelLine: {
             length: 5,
           },

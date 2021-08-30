@@ -74,7 +74,6 @@ export class PermissionSetupComponent implements OnInit {
       this.expandSet.add(id);
       if (!this.pageFunctions.get(id) && isLeaf) {
         this.getPageFunctions(id);
-        console.log(this.pageFunctions);
       }
     } else {
       this.expandSet.delete(id);

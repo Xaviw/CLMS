@@ -1,18 +1,13 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
 import { IndexService } from '../index.service';
+import { statistic } from '@app/shared/types/commonTypes';
 
 interface setting {
   text: string;
   func: Function;
-}
-
-interface series {
-  name: string;
-  value: number;
-  color: string;
 }
 
 @Component({
@@ -21,21 +16,27 @@ interface series {
   styleUrls: ['./info-card.component.scss', '../index.component.scss'],
   providers: [IndexService],
 })
-export class InfoCardComponent implements OnInit {
+export class InfoCardComponent implements OnInit, AfterViewInit {
   // 卡片标题
   @Input() title: string = '';
-  // 数量
-  @Input() quantity: number = 0;
   // 数量单位
   @Input() unit: string = '';
-  // 其他信息
-  @Input() info: string = '';
   // 设置相关
   @Input() settings: setting[] | undefined;
-  // 图表相关
-  @Input() chartData: series[] | undefined;
+  // 数据
+  _chartData: statistic | undefined;
+  @Input()
+  set chartData(v: statistic | undefined) {
+    this._chartData = v;
+    if (this.element) {
+      this.init();
+    }
+  }
+  get chartData() {
+    return this._chartData;
+  }
   get series() {
-    return this.chartData?.map((item) => {
+    return this.chartData?.data.map((item) => {
       return {
         name: item.name,
         type: 'bar',
@@ -59,9 +60,7 @@ export class InfoCardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.chartData);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     fromEvent(window, 'resize')
@@ -69,11 +68,6 @@ export class InfoCardComponent implements OnInit {
       .subscribe((event) => {
         this.Chart.resize();
       });
-
-    setTimeout(() => {
-      // console.log(this.chartData);
-      this.init();
-    });
   }
 
   init() {
@@ -85,7 +79,7 @@ export class InfoCardComponent implements OnInit {
     const option = {
       grid: {
         left: 0,
-        right: -70,
+        right: 0,
         bottom: -100,
         top: -100,
         containLabel: false,
@@ -96,6 +90,7 @@ export class InfoCardComponent implements OnInit {
       xAxis: {
         type: 'value',
         show: false,
+        max: 'dataMax',
       },
       yAxis: {
         type: 'category',

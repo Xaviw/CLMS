@@ -2,12 +2,18 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { IndexService } from './../index.service';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/overlay';
+import { pagination } from '@app/shared/types/commonTypes';
 
 interface rank {
+  hasNext: boolean;
+  data: list[];
+}
+
+interface list {
   name: string;
   account: string;
   avatar: string;
-  count: number;
+  times: number;
   class: string;
   classId: string;
 }
@@ -20,44 +26,69 @@ interface rank {
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RankListComponent implements OnInit {
-  rankList: rank[] = []; // 自习排行榜数据
-  @ViewChild('rankScroll') rankScroll!: CdkScrollable; // 排行榜列表
-  loading: boolean = false; // 加载中状态
+  rankList: list[] = []; // 自习排行榜数据
+  @ViewChild('rankScroll') rankScroll!: any; // 排行榜列表
+  userIndex: number | undefined; // 用户自己排名
+  hasNext: boolean = true; // 加载中状态
+  // 请求参数
+  param = {
+    start: 0,
+    count: 10,
+  };
 
   constructor(private service: IndexService, private scrollDispatcher: ScrollDispatcher) {}
 
   ngOnInit() {
-    this.getRankList();
+    // 获取列表
+    this.getRankList(this.param);
+    // 订阅列表滚动，距离底部小于50请求下一页数据
     this.scrollDispatcher
       .scrolled()
       .pipe(debounceTime(300))
-      .subscribe((scrollable) => {
+      .subscribe((scrollable: any) => {
         if (scrollable) {
-          let e = scrollable.getElementRef().nativeElement;
           let offset = this.rankScroll.measureScrollOffset('bottom');
           if (offset < 50) {
-            this.loading = true;
-            this.service
-              .getRankList()
-              .pipe(
-                tap((err) => {
-                  this.loading = false;
-                }),
-              )
-              .subscribe((res) => {
-                this.rankList.push(...(res as rank[]));
-                this.loading = false;
-              });
+            this.param.start += this.param.count;
+            this.getRankList(this.param);
           }
         }
       });
   }
 
   // 获取排行榜
-  getRankList() {
-    this.service.getRankList().subscribe((res) => {
-      console.log('rank: ', res);
-      this.rankList = res as rank[];
-    });
+  async getRankList(param: pagination) {
+    // 已经到底则停止请求
+    if (this.hasNext) {
+      await this.service.getRankList(param).then((res) => {
+        this.rankList.push(...(res as rank).data);
+        if (!(res as rank).hasNext) {
+          this.hasNext = (res as rank).hasNext;
+          this.scrollDispatcher.deregister(this.scrollDispatcher.scrollContainers.keys().next().value);
+        }
+      });
+    }
+  }
+
+  // 获取自己自习排名
+  getOwnRank() {
+    if (this.userIndex) {
+      // 减去不在列表中的前三项（下表从0开始，所以减4）
+      this.rankScroll.scrollToIndex(this.userIndex - 4);
+    } else {
+      this.service.getOwnRank().subscribe(async (res) => {
+        // 在列表中直接请求
+        if (res <= this.rankList.length + 2) {
+          this.rankScroll.scrollToIndex((res as number) - 4);
+        } else {
+          const param = {
+            start: this.rankList.length + 3,
+            count: (res as number) - this.rankList.length + 13,
+          };
+          await this.getRankList(param);
+          this.rankScroll.scrollToIndex((res as number) - 4);
+        }
+      });
+    }
   }
 }

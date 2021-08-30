@@ -50,7 +50,5 @@ export class LayoutBasicComponent implements OnInit {
     });
   }
 
-  menuClick(e: any) {
-    console.log(e);
-  }
+  menuClick(e: any) {}
 }

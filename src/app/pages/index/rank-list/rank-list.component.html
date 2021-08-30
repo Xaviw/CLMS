@@ -4,7 +4,7 @@
 <div class="top">
   <div *ngFor="let item of rankList.slice(0, 3)">
     <nz-avatar [nzSize]="50" nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
-    <span>{{ item.count }}次</span>
+    <span>{{ item.times }}次</span>
     <span>{{ item.name }}-{{ item.class }}</span>
   </div>
 </div>
@@ -16,13 +16,14 @@
         <span>{{ item.name }}</span>
         <span>{{ item.class }}</span>
       </div>
-      <span>{{ item.count }}次</span>
+      <span>{{ item.times }}次</span>
     </div>
-    <nz-spin nzSimple [nzSize]="'small'" class="flex-center list-item" *ngIf="loading"></nz-spin>
+    <nz-spin nzSimple [nzSize]="'small'" class="flex-center list-item" *ngIf="hasNext"></nz-spin>
+    <div class="flex-center list-item" *ngIf="!hasNext"><span>没有更多内容...</span></div>
   </cdk-virtual-scroll-viewport>
 </div>
-<div class="footer padding">
-  <button nz-button nzType="link">我的位置</button>
+<div class="footer">
+  <button nz-button nzType="link" (click)="getOwnRank()">我的位置</button>
   <nz-divider nzType="vertical"></nz-divider>
-  <button nz-button nzType="link">回到顶部</button>
+  <button nz-button nzType="link" (click)="rankScroll.scrollToIndex(0)">回到顶部</button>
 </div>

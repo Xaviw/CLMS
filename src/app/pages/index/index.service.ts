@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { pagination } from '@app/shared/types/commonTypes';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable()
@@ -27,29 +28,29 @@ export class IndexService {
   // 获取机房申请统计信息
   getLabApplyStatistic() {
     const url = '/apply/lab';
-    return this.http.post(url, null);
+    return this.http.get(url);
   }
   // 获取采购申请统计信息
   getShopApplyStatistic() {
     const url = '/apply/equipment';
-    return this.http.post(url, null);
+    return this.http.get(url);
   }
   // 获取报修申请统计信息
   getRepairApplyStatistic() {
     const url = '/apply/repair';
-    return this.http.post(url, null);
+    return this.http.get(url);
   }
 
   // 获取公告
-  getBulletin() {
+  getBulletin(param: pagination) {
     const url = '/bulletin';
-    return this.http.get(url);
+    return this.http.post(url, param);
   }
 
   // 获取自习排行榜
-  getRankList() {
+  getRankList(param: pagination) {
     const url = '/rank';
-    return this.http.get(url);
+    return this.http.post(url, param).toPromise();
   }
 
   // 获取自己自习排名

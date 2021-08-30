@@ -3,7 +3,7 @@
   <button nz-button nzType="link" nzSize="small" routerLink="">查看更多</button>
 </div>
 <div class="list">
-  <div class="item" *ngFor="let item of data">
+  <div class="item" *ngFor="let item of data?.data">
     <span [routerLink]="" nz-typography nzEllipsis>
       <i nz-icon nzType="container" nzTheme="outline"></i>{{ item.title }}
     </span>

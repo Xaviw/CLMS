@@ -35,7 +35,6 @@ export class ScheduleComponent implements OnInit {
   // 获取课表
   getClassSchedule() {
     return this.common.getClassSchedule(this.param).subscribe((res) => {
-      console.log('res: ', res);
       this.schedule = res as Array<schedule[]>;
     });
   }

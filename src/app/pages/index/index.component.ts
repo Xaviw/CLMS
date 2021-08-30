@@ -1,39 +1,7 @@
 import { IndexService } from './index.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
-
-interface statistic {
-  name: string;
-  value: number;
-  color: string;
-}
-
-interface labStatistic {
-  total: number;
-  free: number;
-  data: statistic[];
-}
-
-interface equipmentStatistic {
-  total: number;
-  data: statistic[];
-}
-
-interface user extends statistic {
-  men: number;
-  women: number;
-}
-
-interface userStatistic {
-  total: number;
-  online: number;
-  data: user[];
-}
-
-interface apply {
-  name: string;
-  value: number;
-}
+import { apply, statistic } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'app-index',
@@ -43,7 +11,7 @@ interface apply {
 })
 export class IndexComponent implements OnInit {
   // 机房统计信息
-  labStatistic: labStatistic | undefined;
+  labStatistic: statistic | undefined;
   // 机房统计信息对应颜色
   labStatisticColors = ['#95a5a6', '#e74c3c', '#2ecc71'];
   // 机房快捷设置
@@ -62,11 +30,11 @@ export class IndexComponent implements OnInit {
     },
   ];
   // 设备统计信息
-  equipmentStatistic: equipmentStatistic | undefined;
+  equipmentStatistic: statistic | undefined;
   // 设备统计信息对应颜色
   equipmentStatisticColors = ['#95a5a6', '#e74c3c', '#3498db', '#2ecc71'];
   // 用户统计数据
-  userStatistic: userStatistic | undefined;
+  userStatistic: statistic | undefined;
   // 用户统计数据对应颜色
   userStatisticColors = ['#ffa502', '#1e90ff'];
   // 机房申请统计数据
@@ -82,38 +50,38 @@ export class IndexComponent implements OnInit {
     this.getLabStatistic();
     this.getEquipmentStatistic();
     this.getUserStatistic();
+    this.getLabApplyStatistic();
+    this.getShopApplyStatistic();
+    this.getRepairApplyStatistic();
   }
 
   // 获取机房统计数据
   getLabStatistic() {
     this.service.getLabStatistic().subscribe((res) => {
-      (res as labStatistic).data.forEach((item) => {
+      (res as statistic).data.forEach((item) => {
         item.color = this.labStatisticColors.pop()!;
       });
-      this.labStatistic = res as labStatistic;
-      console.log('this.labStatistic: ', this.labStatistic);
+      this.labStatistic = res as statistic;
     });
   }
 
   // 获取设备统计数据
   getEquipmentStatistic() {
     this.service.getEquipmentStatistic().subscribe((res) => {
-      (res as equipmentStatistic).data.forEach((item) => {
+      (res as statistic).data.forEach((item) => {
         item.color = this.equipmentStatisticColors.pop()!;
       });
-      this.equipmentStatistic = res as equipmentStatistic;
-      console.log('this.equipmentStatistic: ', this.equipmentStatistic);
+      this.equipmentStatistic = res as statistic;
     });
   }
 
   // 获取用户统计信息
   getUserStatistic() {
     this.service.getUserStatistic().subscribe((res) => {
-      (res as userStatistic).data.forEach((item) => {
+      (res as statistic).data.forEach((item) => {
         item.color = this.userStatisticColors.pop()!;
       });
-      this.userStatistic = res as userStatistic;
-      console.log('this.userStatistic: ', this.userStatistic);
+      this.userStatistic = res as statistic;
     });
   }
 

@@ -1,7 +1,4 @@
-import { NzFormatEmitEvent } from 'ng-zorro-antd/tree';
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
 import { userInfo } from '@app/shared/types/commonTypes';
 import { IndexService } from '../index.service';
@@ -20,8 +17,19 @@ enum week {
 export class ClassScheduleComponent implements OnInit {
   user: userInfo = _session.get('userInfo');
   week: week = week.single; // 单双周
+  param = {
+    userId: this.user.account,
+    time: this.week,
+  };
 
   constructor() {}
 
   ngOnInit() {}
+
+  switchWeek(e: week) {
+    this.param = {
+      userId: this.user.account,
+      time: this.week,
+    };
+  }
 }

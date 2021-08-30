@@ -21,7 +21,7 @@ interface applyHistory {
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
   // 时间范围
-  date: Date[] = [dayjs().subtract(7, 'd').toDate(), dayjs().toDate()];
+  date: Date[] = [];
   // 数据
   data: applyHistory | undefined;
   @ViewChild('chartElement') element!: ElementRef;
@@ -30,7 +30,9 @@ export class LineChartComponent implements OnInit, AfterViewInit {
   constructor(private service: IndexService) {}
 
   ngOnInit() {
-    this.getHistoryStatistic();
+    const basicDate = [dayjs().subtract(7, 'd').toDate(), dayjs().toDate()];
+    this.date = basicDate;
+    this.dateChange(basicDate);
   }
 
   ngAfterViewInit() {
@@ -39,24 +41,25 @@ export class LineChartComponent implements OnInit, AfterViewInit {
       .subscribe((event) => {
         this.Chart.resize();
       });
-    setTimeout(() => {
-      this.init();
-    });
   }
 
   // 获取自习统计数据
-  getHistoryStatistic() {
-    const param = {
-      startTime: dayjs(this.date[0]).format('yyyy-MM-dd'),
-      endTime: dayjs(this.date[1]).format('yyyy-MM-dd'),
-    };
+  getHistoryStatistic(param: { startTime: string; endTime: string }) {
     this.service.getHistoryStatistic(param).subscribe((res) => {
       this.data = res as applyHistory;
+      if (this.element) {
+        this.init();
+      }
     });
   }
 
-  dateChange(e: NzFormatEmitEvent) {
-    console.log('e: ', e);
+  // 切换日期
+  dateChange(e: Date[]) {
+    const param = {
+      startTime: dayjs(e[0]).format('yyyy-MM-dd'),
+      endTime: dayjs(e[1]).format('yyyy-MM-dd'),
+    };
+    this.getHistoryStatistic(param);
   }
 
   init() {
