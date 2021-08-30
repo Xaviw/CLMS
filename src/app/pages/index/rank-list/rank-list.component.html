@@ -10,7 +10,12 @@
 </div>
 <div class="list">
   <cdk-virtual-scroll-viewport [itemSize]="50" class="view" cdkScrollable #rankScroll>
-    <div *cdkVirtualFor="let item of rankList.slice(3); let i = index" class="flex-between list-item">
+    <div
+      *cdkVirtualFor="let item of rankList.slice(3); let i = index"
+      class="flex-between list-item"
+      (click)="clickItem(i)"
+      [ngClass]="activeItem === i ? 'active' : 'false'"
+    >
       <div>
         <span>{{ i + 4 }}</span>
         <span>{{ item.name }}</span>
@@ -18,8 +23,8 @@
       </div>
       <span>{{ item.times }}次</span>
     </div>
-    <nz-spin nzSimple [nzSize]="'small'" class="flex-center list-item" *ngIf="hasNext"></nz-spin>
-    <div class="flex-center list-item" *ngIf="!hasNext"><span>没有更多内容...</span></div>
+    <nz-spin nzSimple [nzSize]="'small'" class="flex-center padding" *ngIf="hasNext"></nz-spin>
+    <div class="flex-center padding" *ngIf="!hasNext"><span>没有更多内容...</span></div>
   </cdk-virtual-scroll-viewport>
 </div>
 <div class="footer">

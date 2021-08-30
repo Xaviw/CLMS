@@ -18,13 +18,17 @@ export class ClassScheduleComponent implements OnInit {
   user: userInfo = _session.get('userInfo');
   week: week = week.single; // 单双周
   param = {
-    userId: this.user.account,
+    userId: this.user?.account,
     time: this.week,
   };
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.user) {
+      this.user = _session.get('userInfo');
+    }
+  }
 
   switchWeek(e: week) {
     this.param = {

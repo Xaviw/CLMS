@@ -30,6 +30,7 @@ export class RankListComponent implements OnInit {
   @ViewChild('rankScroll') rankScroll!: any; // 排行榜列表
   userIndex: number | undefined; // 用户自己排名
   hasNext: boolean = true; // 加载中状态
+  activeItem: number = -1;
   // 请求参数
   param = {
     start: 0,
@@ -56,6 +57,11 @@ export class RankListComponent implements OnInit {
       });
   }
 
+  // active
+  clickItem(i: number) {
+    this.activeItem = i;
+  }
+
   // 获取排行榜
   async getRankList(param: pagination) {
     // 已经到底则停止请求
@@ -75,11 +81,15 @@ export class RankListComponent implements OnInit {
     if (this.userIndex) {
       // 减去不在列表中的前三项（下表从0开始，所以减4）
       this.rankScroll.scrollToIndex(this.userIndex - 4);
+      this.activeItem = (this.userIndex as number) - 3;
+      console.log('this.activeItem: ', this.activeItem);
     } else {
       this.service.getOwnRank().subscribe(async (res) => {
+        this.userIndex = res as number;
         // 在列表中直接请求
         if (res <= this.rankList.length + 2) {
           this.rankScroll.scrollToIndex((res as number) - 4);
+          this.activeItem = (this.userIndex as number) - 4;
         } else {
           const param = {
             start: this.rankList.length + 3,
@@ -87,6 +97,7 @@ export class RankListComponent implements OnInit {
           };
           await this.getRankList(param);
           this.rankScroll.scrollToIndex((res as number) - 4);
+          this.activeItem = (this.userIndex as number) - 4;
         }
       });
     }

@@ -50,6 +50,14 @@
         }
       }
     }
+    &:hover {
+      color: #fff;
+      background-color: #70baff;
+    }
+  }
+  .active {
+    color: #fff;
+    background-color: #70baff;
   }
 }
 

@@ -25,7 +25,7 @@ declare interface pageRoute {
 
 // 全局用户信息类型
 declare interface userInfo {
-  account: number;
+  account: string;
   name: string;
   avatar?: string;
 }
