@@ -1,3 +1,56 @@
-<p>
-  ac-area works!
-</p>
+<div class="header">
+  <span>留言板</span>
+</div>
+<div class="flex-between padding">
+  <textarea
+    nz-input
+    [placeholder]="reply ? '回复' + reply.name + '：' : '请输入留言...'"
+    nzAutosize
+    (blur)="textAreaBlur()"
+    #textArea
+  ></textarea>
+  <button nz-button nzType="primary" style="margin-left: 5px">{{ reply ? '发布回复' : '发布留言' }}</button>
+</div>
+<div class="min-height">
+  <div class="padding-x view_scroll">
+    <nz-comment *ngFor="let item of commentsData" [nzAuthor]="item.name" [nzDatetime]="item.createTime | fromNow">
+      <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+      <nz-comment-content>
+        <p>{{ item.content }}</p>
+      </nz-comment-content>
+      <nz-comment-action>
+        <span (click)="getReply(item)">
+          <i nz-icon nzType="loading" nzTheme="outline" *ngIf="item.loading"></i>
+          {{ item?.expand ? '收起回复' : '查看回复(' + item.comments + '条)' }}
+          <i nz-icon [nzType]="item?.expand ? 'up' : 'down'" nzTheme="outline"></i>
+        </span>
+      </nz-comment-action>
+      <nz-comment-action><span (click)="clickToReply(item)">回复</span></nz-comment-action>
+      <ng-container *ngIf="item?.children?.length && item?.expand">
+        <nz-comment
+          *ngFor="let child of item.children"
+          [nzAuthor]="item.name + '  回复：' + item.parentName"
+          [nzDatetime]="item.createTime | fromNow"
+        >
+          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+          <nz-comment-content>
+            <p>{{ item.content }}</p>
+          </nz-comment-content>
+          <nz-comment-action><span (click)="clickToReply(child)">回复</span></nz-comment-action>
+        </nz-comment>
+      </ng-container>
+    </nz-comment>
+  </div>
+</div>
+<div class="footer padding">
+  <nz-pagination
+    [(nzPageIndex)]="param.pageIndex"
+    [(nzPageSize)]="param.pageSize"
+    [nzTotal]="total"
+    nzShowSizeChanger
+    nzShowQuickJumper
+    nzSize="small"
+    (nzPageIndexChange)="getComments()"
+    (nzPageSizeChange)="getComments()"
+  ></nz-pagination>
+</div>

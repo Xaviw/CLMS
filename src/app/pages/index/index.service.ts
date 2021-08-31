@@ -70,4 +70,28 @@ export class IndexService {
     const url = '/courseSchedule';
     return this.http.get(url);
   }
+
+  // 获取评论列表
+  getComments(param: { pageIndex: number; pageSize: number }) {
+    const url = '/comments';
+    return this.http.post(url, param);
+  }
+
+  // 获取评论回复
+  getReply(id: string) {
+    const url = '/comments/' + id;
+    return this.http.get(url);
+  }
+
+  // 发布留言
+  postMessage(param: string) {
+    const url = '/comments/post';
+    this.http.post(url, param);
+  }
+
+  // 发布回复
+  postReply(param: string) {
+    const url = '/comments/replay';
+    this.http.post(url, param);
+  }
 }

@@ -35,6 +35,8 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzCommentModule } from 'ng-zorro-antd/comment';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 export const SHARED_ZORRO_MODULES = [
   NzButtonModule,
@@ -76,4 +78,6 @@ export const SHARED_ZORRO_MODULES = [
   NzTreeModule,
   NzEmptyModule,
   NzTypographyModule,
+  NzCommentModule,
+  NzPaginationModule,
 ];

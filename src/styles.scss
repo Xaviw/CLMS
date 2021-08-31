@@ -61,7 +61,7 @@ $left-width: 300px;
 .view_scroll {
   height: 100%;
   width: 100%;
-  overflow: overlay;
+  overflow: auto;
 }
 ::-webkit-scrollbar {
   width: 5px;

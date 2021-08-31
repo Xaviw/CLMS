@@ -1,3 +1,4 @@
+import { FromNowPipe } from './pipes/from-now.pipe';
 import { ScheduleComponent } from './components/schedule/schedule.component';
 import { EmptyComponent } from './components/empty/empty.component';
 import { CommonModule } from '@angular/common';
@@ -10,6 +11,7 @@ import { IconsProviderModule } from './icons-provider.module';
 
 const COMPONENTS: Array<Type<any>> = [EmptyComponent, ScheduleComponent];
 const DIRECTIVES: Array<Type<any>> = [];
+const PIPES: Array<Type<any>> = [FromNowPipe];
 
 @NgModule({
   imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule, ...SHARED_ZORRO_MODULES],
@@ -17,6 +19,7 @@ const DIRECTIVES: Array<Type<any>> = [];
     // your components
     ...COMPONENTS,
     ...DIRECTIVES,
+    ...PIPES,
   ],
   exports: [
     CommonModule,
@@ -27,6 +30,7 @@ const DIRECTIVES: Array<Type<any>> = [];
     ...SHARED_ZORRO_MODULES,
     ...COMPONENTS,
     ...DIRECTIVES,
+    ...PIPES,
   ],
 })
 export class SharedModule {}

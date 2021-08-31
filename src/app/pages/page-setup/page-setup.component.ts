@@ -32,7 +32,7 @@ export class PageSetupComponent implements OnInit {
   activePage: NzTreeNode | undefined; // 当前选中页面
   isUpdate: Boolean = false;
   topLevelDisabled: BooleanInput = false; // 设为顶层菜单是否可用：已在顶层时true且不可用
-  // 设为顶层菜单对应值，true时设置form值为-1，false时设置form值为当前选中页面id
+  // 设为顶层菜单对应值，true时设置form值为0，false时设置form值为当前选中页面id
   _isTopLevel: Boolean = false;
   get isTopLevel() {
     return this._isTopLevel;
@@ -40,7 +40,7 @@ export class PageSetupComponent implements OnInit {
   set isTopLevel(v: Boolean) {
     this._isTopLevel = v;
     if (v) {
-      this.pageAddForm.controls.parentPage.patchValue('-1');
+      this.pageAddForm.controls.parentPage.patchValue('0');
     } else {
       this.pageAddForm.controls.parentPage.patchValue(this.activePage?.key);
     }
@@ -57,7 +57,7 @@ export class PageSetupComponent implements OnInit {
         this.pageAddForm.controls.parentPage.patchValue(this.activePage?.key);
         this.topLevelDisabled = this.isTopLevel = false;
       } else {
-        this.pageAddForm.controls.parentPage.patchValue('-1');
+        this.pageAddForm.controls.parentPage.patchValue('0');
         this.topLevelDisabled = this.isTopLevel = true;
       }
     },
@@ -103,7 +103,11 @@ export class PageSetupComponent implements OnInit {
   }
 
   // 调整菜单顺序
-  adjustPageOrder(e: NzFormatEmitEvent) {}
+  adjustPageOrder(e: NzFormatEmitEvent) {
+    console.log('e: ', e);
+    // const param =
+    // this.service.adjustPage(param).subscribe()
+  }
 
   // 单击菜单触发
   pageClick(e: NzFormatEmitEvent) {
@@ -127,6 +131,10 @@ export class PageSetupComponent implements OnInit {
   // 添加页面
   addPage() {
     validateForm(this.pageAddForm.controls);
+    const param = this.pageAddForm.getRawValue();
+    this.service.addPage(param).subscribe((res) => {
+      this.getAllPages();
+    });
   }
 
   // 取消添加
@@ -136,7 +144,11 @@ export class PageSetupComponent implements OnInit {
   }
 
   // 删除页面
-  deletePage() {}
+  deletePage() {
+    this.service.deletePage(this.activePage!.key).subscribe((res) => {
+      this.getAllPages();
+    });
+  }
 
   // 修改页面
   updatePage() {}

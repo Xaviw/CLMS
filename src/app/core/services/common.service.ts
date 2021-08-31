@@ -24,8 +24,8 @@ export class CommonService {
 
   // 获取页面功能
   getPageFunctions(param: string) {
-    const url = '/page/functions';
-    return this.http.post(url, param);
+    const url = '/page/getPermissionsInPage';
+    return this.http.post(url, { page_id: param });
   }
 
   // 获取课程表

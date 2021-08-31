@@ -1,0 +1,20 @@
+:host {
+  grid-area: 4 / 3 / 6/ 4;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 0;
+  & ::ng-deep {
+    .ant-comment-nested {
+      margin: 0;
+      padding-left: 44px;
+      background-color: #f7f7f7;
+    }
+  }
+}
+
+.footer {
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
