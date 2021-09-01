@@ -13,7 +13,6 @@
 </div>
 <div class="min-height">
   <div class="padding-x view_scroll" empty [emptyData]="commentsData" emptyInfo="还没有留言...">
-    <h1>测试</h1>
     <nz-comment *ngFor="let item of commentsData" [nzAuthor]="item.name" [nzDatetime]="item.createTime | fromNow">
       <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
       <nz-comment-content>

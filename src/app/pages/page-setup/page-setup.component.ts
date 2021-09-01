@@ -114,17 +114,19 @@ export class PageSetupComponent implements OnInit {
     if (this.activePage !== e.node) {
       this.activePage = e.node!;
       this.pageAddForm.controls.parentPage.patchValue(e.keys?.[0]);
+      if (e.node?.origin.isLeaf) {
+        // 叶子节点=>加载功能
+        this.common.getPageFunctions(e.node.key).subscribe((res) => {
+          this.pageFunctions = res as pageFunction[];
+        });
+      } else if (e.node) {
+        // 父节点=>展开
+        e.node.isExpanded = !e.node.isExpanded;
+        this.pageFunctions = [];
+      }
     } else {
       this.activePage = undefined;
-    }
-    if (e.node?.origin.isLeaf) {
-      // 叶子节点=>加载功能
-      this.common.getPageFunctions(e.node.key).subscribe((res) => {
-        this.pageFunctions = res as pageFunction[];
-      });
-    } else if (e.node) {
-      // 父节点=>展开
-      e.node.isExpanded = !e.node.isExpanded;
+      this.pageFunctions = [];
     }
   }
 

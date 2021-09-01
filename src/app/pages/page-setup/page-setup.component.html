@@ -29,7 +29,7 @@
         <ng-template #titleTemplate> 拖动节点调整页面顺序<br />页面层级请勿超过四级 </ng-template>
       </div>
       <div class="tree padding">
-        <div class="view_scroll">
+        <div class="view_scroll" empty [emptyData]="pages" emptyInfo="还没有页面...">
           <nz-tree
             [nzData]="pages"
             nzDraggable
@@ -48,8 +48,13 @@
         </div>
         <div class="container">
           <!-- 功能列表 -->
-          <div class="view_scroll padding">
-            <nz-table #pageFunctionTable [nzData]="pageFunctions" nzShowPagination="false">
+          <div class="view_scroll padding" empty [emptyData]="pageFunctions" emptyInfo="请先选择对应页面">
+            <nz-table
+              #pageFunctionTable
+              [nzData]="pageFunctions"
+              nzShowPagination="false"
+              *ngIf="activePage?.origin?.isLeaf"
+            >
               <thead>
                 <tr>
                   <th nzAlign="center">Code</th>

@@ -16,9 +16,6 @@ export class EmptyDirective {
       console.log(this.el.nativeElement);
     } else {
       this.el.nativeElement.removeChild(this.node);
-      this.el.nativeElement.children.forEach((element: Element) => {
-        element.setAttribute('hidden', 'false');
-      });
     }
   }
 
@@ -28,10 +25,10 @@ export class EmptyDirective {
     this.el.nativeElement.style.position = 'relative';
     // 设置样式
     this.node.style.cssText =
-      'position: absolute;top: 0;left: 0;right: 0;bottom: 0;z-index: 99;display: flex;flex-direction: column;justify-content: center;align-items: center;';
+      'position: absolute;color: rgb(195, 203, 214); top: 0;left: 0;right: 0;bottom: 0;z-index: 99;display: flex;flex-direction: column;justify-content: center;align-items: center;';
     // 设置内容
     this.node.innerHTML = `<svg
-    style="width: 50%"
+    style="width: 50%; max-width: 300px;"
     viewBox="0 0 122 104"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"

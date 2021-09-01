@@ -81,8 +81,7 @@ export class RankListComponent implements OnInit {
     if (this.userIndex) {
       // 减去不在列表中的前三项（下表从0开始，所以减4）
       this.rankScroll.scrollToIndex(this.userIndex - 4);
-      this.activeItem = (this.userIndex as number) - 3;
-      console.log('this.activeItem: ', this.activeItem);
+      this.activeItem = (this.userIndex as number) - 4;
     } else {
       this.service.getOwnRank().subscribe(async (res) => {
         this.userIndex = res as number;
