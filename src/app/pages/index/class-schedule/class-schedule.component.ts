@@ -15,7 +15,13 @@ enum week {
   providers: [IndexService],
 })
 export class ClassScheduleComponent implements OnInit {
-  user: userInfo = _session.get('userInfo');
+  _user: userInfo | undefined;
+  get user() {
+    if (!this._user) {
+      this._user = _session.get('userInfo');
+    }
+    return this._user ?? _session.get('userInfo');
+  }
   week: week = week.single; // 单双周
   param = {
     userId: this.user?.account,
@@ -24,11 +30,7 @@ export class ClassScheduleComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    if (!this.user) {
-      this.user = _session.get('userInfo');
-    }
-  }
+  ngOnInit() {}
 
   switchWeek(e: week) {
     this.param = {

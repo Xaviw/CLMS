@@ -1,6 +1,6 @@
+import { EmptyDirective } from './directives/empty.directive';
 import { FromNowPipe } from './pipes/from-now.pipe';
 import { ScheduleComponent } from './components/schedule/schedule.component';
-import { EmptyComponent } from './components/empty/empty.component';
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,8 +9,8 @@ import { RouterModule } from '@angular/router';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { IconsProviderModule } from './icons-provider.module';
 
-const COMPONENTS: Array<Type<any>> = [EmptyComponent, ScheduleComponent];
-const DIRECTIVES: Array<Type<any>> = [];
+const COMPONENTS: Array<Type<any>> = [ScheduleComponent];
+const DIRECTIVES: Array<Type<any>> = [EmptyDirective];
 const PIPES: Array<Type<any>> = [FromNowPipe];
 
 @NgModule({

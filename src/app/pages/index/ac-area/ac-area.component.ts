@@ -14,6 +14,8 @@ interface comment {
   children?: comment[];
   expand?: boolean;
   loading?: boolean;
+  likes: number;
+  isLike: boolean;
 }
 
 interface comments {
@@ -64,6 +66,7 @@ export class AcAreaComponent implements OnInit {
     } else if (!comment?.children?.length) {
       comment.loading = true;
       this.service.getReply(comment.id).subscribe((res) => {
+        console.log('res: ', res);
         comment.expand = true;
         comment.loading = false;
         comment.children = res as comment[];
@@ -88,4 +91,18 @@ export class AcAreaComponent implements OnInit {
 
   // 发布回复
   postReply() {}
+
+  like(item: comment): void {
+    if (item.isLike) {
+      this.service.cancelLike(item.id).subscribe((res) => {
+        item.isLike = false;
+        item.likes -= 1;
+      });
+    } else {
+      this.service.like(item.id).subscribe((res) => {
+        item.isLike = true;
+        item.likes += 1;
+      });
+    }
+  }
 }

@@ -12,12 +12,19 @@
   <button nz-button nzType="primary" style="margin-left: 5px">{{ reply ? '发布回复' : '发布留言' }}</button>
 </div>
 <div class="min-height">
-  <div class="padding-x view_scroll">
+  <div class="padding-x view_scroll" empty [emptyData]="commentsData" emptyInfo="还没有留言...">
+    <h1>测试</h1>
     <nz-comment *ngFor="let item of commentsData" [nzAuthor]="item.name" [nzDatetime]="item.createTime | fromNow">
       <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
       <nz-comment-content>
         <p>{{ item.content }}</p>
       </nz-comment-content>
+      <nz-comment-action>
+        <span class="like" (click)="like(item)">
+          <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [nzTheme]="item.isLike ? 'twotone' : 'outline'"> </i
+          >{{ item.likes ? item.likes : ' ' }}
+        </span>
+      </nz-comment-action>
       <nz-comment-action>
         <span (click)="getReply(item)">
           <i nz-icon nzType="loading" nzTheme="outline" *ngIf="item.loading"></i>
@@ -29,12 +36,12 @@
       <ng-container *ngIf="item?.children?.length && item?.expand">
         <nz-comment
           *ngFor="let child of item.children"
-          [nzAuthor]="item.name + '  回复：' + item.parentName"
-          [nzDatetime]="item.createTime | fromNow"
+          [nzAuthor]="child.name + '  回复：' + child.parentName"
+          [nzDatetime]="child.createTime | fromNow"
         >
-          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
+          <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="child.avatar"></nz-avatar>
           <nz-comment-content>
-            <p>{{ item.content }}</p>
+            <p>{{ child.content }}</p>
           </nz-comment-content>
           <nz-comment-action><span (click)="clickToReply(child)">回复</span></nz-comment-action>
         </nz-comment>

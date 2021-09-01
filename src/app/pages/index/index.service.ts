@@ -86,12 +86,24 @@ export class IndexService {
   // 发布留言
   postMessage(param: string) {
     const url = '/comments/post';
-    this.http.post(url, param);
+    return this.http.post(url, param);
   }
 
   // 发布回复
   postReply(param: string) {
     const url = '/comments/replay';
-    this.http.post(url, param);
+    return this.http.post(url, param);
+  }
+
+  // 点赞
+  like(param: string) {
+    const url = '/comments/like';
+    return this.http.post(url, { comment_id: param });
+  }
+
+  // 取消点赞
+  cancelLike(param: string) {
+    const url = '/comments/cancelLike';
+    return this.http.post(url, { comment_id: param });
   }
 }

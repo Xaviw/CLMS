@@ -48,7 +48,7 @@
         </div>
         <div class="container">
           <!-- 功能列表 -->
-          <div class="view_scroll padding" [hidden]="!activePage?.origin?.isLeaf">
+          <div class="view_scroll padding">
             <nz-table #pageFunctionTable [nzData]="pageFunctions" nzShowPagination="false">
               <thead>
                 <tr>
@@ -77,8 +77,6 @@
               </tbody>
             </nz-table>
           </div>
-          <!-- 空状态显示 -->
-          <empty *ngIf="!activePage?.origin?.isLeaf" info="请先选择对应页面！"></empty>
         </div>
       </div>
     </div>

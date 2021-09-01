@@ -27,9 +27,24 @@ export class PageSetupService {
     return this.http.post(url, { page_id: param });
   }
 
+  // 修改页面
+  modifyPage() {}
+
   // 调整页面顺序
   adjustPage(param: page) {
     const url = '/page/adjustPage';
     return this.http.post(url, param);
+  }
+
+  // 添加功能
+  addFunction() {}
+
+  // 修改功能
+  modifyFunction() {}
+
+  // 删除功能
+  deleteFunction(id: string) {
+    const url = '/page/deletePermissions';
+    return this.http.post(url, { feature_id: id });
   }
 }
