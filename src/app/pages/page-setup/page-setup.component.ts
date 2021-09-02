@@ -3,8 +3,8 @@ import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PageSetupService } from './page-setup.service';
 import { pageRoute, pageFunction } from '@app/shared/types/commonTypes';
-import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -14,6 +14,7 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
   providers: [PageSetupService],
 })
 export class PageSetupComponent implements OnInit {
+  @ViewChild('pageTree') pageTreeEl!: NzTreeNodeOptions;
   pages: pageRoute[] = []; // 完整页面数据
   pageFunctions: pageFunction[] = []; // 页面功能数据
   // 添加页面表单Control
@@ -51,6 +52,7 @@ export class PageSetupComponent implements OnInit {
     visible: false, // 是否显示
     // 打开时设置上层页面id
     add: () => {
+      this.pageAddForm.reset();
       this.addPageDrawer.visible = true;
       this.isUpdate = false;
       if (this.activePage) {
@@ -104,9 +106,14 @@ export class PageSetupComponent implements OnInit {
 
   // 调整菜单顺序
   adjustPageOrder(e: NzFormatEmitEvent) {
-    console.log('e: ', e);
-    // const param =
-    // this.service.adjustPage(param).subscribe()
+    const nodes = e.node?.parentNode?.children || this.pageTreeEl.getTreeNodes();
+    console.log('nodes: ', nodes);
+    const param = {
+      parent_page_id: e.node?.parentNode?.key ?? '0',
+      page_id: e.dragNode?.key!,
+      sort: (nodes as NzTreeNode[]).findIndex((item) => item.key === e.dragNode?.key),
+    };
+    this.service.adjustPage(param).subscribe();
   }
 
   // 单击菜单触发

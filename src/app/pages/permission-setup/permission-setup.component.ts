@@ -112,6 +112,12 @@ export class PermissionSetupComponent implements OnInit {
     });
   }
 
+  // 获取角色菜单权限
+  getRolePages() {}
+
+  // 获取角色某菜单下功能权限
+  getRolePageFunctions() {}
+
   // 单击角色
   roleClick(e: NzFormatEmitEvent) {
     if (this.activeRole !== e.node) {

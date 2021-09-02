@@ -46,26 +46,5 @@ export class AuthGuard implements CanActivateChild {
       this.title.setTitle(title);
       return true;
     }
-
-    // if (!needLogin) {
-    //   // 不需要登录直接跳转
-    //   return true;
-    // } else {
-    //   if (isLogin && skipPermission) {
-    //     // 需要登陆，不需要校验权限，直接跳转
-    //     return true;
-    //   } else if (isLogin && hasPermission) {
-    //     // 需要登陆，已登录、有权限，直接跳转
-    //     return true;
-    //   } else if (isLogin && !hasPermission) {
-    //     // 需要登录，已登录、无权限，跳转首页
-    //     return this.router.parseUrl('/index');
-    //   } else {
-    //     // 未登录，跳转登录页
-    //     this.message.error('登录信息已失效，请重新登录！');
-    //     clearCache();
-    //     return this.router.parseUrl('/blank/login');
-    //   }
-    // }
   }
 }

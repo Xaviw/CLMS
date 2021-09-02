@@ -31,6 +31,7 @@
       <div class="tree padding">
         <div class="view_scroll" empty [emptyData]="pages" emptyInfo="还没有页面...">
           <nz-tree
+            #pageTree
             [nzData]="pages"
             nzDraggable
             nzBlockNode

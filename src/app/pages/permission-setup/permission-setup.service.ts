@@ -9,9 +9,18 @@ export class PermissionSetupService {
 
   // 获取角色
   getRoles() {
-    const url = '/role';
-    return this.http.post(url, null);
+    const url = '/permissions/getAllRoles';
+    return this.http.get(url);
   }
+
+  // 获取角色菜单权限
+  getRolePages(id: string) {
+    const url = '/permissions/getPageByRole';
+    return this.http.post(url, { role_id: id });
+  }
+
+  // 获取角色某菜单下功能权限
+  getRolePageFunctions() {}
 
   // 修改页面权限
   setPagePermission(param: { roleId: string; pageId: string }) {

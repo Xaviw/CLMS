@@ -11,10 +11,9 @@ export class EmptyDirective {
   // 需要校验的值--变化时触发元素修改
   @Input()
   set emptyData(data: any[]) {
-    if (!data.length) {
+    if (!data.length && !this.el.nativeElement.contains(this.node)) {
       this.el.nativeElement.append(this.node);
-      console.log(this.el.nativeElement);
-    } else {
+    } else if (data.length && this.el.nativeElement.contains(this.node)) {
       this.el.nativeElement.removeChild(this.node);
     }
   }

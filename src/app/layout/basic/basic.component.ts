@@ -44,7 +44,6 @@ export class LayoutBasicComponent implements OnInit {
 
   logout() {
     this.service.logout().subscribe(() => {
-      this.message.success('已退出登录！');
       clearCache();
       this.router.navigate(['/blank/login']);
     });

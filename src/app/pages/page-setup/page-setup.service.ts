@@ -31,7 +31,7 @@ export class PageSetupService {
   modifyPage() {}
 
   // 调整页面顺序
-  adjustPage(param: page) {
+  adjustPage(param: { parent_page_id: string; page_id: string; sort: number }) {
     const url = '/page/adjustPage';
     return this.http.post(url, param);
   }

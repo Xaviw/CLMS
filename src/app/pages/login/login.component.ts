@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { code, password } = this.loginForm.value;
       this.service.login({ code, password }).subscribe((res: any) => {
-        this.message.success('登陆成功！');
         _local.set('token', res.token, res.expires);
         this.router.navigateByUrl('/index');
       });
