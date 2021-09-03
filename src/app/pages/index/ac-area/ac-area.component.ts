@@ -66,7 +66,6 @@ export class AcAreaComponent implements OnInit {
     } else if (!comment?.children?.length) {
       comment.loading = true;
       this.service.getReply(comment.id).subscribe((res) => {
-        console.log('res: ', res);
         comment.expand = true;
         comment.loading = false;
         comment.children = res as comment[];
@@ -76,7 +75,6 @@ export class AcAreaComponent implements OnInit {
 
   // 点击回复
   clickToReply(item: comment) {
-    console.log('item: ', item);
     this.reply = item;
     this.textArea?.nativeElement.focus();
   }

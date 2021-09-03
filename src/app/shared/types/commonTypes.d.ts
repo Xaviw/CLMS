@@ -43,6 +43,8 @@ declare interface role {
   key: string;
   isLeaf?: boolean;
   icon?: string;
+  pages?: string[];
+  functions?: string[];
 }
 
 declare interface statistic {

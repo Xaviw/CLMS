@@ -1,5 +1,5 @@
 import { CommonService } from './../../core/services/common.service';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
+import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { PermissionSetupService } from './permission-setup.service';
 import { Component, OnInit } from '@angular/core';
 import { role, pageRoute } from '@app/shared/types/commonTypes';
@@ -93,6 +93,8 @@ export class PermissionSetupComponent implements OnInit {
       (res as role[]).forEach((item: role) => {
         item.isLeaf = true;
         item.icon = 'user';
+        item.pages = [];
+        item.functions = [];
       });
       this.roles = res as role[];
     });
@@ -113,15 +115,30 @@ export class PermissionSetupComponent implements OnInit {
   }
 
   // 获取角色菜单权限
-  getRolePages() {}
+  getRolePages(origin: NzTreeNodeOptions) {
+    this.service.getRolePages(origin.key).subscribe((res) => {
+      origin.pages = res;
+      console.log('origin: ', origin);
+    });
+  }
 
-  // 获取角色某菜单下功能权限
-  getRolePageFunctions() {}
+  // 获取角色功能权限
+  getRolePageFunctions(origin: NzTreeNodeOptions) {
+    this.service.getRolePages(origin.key).subscribe((res) => {
+      origin.functions = res;
+      console.log('origin: ', origin);
+    });
+  }
 
   // 单击角色
   roleClick(e: NzFormatEmitEvent) {
+    console.log('e: ', e);
     if (this.activeRole !== e.node) {
       this.activeRole = e.node!;
+      if (!e.node?.origin.pages.length || !e.node?.origin.functions.length) {
+        this.getRolePages(this.activeRole?.origin!);
+        this.getRolePageFunctions(this.activeRole?.origin!);
+      }
     } else {
       this.activeRole = undefined;
     }
@@ -134,7 +151,8 @@ export class PermissionSetupComponent implements OnInit {
       .pipe(
         tap((err) => {
           // 修改出错，重新请求已有权限
-          this.getRoles();
+          this.getRolePages(this.activeRole?.origin!);
+          this.getRolePageFunctions(this.activeRole?.origin!);
         }),
       )
       .subscribe();
@@ -147,7 +165,8 @@ export class PermissionSetupComponent implements OnInit {
       .pipe(
         tap((err) => {
           // 修改出错，重新请求已有权限
-          this.getRoles();
+          this.getRolePages(e.node?.origin!);
+          this.getRolePageFunctions(e.node?.origin!);
         }),
       )
       .subscribe();

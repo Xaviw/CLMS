@@ -107,7 +107,6 @@ export class PageSetupComponent implements OnInit {
   // 调整菜单顺序
   adjustPageOrder(e: NzFormatEmitEvent) {
     const nodes = e.node?.parentNode?.children || this.pageTreeEl.getTreeNodes();
-    console.log('nodes: ', nodes);
     const param = {
       parent_page_id: e.node?.parentNode?.key ?? '0',
       page_id: e.dragNode?.key!,
