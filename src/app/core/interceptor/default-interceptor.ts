@@ -43,7 +43,7 @@ export class DefaultInterceptor implements HttpInterceptor {
       tap(
         // 错误code统一处理
         (res) => {
-          if (res instanceof HttpResponse && ![0, 1].includes(res.body.code)) {
+          if (res instanceof HttpResponse && ![0, 2].includes(res.body.code)) {
             this.message.error(res.body.msg);
           }
         },
@@ -91,7 +91,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 正确请求直接返回data
         if (res instanceof HttpResponse && res.body.code === 0) {
           return res.clone({ body: res.body?.data });
-        } else if (res instanceof HttpResponse && res.body.code === 1) {
+        } else if (res instanceof HttpResponse && res.body.code === 2) {
           this.message.info(res.body.msg);
           return res.clone({ body: res.body?.data });
         }

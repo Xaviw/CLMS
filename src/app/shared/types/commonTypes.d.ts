@@ -17,10 +17,11 @@ declare interface pageRoute {
   link?: string;
   title: string;
   key: string;
-  isLeaf: boolean;
+  leaf: boolean;
   icon?: string;
   function?: string[];
   children?: pageRoute[];
+  level: number;
 }
 
 // 全局用户信息类型
@@ -35,6 +36,7 @@ declare interface pageFunction {
   code: string;
   name: string;
   id: string;
+  url: string;
 }
 
 // 角色类型

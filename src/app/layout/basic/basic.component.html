@@ -26,7 +26,7 @@
           <ng-template #menuTpl let-menus>
             <ng-container *ngFor="let menu of menus">
               <li
-                *ngIf="menu.isLeaf"
+                *ngIf="menu.leaf"
                 nz-menu-item
                 [nzPaddingLeft]="menu.level * 24"
                 nzMatchRouter
@@ -36,7 +36,7 @@
                 <span>{{ menu.title }}</span>
               </li>
               <li
-                *ngIf="!menu.isLeaf"
+                *ngIf="!menu.leaf"
                 nz-submenu
                 [nzPaddingLeft]="menu.level * 24"
                 [nzTitle]="menu.title"
