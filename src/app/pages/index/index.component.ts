@@ -47,12 +47,12 @@ export class IndexComponent implements OnInit {
   constructor(private service: IndexService) {}
 
   ngOnInit() {
-    // this.getLabStatistic();
-    // this.getEquipmentStatistic();
-    // this.getUserStatistic();
-    // this.getLabApplyStatistic();
-    // this.getShopApplyStatistic();
-    // this.getRepairApplyStatistic();
+    this.getLabStatistic();
+    this.getEquipmentStatistic();
+    this.getUserStatistic();
+    this.getLabApplyStatistic();
+    this.getShopApplyStatistic();
+    this.getRepairApplyStatistic();
   }
 
   // 获取机房统计数据

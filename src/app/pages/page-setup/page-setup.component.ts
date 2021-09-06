@@ -1,4 +1,4 @@
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { CommonService } from './../../core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -178,14 +178,12 @@ export class PageSetupComponent implements OnInit {
       page_id: e.dragNode?.key!,
       sort: (nodes as NzTreeNode[]).findIndex((item) => item.key === e.dragNode?.key) + 1,
     };
-    this.service
-      .adjustPage(param)
-      .pipe(
-        tap((err) => {
-          // this.getAllPages();
-        }),
-      )
-      .subscribe();
+    this.service.adjustPage(param).subscribe(
+      (res) => {},
+      (err) => {
+        this.getAllPages();
+      },
+    );
   }
 
   // 单击菜单触发
