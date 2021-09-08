@@ -1,0 +1,31 @@
+:host ::ng-deep {
+  .ant-radio-button-wrapper {
+    min-width: 0;
+    margin: 5px 10px;
+    padding: 0 5px;
+    border: none;
+  }
+  .ant-radio-button-wrapper:not(:first-child)::before {
+    width: 0;
+  }
+  .ant-radio-button-wrapper-checked {
+    border: 1px solid #1890ff;
+    border-radius: 2px;
+  }
+}
+
+.check-block {
+  margin: 20px;
+  padding: 10px 20px;
+  border: 2px solid #1890ff;
+  border-radius: 5px;
+  .type-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  .type {
+    line-height: 40px;
+    font-weight: bold;
+    text-align: right;
+  }
+}

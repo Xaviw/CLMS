@@ -40,6 +40,14 @@ const routes: Routes = [
           needLogin: true,
         },
       },
+      {
+        path: 'user-manage',
+        loadChildren: () => import('./user-manage/user-manage.module').then((m) => m.UserManageModule),
+        data: {
+          title: '用户管理',
+          needLogin: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局

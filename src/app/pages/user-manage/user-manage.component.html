@@ -1,0 +1,22 @@
+<div class="view">
+  <div class="check-block">
+    <div class="type-row">
+      <span class="type">所处年级：</span>
+      <nz-radio-group [(ngModel)]="grade">
+        <label nz-radio-button [nzValue]="0">全部</label>
+        <label nz-radio-button [nzValue]="maxGrade! - 3">{{ maxGrade! - 3 }}</label>
+        <label nz-radio-button [nzValue]="maxGrade! - 2">{{ maxGrade! - 2 }}</label>
+        <label nz-radio-button [nzValue]="maxGrade! - 1">{{ maxGrade! - 1 }}</label>
+        <label nz-radio-button [nzValue]="maxGrade">{{ maxGrade }}</label>
+      </nz-radio-group>
+    </div>
+    <div class="type-row">
+      <span class="type">所处学院：</span>
+      <nz-radio-group [(ngModel)]="college">
+        <label nz-radio-button [nzValue]="0">全部</label>
+        <label nz-radio-button [nzValue]="item.id" *ngFor="let item of collegeData">{{ item.name }}</label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <div class="view_scroll"></div>
+</div>
