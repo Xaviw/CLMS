@@ -1,0 +1,48 @@
+<div class="check-block">
+  <div class="type-row">
+    <span class="type">单双周：</span>
+    <nz-radio-group [(ngModel)]="week.value">
+      <label nz-radio-button nzValue="single">单周</label>
+      <label nz-radio-button nzValue="double">双周</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row">
+    <span class="type">所在年级：</span>
+    <nz-radio-group [(ngModel)]="grade.value">
+      <label nz-radio-button [nzValue]="0">全部</label>
+      <label nz-radio-button [nzValue]="item" *ngFor="let item of grade.data">{{ item }}</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row">
+    <span class="type">所在学院：</span>
+    <nz-radio-group [(ngModel)]="college.value" (ngModelChange)="getMajor($event)">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.id" *ngFor="let item of college.data">{{ item.name }}</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row">
+    <span class="type">所在专业：</span>
+    <nz-radio-group [(ngModel)]="major.value" (ngModelChange)="getClass($event)">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.id" *ngFor="let item of major.data">{{ item.name }}</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row">
+    <span class="type">所在班级：</span>
+    <nz-radio-group [(ngModel)]="class.value">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.id" *ngFor="let item of class.data">{{ item.name }}</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row">
+    <span class="type">其他：</span>
+    <div class="search-type">
+      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input">
+        <input type="text" nz-input placeholder="搜索姓名或帐号" />
+      </nz-input-group>
+      <ng-template #accountSearch>
+        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+      </ng-template>
+    </div>
+  </div>
+</div>

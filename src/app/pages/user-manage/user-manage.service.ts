@@ -11,4 +11,16 @@ export class UserManageService {
     const url = '/college';
     return this.http.get(url);
   }
+
+  // 获取专业信息
+  getMajor(param: { grade: number; college_id: string }) {
+    const url = '/major';
+    return this.http.post(url, param);
+  }
+
+  // 获取班级信息
+  getClass(param: { grade: number; college_id: string; major_id: string }) {
+    const url = '/class';
+    return this.http.post(url, param);
+  }
 }
