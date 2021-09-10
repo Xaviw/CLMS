@@ -23,4 +23,16 @@ export class UserManageService {
     const url = '/class';
     return this.http.post(url, param);
   }
+
+  // 获取教师关联班级
+  getChargeClass() {
+    const url = '/class/own';
+    return this.http.get(url);
+  }
+
+  // 查询用户
+  queryUser(param: any) {
+    const url = '/user/query';
+    return this.http.post(url, param);
+  }
 }

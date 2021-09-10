@@ -1,37 +1,46 @@
 <div class="check-block">
-  <div class="type-row">
+  <div class="type-row" *ngIf="week.show">
     <span class="type">单双周：</span>
     <nz-radio-group [(ngModel)]="week.value">
       <label nz-radio-button nzValue="single">单周</label>
       <label nz-radio-button nzValue="double">双周</label>
     </nz-radio-group>
   </div>
-  <div class="type-row">
+  <div class="type-row" *ngIf="grade.show">
     <span class="type">所在年级：</span>
-    <nz-radio-group [(ngModel)]="grade.value">
+    <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="emitCascade()">
       <label nz-radio-button [nzValue]="0">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of grade.data">{{ item }}</label>
     </nz-radio-group>
   </div>
-  <div class="type-row">
+  <div class="type-row" *ngIf="college.show">
     <span class="type">所在学院：</span>
     <nz-radio-group [(ngModel)]="college.value" (ngModelChange)="getMajor($event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of college.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
-  <div class="type-row">
+  <div class="type-row" *ngIf="major.show">
     <span class="type">所在专业：</span>
     <nz-radio-group [(ngModel)]="major.value" (ngModelChange)="getClass($event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of major.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
-  <div class="type-row">
+  <div class="type-row" *ngIf="class.show">
     <span class="type">所在班级：</span>
-    <nz-radio-group [(ngModel)]="class.value">
+    <nz-radio-group [(ngModel)]="class.value" (ngModelChange)="emitCascade()">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of class.data">{{ item.name }}</label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row" *ngIf="chargeClass.show">
+    <span class="type">我的班级：</span>
+    <nz-radio-group [(ngModel)]="chargeClass.value">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.class_id" *ngFor="let item of chargeClass.data">
+        {{ item.class_name }}
+      </label>
     </nz-radio-group>
   </div>
   <div class="type-row">

@@ -1,5 +1,5 @@
 import { UserManageService } from '@pages/user-manage/user-manage.service';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as dayjs from 'dayjs';
 
 interface filterType {
@@ -8,7 +8,7 @@ interface filterType {
 }
 
 interface condition {
-  value: string | number;
+  value: string | number | null;
   data?: any[];
   show: boolean;
 }
@@ -20,31 +20,46 @@ interface condition {
   providers: [UserManageService],
 })
 export class CascadeConditionComponent implements OnInit {
-  @Output() getConditions!: any;
+  // 参数发射器
+  @Output() paramsEmitter: EventEmitter<any> = new EventEmitter();
+  // 显示字段筛选
+  @Input() showFilter: string[] = [];
+  // 单双周
   week: condition = {
     value: 'single',
-    show: true,
+    show: !this.showFilter.includes('week'),
   };
+  // 年级
   grade: condition = {
     value: 0,
     data: [],
-    show: true,
+    show: !this.showFilter.includes('grade'),
   };
+  // 学院
   college: condition = {
     value: '0',
     data: [],
-    show: true,
+    show: !this.showFilter.includes('college'),
   };
+  // 专业
   major: condition = {
     value: '0',
     data: [],
-    show: true,
+    show: !this.showFilter.includes('major'),
   };
+  // 班级
   class: condition = {
     value: '0',
     data: [],
-    show: true,
+    show: !this.showFilter.includes('class'),
   };
+  // 教师关联班级
+  chargeClass: condition = {
+    value: null,
+    data: [],
+    show: !this.showFilter.includes('chargeClass'),
+  };
+
   constructor(private service: UserManageService) {}
 
   ngOnInit() {
@@ -53,14 +68,15 @@ export class CascadeConditionComponent implements OnInit {
     for (let i = 3; i >= 0; i--) {
       this.grade.data!.push(maxGrade - i);
     }
-    // 获取学院
+
     this.getCollege();
+    this.getChargeClass();
   }
 
   // 获取学院信息
   getCollege() {
     this.service.getCollege().subscribe((res) => {
-      this.college.data = res as filterType[];
+      this.college.data = res as any[];
     });
   }
 
@@ -75,6 +91,7 @@ export class CascadeConditionComponent implements OnInit {
       this.major.value = '0';
       this.getClass(id);
     }
+    this.emitCascade();
   }
 
   // 获取班级信息
@@ -89,18 +106,23 @@ export class CascadeConditionComponent implements OnInit {
       this.class.data = [];
       this.class.value = '0';
     }
+    this.emitCascade();
   }
 
-  emitConditions(isSearch = false) {
-    if (isSearch) {
-    } else {
-      const param = {
-        week: this.week.value,
-        grade: this.grade.value,
-        college: this.college.value,
-        major: this.major.value,
-        class: this.class.value,
-      };
-    }
+  // 获取教师关联班级
+  getChargeClass() {
+    this.service.getChargeClass().subscribe((res) => {
+      this.chargeClass.data = res as filterType[];
+    });
+  }
+
+  emitCascade() {
+    this.paramsEmitter.emit({
+      week: this.week.value,
+      grade: this.grade.value,
+      college: this.college.value,
+      major: this.major.value,
+      class: this.class.value,
+    });
   }
 }

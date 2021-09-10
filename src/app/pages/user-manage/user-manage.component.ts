@@ -8,6 +8,16 @@ import { Component, OnInit } from '@angular/core';
   providers: [UserManageService],
 })
 export class UserManageComponent implements OnInit {
-  constructor() {}
+  userData: any[] = [];
+
+  constructor(private service: UserManageService) {}
+
   ngOnInit() {}
+
+  // 查询用户
+  queryUser(param: any) {
+    this.service.queryUser(param).subscribe((res: any) => {
+      this.userData = res.data as any[];
+    });
+  }
 }

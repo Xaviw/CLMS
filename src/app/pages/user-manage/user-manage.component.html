@@ -1,4 +1,63 @@
-<div class="view">
-  <cascade-condition></cascade-condition>
-  <div class="view_scroll"></div>
+<div class="view padding">
+  <cascade-condition (paramsEmitter)="queryUser($event)" [showFilter]="['week']"></cascade-condition>
+  <div class="flex-between my5">
+    <div>
+      <button nz-button nzType="primary" class="mr5">添加用户</button>
+      <button nz-button nzType="primary">导入用户</button>
+    </div>
+    <div>
+      <i
+        nz-icon
+        nzType="info-circle"
+        nzTheme="twotone"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        nzTooltipTitle="多选用户以执行批量操作"
+        class="mr5"
+      ></i>
+      <button nz-button nzType="primary" class="mr5">批量设置权限</button>
+      <button nz-button nzType="primary" class="mr5">批量强制下线</button>
+      <button nz-button nzType="primary" class="mr5">批量重置密码</button>
+      <button nz-button nzType="primary">批量删除用户</button>
+    </div>
+  </div>
+  <div >
+    <nz-table #userTable nzSize="small" nzBordered [nzData]="userData" class="view_scroll">
+      <thead>
+        <tr>
+          <th>帐号</th>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>学院</th>
+          <th>专业</th>
+          <th>班级</th>
+          <th>班主任</th>
+          <th>角色</th>
+          <th>状态</th>
+          <th nzAlign="center">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of userTable.data">
+          <td>{{ data.account }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.gender }}</td>
+          <td>{{ data.college }}</td>
+          <td>{{ data.major }}</td>
+          <td>{{ data.class }}</td>
+          <td>{{ data.chargeTeacher }}</td>
+          <td>{{ data.role }}</td>
+          <td>{{ data.status }}</td>
+          <td nzAlign="center">
+            <nz-button-group>
+              <button nz-button nzType="link">修改信息</button>
+              <button nz-button nzType="link">强制下线</button>
+              <button nz-button nzType="link">重置密码</button>
+              <button nz-button nzType="link">删除用户</button>
+            </nz-button-group>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
 </div>
