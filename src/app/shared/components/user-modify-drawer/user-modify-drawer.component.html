@@ -1,0 +1,93 @@
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  nzWidth="300px"
+  nzPlacement="right"
+  [nzTitle]="isAdd ? '添加用户' : '修改用户信息'"
+  (nzOnClose)="close()"
+  [nzFooter]="infoFooterTpl"
+>
+  <div class="view_scroll" *nzDrawerContent>
+    <form nz-form [formGroup]="formGroup" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzFor="account" nzRequired>账号：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="accountErrorTpl">
+          <input nz-input id="account" formControlName="account" />
+          <ng-template #accountErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请输入账号！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="name" nzRequired>名字：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="nameErrorTpl">
+          <input nz-input id="name" formControlName="name" />
+          <ng-template #nameErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请输入姓名！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="grade" nzRequired>年级：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="gradeErrorTpl">
+          <nz-select id="grade" formControlName="grade">
+            <nz-option *ngFor="let item of grade" [nzValue]="item" [nzLabel]="item"></nz-option>
+          </nz-select>
+          <ng-template #gradeErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请选择年级！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="college" nzRequired>学院：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="collegeErrorTpl">
+          <nz-select id="college" formControlName="college" (ngModelChange)="getMajor($event)">
+            <nz-option *ngFor="let item of college" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <ng-template #collegeErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请选择学院！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="major" nzRequired>专业：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="majorErrorTpl">
+          <nz-select id="major" formControlName="major" (ngModelChange)="getClass($event)">
+            <nz-option *ngFor="let item of major" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <ng-template #majorErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请选择专业！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="class" nzRequired>班级：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="classErrorTpl">
+          <nz-select id="class" formControlName="class">
+            <nz-option *ngFor="let item of class" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+          </nz-select>
+          <ng-template #classErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请选择班级！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="role" nzRequired>用户角色：</nz-form-label>
+        <nz-form-control nzHasFeedback [nzErrorTip]="roleErrorTpl">
+          <nz-select id="role" formControlName="role">
+            <nz-option *ngFor="let item of roles" [nzValue]="item.key" [nzLabel]="item.title"></nz-option>
+          </nz-select>
+          <ng-template #roleErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">请选择用户角色！</ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+  <ng-template #infoFooterTpl>
+    <div style="float: right">
+      <button nz-button nzType="primary" (click)="update()" *ngIf="!isAdd">保存</button>
+      <button nz-button nzType="primary" (click)="add()" *ngIf="isAdd">添加</button>
+    </div>
+  </ng-template>
+</nz-drawer>

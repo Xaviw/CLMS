@@ -23,42 +23,54 @@ export class CascadeConditionComponent implements OnInit {
   // 参数发射器
   @Output() paramsEmitter: EventEmitter<any> = new EventEmitter();
   // 显示字段筛选
-  @Input() showFilter: string[] = [];
+  @Input()
+  set showFilter(arr: string[]) {
+    this.week.show = !arr.includes('week');
+    this.grade.show = !arr.includes('grade');
+    this.college.show = !arr.includes('college');
+    this.major.show = !arr.includes('major');
+    this.class.show = !arr.includes('class');
+    this.chargeClass.show = !arr.includes('chargeClass');
+  }
+  // 教师还是学生
+  @Input() isStudent = true;
   // 单双周
   week: condition = {
     value: 'single',
-    show: !this.showFilter.includes('week'),
+    show: false,
   };
   // 年级
   grade: condition = {
     value: 0,
     data: [],
-    show: !this.showFilter.includes('grade'),
+    show: false,
   };
   // 学院
   college: condition = {
     value: '0',
     data: [],
-    show: !this.showFilter.includes('college'),
+    show: false,
   };
   // 专业
   major: condition = {
     value: '0',
     data: [],
-    show: !this.showFilter.includes('major'),
+    show: false,
   };
   // 班级
   class: condition = {
     value: '0',
     data: [],
-    show: !this.showFilter.includes('class'),
+    show: false,
   };
   // 教师关联班级
   chargeClass: condition = {
     value: null,
     data: [],
-    show: !this.showFilter.includes('chargeClass'),
+    show: false,
   };
+  // 添加/修改用户抽屉
+  infoDrawer = {};
 
   constructor(private service: UserManageService) {}
 

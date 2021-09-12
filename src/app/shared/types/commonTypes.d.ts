@@ -31,6 +31,24 @@ declare interface userInfo {
   avatar?: string;
 }
 
+// 用户
+declare interface user {
+  account: string;
+  name: string;
+  gender?: string;
+  college?: string;
+  college_id?: string;
+  major?: string;
+  major_id?: string;
+  class?: string;
+  class_id?: string;
+  chargeTeacher?: string;
+  chargeTeacher_id?: string;
+  role?: string;
+  role_id?: string;
+  status?: string;
+}
+
 // 页面功能类型
 declare interface pageFunction {
   code: string;
