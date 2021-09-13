@@ -85,7 +85,7 @@ export class PermissionSetupComponent implements OnInit {
 
   // 获取所有角色
   getRoles() {
-    this.service.getRoles().subscribe((res) => {
+    this.common.getRoles().subscribe((res) => {
       (res as role[]).forEach((item: role) => {
         item.isLeaf = true;
         item.icon = 'user';

@@ -1,3 +1,4 @@
+import { CommonService } from './../../../core/services/common.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PermissionSetupService } from '@app/pages/permission-setup/permission-setup.service';
@@ -34,11 +35,7 @@ export class UserModifyDrawerComponent implements OnInit {
   // 角色
   roles: any[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private service: UserManageService,
-    private PermissionService: PermissionSetupService,
-  ) {}
+  constructor(private fb: FormBuilder, private service: UserManageService, private commonService: CommonService) {}
 
   ngOnInit() {
     // 初始化当前四个年级
@@ -80,7 +77,7 @@ export class UserModifyDrawerComponent implements OnInit {
 
   // 获取所有角色
   getRoles() {
-    this.PermissionService.getRoles().subscribe((res) => {
+    this.commonService.getRoles().subscribe((res) => {
       this.roles = res as role[];
     });
   }

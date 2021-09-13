@@ -1,8 +1,8 @@
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
-import { FormBuilder, Validators } from '@angular/forms';
 import { UserManageService } from './user-manage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { user } from '@app/shared/types/commonTypes';
+import { user, role } from '@app/shared/types/commonTypes';
+import { CommonService } from '@app/core/services/common.service';
 
 @Component({
   selector: 'app-user-manage',
@@ -20,11 +20,39 @@ export class UserManageComponent implements OnInit {
   indeterminate = false; // 半选状态
   listOfData: user[] = [];
   setOfCheckedId = new Set<string>(); // 已选中集合
-  param: any = {};
+  param: any;
+  // 权限Modal
+  roleModal = {
+    roles: <role[]>[],
+    value: null,
+    visible: false,
+    loading: false,
+    open: () => {
+      this.roleModal.visible = true;
+    },
+    cancel: () => {
+      this.roleModal.visible = false;
+    },
+    setRole: () => {},
+  };
 
-  constructor(private service: UserManageService) {}
+  constructor(private service: UserManageService, private commonService: CommonService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getRoles();
+  }
+
+  // 添加用户
+  addUser() {
+    this.userDrawerEl.formGroup.reset();
+    this.userDrawerEl.open();
+  }
+  // 修改用户
+  modifyUser(data: any) {
+    this.userDrawerEl.formGroup.reset();
+    this.userDrawerEl.formGroup.patchValue(data);
+    this.userDrawerEl.open();
+  }
 
   // 查询用户
   queryUser(isFirst = false) {
@@ -33,6 +61,13 @@ export class UserManageComponent implements OnInit {
     this.service.queryUser(this.param).subscribe((res: any) => {
       this.listOfData = res.data as any[];
       if (isFirst) this.total = res.total;
+    });
+  }
+
+  // 获取所有角色
+  getRoles() {
+    this.commonService.getRoles().subscribe((res) => {
+      this.roleModal.roles = res as role[];
     });
   }
 
@@ -69,5 +104,18 @@ export class UserManageComponent implements OnInit {
   onAllChecked(checked: boolean): void {
     this.listOfData.forEach(({ account }) => this.updateCheckedSet(account, checked));
     this.refreshCheckedStatus();
+  }
+
+  // 强制下线
+  logout() {
+    let param = this.setOfCheckedId.keys();
+  }
+  // 重置密码
+  resetPWD() {
+    let param = this.setOfCheckedId.keys();
+  }
+  // 删除用户
+  deleteUser() {
+    let param = this.setOfCheckedId.keys();
   }
 }

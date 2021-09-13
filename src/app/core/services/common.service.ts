@@ -33,4 +33,10 @@ export class CommonService {
     const url = '/courseSchedule';
     return this.http.post(url, param);
   }
+
+  // 获取角色
+  getRoles() {
+    const url = '/permissions/getAllRoles';
+    return this.http.get(url);
+  }
 }

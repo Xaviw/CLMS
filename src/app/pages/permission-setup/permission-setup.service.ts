@@ -7,12 +7,6 @@ import { tap } from 'rxjs/operators';
 export class PermissionSetupService {
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
-  // 获取角色
-  getRoles() {
-    const url = '/permissions/getAllRoles';
-    return this.http.get(url);
-  }
-
   // 获取角色菜单权限
   getRolePages(id: string) {
     const url = '/permissions/getPageByRole';
