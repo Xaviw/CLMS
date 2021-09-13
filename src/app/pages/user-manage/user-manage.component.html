@@ -115,8 +115,9 @@
 
 <!-- 设置权限 -->
 <nz-modal
+  nzWidth="300px"
   [(nzVisible)]="roleModal.visible"
-  [nzTitle]="(setOfCheckedId.size ? '批量' : '') + '设置权限'"
+  [nzTitle]="(setOfCheckedId.size > 1 ? '批量' : '') + '设置权限'"
   (nzOnOk)="roleModal.setRole()"
   (nzOnCancel)="roleModal.cancel()"
   [nzOkLoading]="roleModal.loading"
