@@ -48,6 +48,15 @@ const routes: Routes = [
           needLogin: true,
         },
       },
+      {
+        path: 'modify-profile',
+        loadChildren: () => import('./modify-profile/modify-profile.module').then((m) => m.ModifyProfileModule),
+        data: {
+          title: '修改资料',
+          needLogin: true,
+          skipPermission: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局

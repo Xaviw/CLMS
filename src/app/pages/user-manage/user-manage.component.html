@@ -87,6 +87,7 @@
           <th>班主任</th>
           <th>角色</th>
           <th>状态</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -104,6 +105,7 @@
           <td>{{ data.chargeTeacher }}</td>
           <td>{{ data.role }}</td>
           <td>{{ data.status }}</td>
+          <td><button nz-button nzType="link" (click)="modifyUser(data)">修改用户</button></td>
         </tr>
       </tbody>
     </nz-table>
