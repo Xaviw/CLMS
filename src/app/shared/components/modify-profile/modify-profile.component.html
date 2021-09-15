@@ -1,0 +1,68 @@
+<nz-modal
+  [(nzVisible)]="visible"
+  nzTitle="修改资料"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+  [nzOkLoading]="isOkLoading"
+  [nzCentered]="true"
+  [nzClosable]="false"
+  [nzKeyboard]="false"
+  [nzMaskClosable]="false"
+>
+  <form nz-form [formGroup]="pwdForm" *nzModalContent style="width: 500px">
+    <nz-form-item>
+      <nz-upload
+        class="avatar-uploader flex-center"
+        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        nzName="avatar"
+        nzListType="picture-card"
+        [nzLimit]="1"
+        [nzShowUploadList]="false"
+        [nzBeforeUpload]="beforeUpload"
+        (nzChange)="handleChange($event)"
+      >
+        <ng-container *ngIf="!avatarUrl">
+          <i class="upload-icon" nz-icon [nzType]="avatarLoading ? 'loading' : 'plus'"></i>
+          <div class="ant-upload-text">上传头像</div>
+        </ng-container>
+        <img *ngIf="avatarUrl" [src]="avatarUrl" style="width: 100%" />
+      </nz-upload>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">姓名</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input disabled [value]="userInfo.name" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">帐号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input disabled [value]="userInfo.account" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">密码</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="pwdErrorTpl">
+        <input nz-input type="password" [disabled]="!canEdit" formControlName="pwd" />
+        <ng-template #pwdErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">请输入密码!</ng-container>
+        </ng-template>
+      </nz-form-control>
+      <i nz-icon nzType="edit" nzTheme="twotone" nz-col class="flex-center edit-icon" (click)="canEdit = true"></i>
+    </nz-form-item>
+    <nz-form-item *ngIf="canEdit">
+      <nz-form-label [nzSpan]="6" nzFor="email">确认密码</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="confirmErrorTpl">
+        <input nz-input type="password" formControlName="confirmPwd" />
+        <ng-template #confirmErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">请再次输入密码!</ng-container>
+          <ng-container *ngIf="control.hasError('different')">两次密码不一致!</ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <div *nzModalFooter>
+    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isOkLoading">保存</button>
+    <button nz-button nzType="default" (click)="handleCancel()">取消</button>
+  </div>
+</nz-modal>

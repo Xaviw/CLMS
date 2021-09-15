@@ -1,3 +1,4 @@
+import { CacheService } from './../../../core/services/cache.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
 import { userInfo } from '@app/shared/types/commonTypes';
@@ -15,20 +16,14 @@ enum week {
   providers: [IndexService],
 })
 export class ClassScheduleComponent implements OnInit {
-  _user: userInfo | undefined;
-  get user() {
-    if (!this._user) {
-      this._user = _session.get('userInfo');
-    }
-    return this._user ?? _session.get('userInfo');
-  }
+  user: userInfo = this.cache.userInfo;
   week: week = week.single; // 单双周
   param = {
     userId: this.user?.account,
     time: this.week,
   };
 
-  constructor() {}
+  constructor(public cache: CacheService) {}
 
   ngOnInit() {}
 

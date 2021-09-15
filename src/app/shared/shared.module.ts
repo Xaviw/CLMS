@@ -1,3 +1,4 @@
+import { ModifyProfileComponent } from '@shared/components/modify-profile/modify-profile.component';
 import { UserModifyDrawerComponent } from './components/user-modify-drawer/user-modify-drawer.component';
 import { CascadeConditionComponent } from './components/cascade-condition/cascade-condition.component';
 import { EmptyDirective } from './directives/empty.directive';
@@ -11,7 +12,12 @@ import { RouterModule } from '@angular/router';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
 import { IconsProviderModule } from './icons-provider.module';
 
-const COMPONENTS: Array<Type<any>> = [ScheduleComponent, CascadeConditionComponent, UserModifyDrawerComponent];
+const COMPONENTS: Array<Type<any>> = [
+  ScheduleComponent,
+  CascadeConditionComponent,
+  UserModifyDrawerComponent,
+  ModifyProfileComponent,
+];
 const DIRECTIVES: Array<Type<any>> = [EmptyDirective];
 const PIPES: Array<Type<any>> = [FromNowPipe];
 

@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { LayoutBlankComponent } from './blank/blank.component';
 import { NgModule } from '@angular/core';
@@ -15,18 +16,7 @@ import { LayoutBasicComponent } from './basic/basic.component';
 const COMPONENTS = [LayoutBasicComponent, LayoutBlankComponent];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    IconsProviderModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzBreadCrumbModule,
-    NzDropDownModule,
-    NzButtonModule,
-    NzAvatarModule,
-  ],
+  imports: [SharedModule],
   declarations: [...COMPONENTS],
   exports: [...COMPONENTS],
 })
