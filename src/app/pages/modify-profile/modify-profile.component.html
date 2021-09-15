@@ -1,3 +1,52 @@
-<p>
-  modify-profile works!
-</p>
+<div class="view flex-center">
+  <form nz-form style="width: 500px">
+    <nz-form-item>
+      <nz-upload
+        class="avatar-uploader flex-center"
+        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        nzName="avatar"
+        nzListType="picture-card"
+        [nzShowUploadList]="false"
+        [nzBeforeUpload]="beforeUpload"
+        (nzChange)="handleChange($event)"
+      >
+        <ng-container *ngIf="!avatarUrl">
+          <i class="upload-icon" nz-icon [nzType]="loading ? 'loading' : 'plus'"></i>
+          <div class="ant-upload-text">Upload</div>
+        </ng-container>
+        <img *ngIf="avatarUrl" [src]="avatarUrl" style="width: 100%" />
+      </nz-upload>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">姓名</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input disabled value="张三" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">帐号</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input disabled value="12314124" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">密码</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input type="password" value="12314124" />
+      </nz-form-control>
+      <i nz-icon nzType="edit" nzTheme="twotone" nz-col class="flex-center edit-icon"></i>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="email">确认密码</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+        <input nz-input type="password" value="12314124" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control class="flex-center">
+        <button nz-button nzType="primary">保存</button>
+        <button nz-button style="margin-left: 40px">取消</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>
