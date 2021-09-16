@@ -25,12 +25,16 @@ export class CascadeConditionComponent implements OnInit {
   // 显示字段筛选
   @Input()
   set showFilter(arr: string[]) {
-    this.week.show = !arr.includes('week');
-    this.grade.show = !arr.includes('grade');
-    this.college.show = !arr.includes('college');
-    this.major.show = !arr.includes('major');
-    this.class.show = !arr.includes('class');
-    this.chargeClass.show = !arr.includes('chargeClass');
+    this.week.show = arr.includes('week');
+    this.grade.show = arr.includes('grade');
+    this.college.show = arr.includes('college');
+    this.major.show = arr.includes('major');
+    this.class.show = arr.includes('class');
+    this.chargeClass.show = arr.includes('chargeClass');
+    this.course.show = arr.includes('course');
+    this.userSearch.show = arr.includes('userSearch');
+    this.courseUserSearch.show = arr.includes('courseUserSearch');
+    this.courseSearch.show = arr.includes('courseSearch');
   }
   // 教师还是学生
   @Input() isStudent = true;
@@ -69,6 +73,30 @@ export class CascadeConditionComponent implements OnInit {
     data: [],
     show: false,
   };
+  // 课程
+  course: condition = {
+    value: '0',
+    data: [],
+    show: false,
+  };
+  // 用户管理搜索用户
+  userSearch: condition = {
+    value: null,
+    data: [],
+    show: false,
+  };
+  // 课程管理搜索教师
+  courseUserSearch: condition = {
+    value: null,
+    data: [],
+    show: false,
+  };
+  // 课程管理搜索课程
+  courseSearch: condition = {
+    value: null,
+    data: [],
+    show: false,
+  };
   // 添加/修改用户抽屉
   infoDrawer = {};
 
@@ -81,8 +109,19 @@ export class CascadeConditionComponent implements OnInit {
       this.grade.data!.push(maxGrade - i);
     }
 
-    this.getCollege();
-    this.getChargeClass();
+    if (this.college.show) this.getCollege();
+    if (this.chargeClass.show) this.getChargeClass();
+  }
+
+  // 切换年级加载课程信息
+  switchGrade() {
+    if (this.course.show) this.getCourse();
+    this.emitCascade();
+  }
+
+  // 获取课程信息
+  getCourse() {
+    
   }
 
   // 获取学院信息
@@ -101,7 +140,7 @@ export class CascadeConditionComponent implements OnInit {
     } else {
       this.major.data = [];
       this.major.value = '0';
-      this.getClass(id);
+      if (this.class.show) this.getClass(id);
     }
     this.emitCascade();
   }

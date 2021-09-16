@@ -8,7 +8,7 @@
   </div>
   <div class="type-row" *ngIf="grade.show">
     <span class="type">所在年级：</span>
-    <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="emitCascade()">
+    <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="switchGrade()">
       <label nz-radio-button [nzValue]="0">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of grade.data">{{ item }}</label>
     </nz-radio-group>
@@ -43,11 +43,26 @@
       </label>
     </nz-radio-group>
   </div>
-  <div class="type-row">
+  <div class="type-row" *ngIf="course.show">
+    <span class="type">课程：</span>
+    <nz-radio-group [(ngModel)]="course.value">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.code" *ngFor="let item of course.data">
+        {{ item.name }}
+      </label>
+    </nz-radio-group>
+  </div>
+  <div class="type-row" *ngIf="userSearch.show || courseUserSearch.show || courseSearch.show">
     <span class="type">其他：</span>
-    <div class="search-type">
-      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input">
+    <div>
+      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="userSearch.show">
         <input type="text" nz-input placeholder="搜索姓名或帐号" />
+      </nz-input-group>
+      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="courseUserSearch.show">
+        <input type="text" nz-input placeholder="搜索授课教师姓名或帐号" />
+      </nz-input-group>
+      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="courseSearch.show">
+        <input type="text" nz-input placeholder="搜索课程名称" />
       </nz-input-group>
       <ng-template #accountSearch>
         <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>

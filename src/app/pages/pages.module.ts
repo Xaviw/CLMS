@@ -48,6 +48,14 @@ const routes: Routes = [
           needLogin: true,
         },
       },
+      {
+        path: 'course-manage',
+        loadChildren: () => import('./course-manage/course-manage.module').then((m) => m.CourseManageModule),
+        data: {
+          title: '课程管理',
+          needLogin: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局../shared/components/modify-profile/modify-profile.module

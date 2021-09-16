@@ -27,7 +27,25 @@ export class ModifyProfileComponent implements OnInit {
   // 确认密码
   confirmPWD: string | undefined;
   // 密码修改状态
-  canEdit = false;
+  _canEdit = false;
+  get canEdit() {
+    return this._canEdit;
+  }
+  set canEdit(v) {
+    this._canEdit = v;
+    if (v) {
+      this.pwdForm.get('pwd')?.enable();
+      this.pwdForm.patchValue({
+        pwd: null,
+      });
+    } else {
+      this.pwdForm.get('pwd')?.disable();
+      this.pwdForm.patchValue({
+        pwd: '******',
+        confirmPwd: null,
+      });
+    }
+  }
   // 密码formGroup
   pwdForm!: FormGroup;
 
@@ -35,8 +53,15 @@ export class ModifyProfileComponent implements OnInit {
 
   ngOnInit() {
     this.pwdForm = this.fb.group({
-      pwd: [null, [Validators.required]],
+      name: [{ value: null, disabled: true }],
+      account: [{ value: null, disabled: true }],
+      pwd: [{ value: null, disabled: !this.canEdit }, [Validators.required]],
       confirmPwd: [null, [Validators.required, this.confirmValidator()]],
+    });
+    this.pwdForm.patchValue({
+      name: this.userInfo?.name,
+      account: this.userInfo?.account,
+      pwd: '******',
     });
   }
 

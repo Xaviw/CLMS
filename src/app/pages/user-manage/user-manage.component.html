@@ -1,5 +1,8 @@
 <div class="view_scroll padding">
-  <cascade-condition (paramsEmitter)="getConditions($event)" [showFilter]="['week']"></cascade-condition>
+  <cascade-condition
+    (paramsEmitter)="getConditions($event)"
+    [showFilter]="['grade', 'college', 'major', 'class', 'chargeClass', 'userSearch']"
+  ></cascade-condition>
   <div class="flex-between my10">
     <div>
       <button nz-button nzType="primary" class="mr5" (click)="userDrawerEl.open()" [disabled]="!param">添加用户</button>
