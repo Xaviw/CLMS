@@ -1,3 +1,4 @@
+import { CourseManageService } from './../../../pages/course-manage/course-manage.service';
 import { UserManageService } from '@pages/user-manage/user-manage.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as dayjs from 'dayjs';
@@ -17,7 +18,7 @@ interface condition {
   selector: 'cascade-condition',
   templateUrl: './cascade-condition.component.html',
   styleUrls: ['./cascade-condition.component.scss'],
-  providers: [UserManageService],
+  providers: [UserManageService, CourseManageService],
 })
 export class CascadeConditionComponent implements OnInit {
   // 参数发射器
@@ -25,17 +26,13 @@ export class CascadeConditionComponent implements OnInit {
   // 显示字段筛选
   @Input()
   set showFilter(arr: string[]) {
-    this.week.show = arr.includes('week');
-    this.grade.show = arr.includes('grade');
-    this.college.show = arr.includes('college');
-    this.major.show = arr.includes('major');
-    this.class.show = arr.includes('class');
-    this.chargeClass.show = arr.includes('chargeClass');
-    this.course.show = arr.includes('course');
-    this.userSearch.show = arr.includes('userSearch');
-    this.courseUserSearch.show = arr.includes('courseUserSearch');
-    this.courseSearch.show = arr.includes('courseSearch');
+    this.fields = arr;
+    arr.forEach((field: string) => {
+      (this as any)[field].show = true;
+    });
   }
+  // 所有字段
+  fields: any[] = [];
   // 教师还是学生
   @Input() isStudent = true;
   // 单双周
@@ -100,7 +97,11 @@ export class CascadeConditionComponent implements OnInit {
   // 添加/修改用户抽屉
   infoDrawer = {};
 
+<<<<<<< HEAD
   constructor(private userManageService: UserManageService) {}
+=======
+  constructor(private userService: UserManageService, private courseService: CourseManageService) {}
+>>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
 
   ngOnInit() {
     // 初始化当前四个年级
@@ -108,7 +109,7 @@ export class CascadeConditionComponent implements OnInit {
     for (let i = 3; i >= 0; i--) {
       this.grade.data!.push(maxGrade - i);
     }
-
+    // 获取初始信息
     if (this.college.show) this.getCollege();
     if (this.chargeClass.show) this.getChargeClass();
   }
@@ -121,12 +122,23 @@ export class CascadeConditionComponent implements OnInit {
 
   // 获取课程信息
   getCourse() {
-    
+    if (this.grade.value === 0) {
+      this.course.data = [];
+      this.course.value = 0;
+    } else {
+      this.courseService.getCoursesByGrade(this.grade.value as number).subscribe((res) => {
+        this.course.data = res as any[];
+      });
+    }
   }
 
   // 获取学院信息
   getCollege() {
+<<<<<<< HEAD
     this.userManageService.getCollege().subscribe((res) => {
+=======
+    this.userService.getCollege().subscribe((res) => {
+>>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
       this.college.data = res as any[];
     });
   }
@@ -134,7 +146,11 @@ export class CascadeConditionComponent implements OnInit {
   // 获取专业信息
   getMajor(id: string) {
     if (id !== '0') {
+<<<<<<< HEAD
       this.userManageService.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
+=======
+      this.userService.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
+>>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
         this.major.data = res as filterType[];
       });
     } else {
@@ -148,7 +164,11 @@ export class CascadeConditionComponent implements OnInit {
   // 获取班级信息
   getClass(id: string) {
     if (id !== '0') {
+<<<<<<< HEAD
       this.userManageService
+=======
+      this.userService
+>>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
         .getClass({ grade: this.grade.value as number, college_id: this.college.value as string, major_id: id })
         .subscribe((res) => {
           this.class.data = res as filterType[];
@@ -162,18 +182,20 @@ export class CascadeConditionComponent implements OnInit {
 
   // 获取教师关联班级
   getChargeClass() {
+<<<<<<< HEAD
     this.userManageService.getChargeClass().subscribe((res) => {
+=======
+    this.userService.getChargeClass().subscribe((res) => {
+>>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
       this.chargeClass.data = res as filterType[];
     });
   }
 
   emitCascade() {
-    this.paramsEmitter.emit({
-      week: this.week.value,
-      grade: this.grade.value,
-      college: this.college.value,
-      major: this.major.value,
-      class: this.class.value,
+    const param: any = {};
+    this.fields.forEach((field: string) => {
+      param[field] = (this as any)[field].value;
     });
+    this.paramsEmitter.emit(param);
   }
 }

@@ -14,5 +14,6 @@ export class CourseManageComponent implements OnInit {
   // 接收参数
   getConditions(param: any) {
     this.param = param;
+    console.log('this.param: ', this.param);
   }
 }

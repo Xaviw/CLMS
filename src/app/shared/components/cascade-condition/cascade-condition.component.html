@@ -45,7 +45,7 @@
   </div>
   <div class="type-row" *ngIf="course.show">
     <span class="type">课程：</span>
-    <nz-radio-group [(ngModel)]="course.value">
+    <nz-radio-group [(ngModel)]="course.value" (ngModelChange)="emitCascade()">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.code" *ngFor="let item of course.data">
         {{ item.name }}
