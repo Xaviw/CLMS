@@ -1,7 +1,7 @@
 import { CacheService } from './../../../core/services/cache.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
-import { userInfo } from '@app/shared/types/commonTypes';
+import { User } from '@app/shared/types/commonTypes';
 import { IndexService } from '../index.service';
 
 enum week {
@@ -16,7 +16,7 @@ enum week {
   providers: [IndexService],
 })
 export class ClassScheduleComponent implements OnInit {
-  user: userInfo = this.cache.userInfo;
+  user: User = this.cache.userInfo;
   week: week = week.single; // 单双周
   param = {
     userId: this.user?.account,

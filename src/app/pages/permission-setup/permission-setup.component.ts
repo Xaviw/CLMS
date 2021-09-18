@@ -2,8 +2,7 @@ import { CommonService } from './../../core/services/common.service';
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { PermissionSetupService } from './permission-setup.service';
 import { Component, OnInit } from '@angular/core';
-import { role, pageRoute } from '@app/shared/types/commonTypes';
-import { tap } from 'rxjs/operators';
+import { Role, PageRoute } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'app-permission-setup',
@@ -12,9 +11,9 @@ import { tap } from 'rxjs/operators';
   providers: [PermissionSetupService],
 })
 export class PermissionSetupComponent implements OnInit {
-  roles: role[] = []; // 角色数据
+  roles: Role[] = []; // 角色数据
   activeRole: NzTreeNode | undefined; // 当前选中角色
-  pages: pageRoute[] = []; // 页面数据
+  pages: PageRoute[] = []; // 页面数据
   pageFunctions = new Map(); // 页面功能数据
   expandSet = new Set<string>(); // 已展开页面列表
   // 角色操作对话框
@@ -86,20 +85,20 @@ export class PermissionSetupComponent implements OnInit {
   // 获取所有角色
   getRoles() {
     this.common.getRoles().subscribe((res) => {
-      (res as role[]).forEach((item: role) => {
+      (res as Role[]).forEach((item: Role) => {
         item.isLeaf = true;
         item.icon = 'user';
         item.pages = [];
-        item.functions = [];
+        item.actions = [];
       });
-      this.roles = res as role[];
+      this.roles = res as Role[];
     });
   }
 
   // 获取完整菜单
   getAllPages() {
     this.common.getAllPages().subscribe((res) => {
-      this.pages = res as pageRoute[];
+      this.pages = res as PageRoute[];
     });
   }
 
@@ -119,9 +118,9 @@ export class PermissionSetupComponent implements OnInit {
   }
 
   // 获取角色功能权限
-  getRolePageFunctions(origin: NzTreeNodeOptions) {
+  getRolePageActions(origin: NzTreeNodeOptions) {
     this.service.getRolePages(origin.key).subscribe((res) => {
-      origin.functions = res;
+      origin.actions = res;
       console.log('origin: ', origin);
     });
   }
@@ -131,9 +130,9 @@ export class PermissionSetupComponent implements OnInit {
     console.log('e: ', e);
     if (this.activeRole !== e.node) {
       this.activeRole = e.node!;
-      if (!e.node?.origin.pages.length || !e.node?.origin.functions.length) {
+      if (!e.node?.origin.pages.length || !e.node?.origin.actions.length) {
         this.getRolePages(this.activeRole?.origin!);
-        this.getRolePageFunctions(this.activeRole?.origin!);
+        this.getRolePageActions(this.activeRole?.origin!);
       }
     } else {
       this.activeRole = undefined;
@@ -147,7 +146,7 @@ export class PermissionSetupComponent implements OnInit {
       (err) => {
         // 修改出错，重新请求已有权限
         this.getRolePages(this.activeRole?.origin!);
-        this.getRolePageFunctions(this.activeRole?.origin!);
+        this.getRolePageActions(this.activeRole?.origin!);
       },
     );
   }
@@ -159,7 +158,7 @@ export class PermissionSetupComponent implements OnInit {
       (err) => {
         // 修改出错，重新请求已有权限
         this.getRolePages(e.node?.origin!);
-        this.getRolePageFunctions(e.node?.origin!);
+        this.getRolePageActions(e.node?.origin!);
       },
     );
   }

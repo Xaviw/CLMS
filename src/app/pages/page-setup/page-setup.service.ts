@@ -1,4 +1,4 @@
-import { pageFunction } from '@app/shared/types/commonTypes';
+import { PageAction } from '@app/shared/types/commonTypes';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -12,7 +12,7 @@ interface page {
   sort?: number;
 }
 
-interface modifyFunction extends pageFunction {
+interface modifyFunction extends PageAction {
   permission_id: string;
 }
 
@@ -45,7 +45,7 @@ export class PageSetupService {
   }
 
   // 添加功能
-  addFunction(param: pageFunction) {
+  addFunction(param: PageAction) {
     const url = '/page/addPermissions';
     return this.http.post(url, param);
   }

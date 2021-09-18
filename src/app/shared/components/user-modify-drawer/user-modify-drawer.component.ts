@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PermissionSetupService } from '@app/pages/permission-setup/permission-setup.service';
 import { UserManageService } from '@app/pages/user-manage/user-manage.service';
-import { role } from '@app/shared/types/commonTypes';
+import { Role } from '@app/shared/types/commonTypes';
 import * as dayjs from 'dayjs';
 
 @Component({
@@ -78,7 +78,7 @@ export class UserModifyDrawerComponent implements OnInit {
   // 获取所有角色
   getRoles() {
     this.commonService.getRoles().subscribe((res) => {
-      this.roles = res as role[];
+      this.roles = res as Role[];
     });
   }
 

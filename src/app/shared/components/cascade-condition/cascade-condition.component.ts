@@ -100,7 +100,7 @@ export class CascadeConditionComponent implements OnInit {
   // 添加/修改用户抽屉
   infoDrawer = {};
 
-  constructor(private service: UserManageService) {}
+  constructor(private userManageService: UserManageService) {}
 
   ngOnInit() {
     // 初始化当前四个年级
@@ -126,7 +126,7 @@ export class CascadeConditionComponent implements OnInit {
 
   // 获取学院信息
   getCollege() {
-    this.service.getCollege().subscribe((res) => {
+    this.userManageService.getCollege().subscribe((res) => {
       this.college.data = res as any[];
     });
   }
@@ -134,7 +134,7 @@ export class CascadeConditionComponent implements OnInit {
   // 获取专业信息
   getMajor(id: string) {
     if (id !== '0') {
-      this.service.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
+      this.userManageService.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
         this.major.data = res as filterType[];
       });
     } else {
@@ -148,7 +148,7 @@ export class CascadeConditionComponent implements OnInit {
   // 获取班级信息
   getClass(id: string) {
     if (id !== '0') {
-      this.service
+      this.userManageService
         .getClass({ grade: this.grade.value as number, college_id: this.college.value as string, major_id: id })
         .subscribe((res) => {
           this.class.data = res as filterType[];
@@ -162,7 +162,7 @@ export class CascadeConditionComponent implements OnInit {
 
   // 获取教师关联班级
   getChargeClass() {
-    this.service.getChargeClass().subscribe((res) => {
+    this.userManageService.getChargeClass().subscribe((res) => {
       this.chargeClass.data = res as filterType[];
     });
   }

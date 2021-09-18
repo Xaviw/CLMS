@@ -1,5 +1,3 @@
-import { Res } from '@app/shared/types/commonTypes';
-import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -28,8 +26,8 @@ export class CommonService {
     return this.http.post(url, { page_id: param });
   }
 
-  // 获取课程表
-  getClassSchedule(param: any) {
+  // 获取个人课程表
+  getOwnClassSchedule(param: any) {
     const url = '/courseSchedule';
     return this.http.post(url, param);
   }

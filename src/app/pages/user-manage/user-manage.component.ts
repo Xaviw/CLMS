@@ -1,7 +1,7 @@
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
 import { UserManageService } from './user-manage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { user, role } from '@app/shared/types/commonTypes';
+import { User, Role } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
 
 @Component({
@@ -18,12 +18,12 @@ export class UserManageComponent implements OnInit {
   checked = false; // 全选状态
   loading = false;
   indeterminate = false; // 半选状态
-  listOfData: user[] = [];
+  listOfData: User[] = [];
   setOfCheckedId = new Set<string>(); // 已选中集合
   param: any;
   // 权限Modal
   roleModal = {
-    roles: <role[]>[],
+    roles: <Role[]>[],
     value: null,
     visible: false,
     loading: false,
@@ -67,7 +67,7 @@ export class UserManageComponent implements OnInit {
   // 获取所有角色
   getRoles() {
     this.commonService.getRoles().subscribe((res) => {
-      this.roleModal.roles = res as role[];
+      this.roleModal.roles = res as Role[];
     });
   }
 

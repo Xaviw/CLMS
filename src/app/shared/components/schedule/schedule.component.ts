@@ -24,7 +24,7 @@ export class ScheduleComponent implements OnInit {
   }
   set param(v) {
     this._param = v;
-    this.getClassSchedule();
+    this.getOwnClassSchedule();
   }
   schedule: Array<schedule[]> = []; // 课程表
 
@@ -33,8 +33,8 @@ export class ScheduleComponent implements OnInit {
   ngOnInit() {}
 
   // 获取课表
-  getClassSchedule() {
-    return this.common.getClassSchedule(this.param).subscribe((res) => {
+  getOwnClassSchedule() {
+    return this.common.getOwnClassSchedule(this.param).subscribe((res) => {
       this.schedule = res as Array<schedule[]>;
     });
   }

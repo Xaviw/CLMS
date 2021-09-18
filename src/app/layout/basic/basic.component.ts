@@ -7,7 +7,7 @@ import { LayoutService } from './../layout.service';
 import { environment } from './../../../environments/environment.mock';
 import { CommonService } from '../../core/services/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { pageRoute, userInfo } from '@app/shared/types/commonTypes';
+import { PageRoute, User } from '@app/shared/types/commonTypes';
 import { _session } from '@app/shared/utils/Storage';
 
 @Component({
@@ -19,8 +19,8 @@ import { _session } from '@app/shared/utils/Storage';
 export class LayoutBasicComponent implements OnInit {
   @ViewChild('ProfileEl') ProfileEl!: ModifyProfileComponent;
   avatarPath = environment.avatarPath;
-  menus: pageRoute[] = [];
-  userInfo: userInfo | undefined;
+  menus: PageRoute[] = [];
+  userInfo: User | undefined;
   constructor(
     private commonService: CommonService,
     private service: LayoutService,

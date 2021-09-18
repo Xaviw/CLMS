@@ -3,7 +3,7 @@ import { CommonService } from './../../core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { PageSetupService } from './page-setup.service';
-import { pageRoute, pageFunction } from '@app/shared/types/commonTypes';
+import { PageRoute, PageAction } from '@app/shared/types/commonTypes';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -16,8 +16,8 @@ import { BooleanInput } from 'ng-zorro-antd/core/types';
 })
 export class PageSetupComponent implements OnInit {
   @ViewChild('pageTree') pageTreeEl!: NzTreeNodeOptions;
-  pages: pageRoute[] = []; // 完整页面数据
-  pageFunctions: pageFunction[] = []; // 页面功能数据
+  pages: PageRoute[] = []; // 完整页面数据
+  pageFunctions: PageAction[] = []; // 页面功能数据
   // 添加页面表单Control
   pageAddForm: FormGroup = this.fb.group({
     parent_page_id: [null],
@@ -118,7 +118,7 @@ export class PageSetupComponent implements OnInit {
       this.addFunctionDrawer.visible = true;
     },
     // 修改
-    update: (item: pageFunction) => {
+    update: (item: PageAction) => {
       this.addFunctionDrawer.functionId = item.id;
       this.functionAddForm.reset();
       this.addFunctionDrawer.visible = true;
@@ -166,7 +166,7 @@ export class PageSetupComponent implements OnInit {
   // 获取完整菜单
   getAllPages() {
     this.common.getAllPages().subscribe((res) => {
-      this.pages = res as pageRoute[];
+      this.pages = res as PageRoute[];
     });
   }
 
@@ -208,7 +208,7 @@ export class PageSetupComponent implements OnInit {
   // 获取页面下功能
   getPageFunction(id: string) {
     this.common.getPageFunctions(id).subscribe((res) => {
-      this.pageFunctions = res as pageFunction[];
+      this.pageFunctions = res as PageAction[];
     });
   }
 

@@ -1,8 +1,8 @@
 import { _local, _session } from '@app/shared/utils/Storage';
-import { formControls } from '@app/shared/types/commonTypes';
+import { FormControls } from '@app/shared/types/commonTypes';
 
 // 校验表单
-export function validateForm(form: formControls): void {
+export function validateForm(form: FormControls): void {
   for (const i in form) {
     if (form.hasOwnProperty(i)) {
       form[i].markAsDirty();

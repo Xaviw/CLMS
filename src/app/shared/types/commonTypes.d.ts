@@ -8,33 +8,27 @@ declare interface Res {
 }
 
 // FormControl
-declare interface formControls {
+declare interface FormControls {
   [propName: string]: AbstractControl;
 }
 
 // 路由表类型
-declare interface pageRoute {
+declare interface PageRoute {
   link?: string;
   title: string;
   key: string;
   leaf: boolean;
   icon?: string;
   function?: string[];
-  children?: pageRoute[];
+  children?: PageRoute[];
   level: number;
 }
 
-// 全局用户信息类型
-declare interface userInfo {
+// 用户
+declare interface User {
   account: string;
   name: string;
   avatar?: string;
-}
-
-// 用户
-declare interface user {
-  account: string;
-  name: string;
   gender?: string;
   college?: string;
   college_id?: string;
@@ -50,7 +44,7 @@ declare interface user {
 }
 
 // 页面功能类型
-declare interface pageFunction {
+declare interface PageAction {
   code: string;
   name: string;
   id: string;
@@ -58,13 +52,13 @@ declare interface pageFunction {
 }
 
 // 角色类型
-declare interface role {
+declare interface Role {
   title: string;
   key: string;
   isLeaf?: boolean;
   icon?: string;
   pages?: string[];
-  functions?: string[];
+  actions?: string[];
 }
 
 declare interface statistic {
