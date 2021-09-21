@@ -52,21 +52,65 @@
       </label>
     </nz-radio-group>
   </div>
+  <div class="type-row" *ngIf="myCourse.show">
+    <span class="type">我的课程：</span>
+    <nz-radio-group [(ngModel)]="myCourse.value" (ngModelChange)="onLocationCourse()">
+      <label nz-radio-button nzValue="0">全部</label>
+      <label nz-radio-button [nzValue]="item.id" *ngFor="let item of myCourse.data">
+        {{ item.name }}
+      </label>
+    </nz-radio-group>
+  </div>
   <div class="type-row" *ngIf="userSearch.show || courseUserSearch.show || courseSearch.show">
     <span class="type">其他：</span>
     <div>
-      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="userSearch.show">
-        <input type="text" nz-input placeholder="搜索姓名或帐号" />
+      <nz-input-group nzSearch [nzAddOnAfter]="userSearchButton" class="search-input" *ngIf="userSearch.show">
+        <input
+          type="text"
+          nz-input
+          placeholder="搜索姓名或帐号"
+          [(ngModel)]="userSearch.value"
+          (keyup)="$event.which === 13 ? onSearchUser() : null"
+        />
+        <ng-template #userSearchButton>
+          <button nz-button nzType="primary" nzSearch (click)="onSearchUser()">
+            <i nz-icon nzType="search"></i>
+          </button>
+        </ng-template>
       </nz-input-group>
-      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="courseUserSearch.show">
-        <input type="text" nz-input placeholder="搜索授课教师姓名或帐号" />
+      <nz-input-group
+        nzSearch
+        [nzAddOnAfter]="courseUserSearchButton"
+        class="search-input"
+        *ngIf="courseUserSearch.show"
+      >
+        <input
+          type="text"
+          nz-input
+          placeholder="搜索授课教师姓名或帐号"
+          [(ngModel)]="courseUserSearch.value"
+          (keyup)="$event.which === 13 ? onSearchCourseTeacher() : null"
+        />
+        <ng-template #courseUserSearchButton>
+          <button nz-button nzType="primary" nzSearch (click)="onSearchCourseTeacher()">
+            <i nz-icon nzType="search"></i>
+          </button>
+        </ng-template>
       </nz-input-group>
-      <nz-input-group nzSearch [nzAddOnAfter]="accountSearch" class="search-input" *ngIf="courseSearch.show">
-        <input type="text" nz-input placeholder="搜索课程名称" />
+      <nz-input-group nzSearch [nzAddOnAfter]="courseSearchButton" class="search-input" *ngIf="courseSearch.show">
+        <input
+          type="text"
+          nz-input
+          placeholder="搜索课程名称"
+          [(ngModel)]="courseSearch.value"
+          (keyup)="$event.which === 13 ? onSearchCourse() : null"
+        />
+        <ng-template #courseSearchButton>
+          <button nz-button nzType="primary" nzSearch (click)="onSearchCourse()">
+            <i nz-icon nzType="search"></i>
+          </button>
+        </ng-template>
       </nz-input-group>
-      <ng-template #accountSearch>
-        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
-      </ng-template>
     </div>
   </div>
 </div>

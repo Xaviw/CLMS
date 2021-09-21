@@ -85,7 +85,6 @@ export class UserManageComponent implements OnInit {
     } else {
       this.setOfCheckedId.delete(id);
     }
-    console.log(this.setOfCheckedId.keys());
   }
 
   // 刷新全/半选状态

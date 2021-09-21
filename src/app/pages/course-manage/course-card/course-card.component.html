@@ -1,0 +1,38 @@
+<nz-card
+  style="width: 100%"
+  [nzTitle]="data?.courseName"
+  [nzExtra]="extraTemplate"
+  [nzActions]="[viewDetail, delete]"
+  [nzBodyStyle]="{ padding: '10px 24px' }"
+  nzHoverable
+>
+  <div class="flex-between" style="line-height: 2.3">
+    <span style="font-size: medium">{{ data?.teacherName }}</span>
+    <span>共 {{ data?.count }} 节</span>
+  </div>
+  <div class="flex-between">
+    <span nz-typography nzEllipsis>{{ data.isCompulsory ? data?.classes : data?.description }}</span>
+    <span style="flex-shrink: 0; margin-left: 10px">第{{ data?.startWeek }}-{{ data?.endWeek }}周</span>
+  </div>
+</nz-card>
+<ng-template #extraTemplate>
+  <nz-tag nzColor="blue" *ngIf="data?.isCompulsory">必修</nz-tag>
+  <nz-tag nzColor="green" *ngIf="!data?.isCompulsory">选修</nz-tag>
+</ng-template>
+<ng-template #viewDetail>
+  <button nz-button nzType="link" nzSize="small" [routerLink]="['/course-manage', data.courseId]">查看详细</button>
+</ng-template>
+<ng-template #delete>
+  <button
+    nz-button
+    nzType="link"
+    nzDanger
+    nzSize="small"
+    nz-popconfirm
+    nzPopconfirmTitle="确认删除该课程?"
+    (nzOnConfirm)="deleteCourse()"
+    nzPopconfirmPlacement="bottom"
+  >
+    删除课程
+  </button>
+</ng-template>

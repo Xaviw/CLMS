@@ -1,0 +1,83 @@
+<nz-page-header class="site-page-header">
+  <nz-page-header-title>数据结构与算法</nz-page-header-title>
+  <nz-page-header-subtitle>必修</nz-page-header-subtitle>
+  <nz-page-header-extra>
+    <button nz-button nzType="primary">编辑</button>
+    <button nz-button nzDanger nzType="primary">删除</button>
+  </nz-page-header-extra>
+  <nz-page-header-content>
+    <div class="content">
+      <div class="main">
+        <nz-descriptions nzSize="small" [nzColumn]="2">
+          <nz-descriptions-item nzTitle="教师" [nzSpan]="1">谢科</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">第 1-20 周</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="班级" [nzSpan]="1">计科一班</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">暂无描述...</nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+      <div class="extra">
+        <div>
+          <nz-statistic nzTitle="总节次" [nzValue]="40"></nz-statistic>
+          <nz-statistic nzTitle="学生人数" [nzValue]="58" style="margin: 0 32px"></nz-statistic>
+        </div>
+      </div>
+    </div>
+  </nz-page-header-content>
+  <nz-page-header-footer>
+    <nz-tabset [nzSelectedIndex]="0">
+      <nz-tab nzTitle="学生列表">
+        <ng-template [ngTemplateOutlet]="studentListEl"></ng-template>
+      </nz-tab>
+      <nz-tab nzTitle="课程表">
+        <ng-template [ngTemplateOutlet]="courseScheduleEl"></ng-template>
+      </nz-tab>
+    </nz-tabset>
+  </nz-page-header-footer>
+</nz-page-header>
+
+<ng-template #studentListEl>
+  <div class="flex-between my10">
+    <span>
+      <button nz-button nzType="primary">添加学生</button>
+      <button nz-button nzType="primary" style="margin-left: 10px">导入学生</button>
+    </span>
+    <span>
+      <button nz-button nzDanger nzType="primary">删除学生</button>
+    </span>
+  </div>
+  <div class="view_scroll">
+    <nz-table #userTable nzSize="small" nzBordered [nzData]="studentList">
+      <thead>
+        <tr>
+          <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+          <th>学号</th>
+          <th>姓名</th>
+          <th>性别</th>
+          <th>学院</th>
+          <th>专业</th>
+          <th>班级</th>
+          <th>班主任</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of userTable.data">
+          <td
+            [nzChecked]="setOfCheckedId.has(data.account)"
+            (nzCheckedChange)="onItemChecked(data.account, $event)"
+          ></td>
+          <td>{{ data.account }}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.gender }}</td>
+          <td>{{ data.college }}</td>
+          <td>{{ data.major }}</td>
+          <td>{{ data.class }}</td>
+          <td>{{ data.chargeTeacher }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</ng-template>
+
+<ng-template #courseScheduleEl>
+  <h1>课程表</h1>
+</ng-template>

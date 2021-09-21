@@ -11,4 +11,22 @@ export class CourseManageService {
     const url = '/grade/course';
     return this.http.post(url, { grade });
   }
+
+  // 获取我的课程
+  getMyCourse() {
+    const url = '/course/mine';
+    return this.http.get(url);
+  }
+
+  // 级联参数查询课程卡片
+  getCourseCardByCascade(param: { year: number; courseCode: string }) {
+    const url = '/course';
+    return this.http.post(url, param);
+  }
+
+  // 删除课程
+  deleteCourse(param: { courseId: string }) {
+    const url = '';
+    return this.http.post(url, param);
+  }
 }

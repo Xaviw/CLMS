@@ -56,6 +56,15 @@ const routes: Routes = [
           needLogin: true,
         },
       },
+      {
+        path: 'course-manage/:id',
+        loadChildren: () => import('./course-detail/course-detail.module').then((m) => m.CourseDetailModule),
+        data: {
+          title: '课程详细',
+          needLogin: true,
+          skipPermission: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局../shared/components/modify-profile/modify-profile.module
@@ -74,7 +83,7 @@ const routes: Routes = [
       },
     ],
   },
-  { path: '**', redirectTo: '/index' },
+  // { path: '**', redirectTo: '/index' },
 ];
 
 @NgModule({

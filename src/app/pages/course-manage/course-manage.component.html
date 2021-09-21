@@ -1,6 +1,24 @@
-<div class="view_scroll padding">
+<div class="view_scroll padding-y padding20-x">
   <cascade-condition
-    (paramsEmitter)="getConditions($event)"
-    [showFilter]="['grade', 'course', 'courseUserSearch', 'courseSearch']"
+    (cascadeEmitter)="getConditions($event)"
+    (searchCourseTeacher)="queryCourseByTeacher($event)"
+    (searchCourse)="queryCourse($event)"
+    (locationCourse)="locationCourse($event)"
+    [showFilter]="['grade', 'course', 'courseUserSearch', 'myCourse', 'courseSearch']"
   ></cascade-condition>
+  <div class="my10">
+    <button nz-button nzType="primary">添加课程</button>
+  </div>
+  <div class="card-area" empty [emptyData]="courseCardData" emptyInfo="暂无课程...">
+    <course-card class="card" *ngFor="let item of courseCardData" [data]="item"></course-card>
+    <!-- 占位空标签，用于flex对齐 -->
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
 </div>
+
+<!-- 添加课程抽屉 -->

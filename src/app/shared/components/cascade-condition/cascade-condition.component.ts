@@ -12,6 +12,7 @@ interface condition {
   value: string | number | null;
   data?: any[];
   show: boolean;
+  isQuery?: boolean;
 }
 
 @Component({
@@ -21,8 +22,18 @@ interface condition {
   providers: [UserManageService, CourseManageService],
 })
 export class CascadeConditionComponent implements OnInit {
-  // 参数发射器
-  @Output() paramsEmitter: EventEmitter<any> = new EventEmitter();
+  // 级联参数发射器
+  @Output() cascadeEmitter: EventEmitter<any> = new EventEmitter();
+  // 搜索用户事件
+  @Output() searchUser: EventEmitter<any> = new EventEmitter();
+  // 搜索授课教师事件
+  @Output() searchCourseTeacher: EventEmitter<any> = new EventEmitter();
+  // 搜索课程事件
+  @Output() searchCourse: EventEmitter<any> = new EventEmitter();
+  // 定位自己班级事件
+  @Output() locationClass: EventEmitter<any> = new EventEmitter();
+  // 定位自己课程事件
+  @Output() locationCourse: EventEmitter<any> = new EventEmitter();
   // 显示字段筛选
   @Input()
   set showFilter(arr: string[]) {
@@ -69,6 +80,7 @@ export class CascadeConditionComponent implements OnInit {
     value: null,
     data: [],
     show: false,
+    isQuery: true,
   };
   // 课程
   course: condition = {
@@ -76,32 +88,38 @@ export class CascadeConditionComponent implements OnInit {
     data: [],
     show: false,
   };
+  // 我的课程
+  myCourse: condition = {
+    value: '0',
+    data: [],
+    show: false,
+    isQuery: true,
+  };
   // 用户管理搜索用户
   userSearch: condition = {
     value: null,
     data: [],
     show: false,
+    isQuery: true,
   };
   // 课程管理搜索教师
   courseUserSearch: condition = {
     value: null,
     data: [],
     show: false,
+    isQuery: true,
   };
   // 课程管理搜索课程
   courseSearch: condition = {
     value: null,
     data: [],
     show: false,
+    isQuery: true,
   };
   // 添加/修改用户抽屉
   infoDrawer = {};
 
-<<<<<<< HEAD
-  constructor(private userManageService: UserManageService) {}
-=======
   constructor(private userService: UserManageService, private courseService: CourseManageService) {}
->>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
 
   ngOnInit() {
     // 初始化当前四个年级
@@ -112,6 +130,23 @@ export class CascadeConditionComponent implements OnInit {
     // 获取初始信息
     if (this.college.show) this.getCollege();
     if (this.chargeClass.show) this.getChargeClass();
+    if (this.myCourse.show) this.getMyCourse();
+  }
+
+  onSearchUser() {
+    this.searchUser.emit(this.userSearch.value);
+  }
+  onSearchCourseTeacher() {
+    this.searchCourseTeacher.emit(this.courseUserSearch.value);
+  }
+  onSearchCourse() {
+    this.searchCourse.emit(this.courseSearch.value);
+  }
+  onLocationClass() {
+    this.locationClass.emit(this.chargeClass.value);
+  }
+  onLocationCourse() {
+    this.locationCourse.emit(this.myCourse.value);
   }
 
   // 切换年级加载课程信息
@@ -132,13 +167,16 @@ export class CascadeConditionComponent implements OnInit {
     }
   }
 
+  // 获取我的课程
+  getMyCourse() {
+    this.courseService.getMyCourse().subscribe((res) => {
+      this.myCourse.data = res as any[];
+    });
+  }
+
   // 获取学院信息
   getCollege() {
-<<<<<<< HEAD
-    this.userManageService.getCollege().subscribe((res) => {
-=======
     this.userService.getCollege().subscribe((res) => {
->>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
       this.college.data = res as any[];
     });
   }
@@ -146,11 +184,7 @@ export class CascadeConditionComponent implements OnInit {
   // 获取专业信息
   getMajor(id: string) {
     if (id !== '0') {
-<<<<<<< HEAD
-      this.userManageService.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
-=======
       this.userService.getMajor({ grade: this.grade.value as number, college_id: id }).subscribe((res) => {
->>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
         this.major.data = res as filterType[];
       });
     } else {
@@ -164,11 +198,7 @@ export class CascadeConditionComponent implements OnInit {
   // 获取班级信息
   getClass(id: string) {
     if (id !== '0') {
-<<<<<<< HEAD
-      this.userManageService
-=======
       this.userService
->>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
         .getClass({ grade: this.grade.value as number, college_id: this.college.value as string, major_id: id })
         .subscribe((res) => {
           this.class.data = res as filterType[];
@@ -182,20 +212,21 @@ export class CascadeConditionComponent implements OnInit {
 
   // 获取教师关联班级
   getChargeClass() {
-<<<<<<< HEAD
-    this.userManageService.getChargeClass().subscribe((res) => {
-=======
     this.userService.getChargeClass().subscribe((res) => {
->>>>>>> 919b5f7654dbc7ee9e79e3e68c7de2fa32a6fde3
       this.chargeClass.data = res as filterType[];
     });
   }
 
   emitCascade() {
     const param: any = {};
+    // 遍历显示字段
     this.fields.forEach((field: string) => {
-      param[field] = (this as any)[field].value;
+      let condition = (this as any)[field];
+      // 发出非查询字段
+      if (!condition?.isQuery) {
+        param[field] = condition.value;
+      }
     });
-    this.paramsEmitter.emit(param);
+    this.cascadeEmitter.emit(param);
   }
 }

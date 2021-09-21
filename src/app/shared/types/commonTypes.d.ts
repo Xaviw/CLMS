@@ -81,3 +81,17 @@ declare interface pagination {
   start: number;
   count: number;
 }
+
+// 课程卡片
+declare interface CourseCard {
+  courseId: string;
+  courseName: string;
+  teacherId: string;
+  teacherName: string;
+  isCompulsory?: boolean;
+  classes?: string;
+  description?: string;
+  count: number;
+  startWeek?: number;
+  endWeek?: number;
+}
