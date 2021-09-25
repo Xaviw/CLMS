@@ -1,5 +1,6 @@
 import { User } from '@app/shared/types/commonTypes';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course-detail',
@@ -11,10 +12,24 @@ export class CourseDetailComponent implements OnInit {
   checked: boolean = false;
   indeterminate: boolean = false;
   setOfCheckedId = new Set<string>(); // 已选中集合
+  // 课表参数
+  params = {
+    courseId: null,
+    week: 0, // 单双周
+  };
+  editable = false; // 启用编辑
 
-  constructor() {}
+  constructor(private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRoute.params.subscribe((res) => {
+      this.params.courseId = res.id;
+    });
+  }
+
+  switchWeek() {
+    this.params = { ...this.params };
+  }
 
   onAllChecked(checked: boolean): void {
     this.studentList.forEach(({ account }) => this.updateCheckedSet(account, checked));

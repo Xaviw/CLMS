@@ -12,17 +12,38 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of scheduleTable.data; let i = index">
-      <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
-      <td nzAlign="center" *ngFor="let class of item">
-        <ng-container *ngIf="class">
-          <div class="course">
-            <span>{{ class.courseName }}</span>
-            <span>{{ class.labName }}</span>
-            <span>{{ class.teacherName }}</span>
-          </div>
-        </ng-container>
-      </td>
-    </tr>
+    <ng-container *ngIf="!editable">
+      <tr *ngFor="let item of scheduleTable.data; let i = index">
+        <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
+        <td nzAlign="center" *ngFor="let class of item">
+          <ng-container *ngIf="class && !singleCourse">
+            <div class="course">
+              <span>{{ class.courseName }}</span>
+              <span>{{ class.labName }}</span>
+              <span>{{ class.teacherName }}</span>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="class && singleCourse">
+            <i nz-icon nzType="check-circle" nzTheme="outline" class="flex-center check"></i>
+          </ng-container>
+        </td>
+      </tr>
+    </ng-container>
+    <ng-container *ngIf="editable">
+      <tr *ngFor="let item of editList; let i = index">
+        <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
+        <td nzAlign="center" *ngFor="let class of item; let j = index">
+          <i
+            nz-icon
+            nzType="check-circle"
+            nzTheme="twotone"
+            class="flex-center check"
+            [ngStyle]="{ opacity: class ? 1 : 0 }"
+            nz-checkbox
+            [(ngModel)]="editList[i][j]"
+          ></i>
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </nz-table>

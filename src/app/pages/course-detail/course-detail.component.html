@@ -42,6 +42,15 @@
       <button nz-button nzType="primary" style="margin-left: 10px">导入学生</button>
     </span>
     <span>
+      <i
+        nz-icon
+        nzType="info-circle"
+        nzTheme="twotone"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        nzTooltipTitle="多选用户以执行批量操作"
+        class="mr5"
+      ></i>
       <button nz-button nzDanger nzType="primary">删除学生</button>
     </span>
   </div>
@@ -79,5 +88,27 @@
 </ng-template>
 
 <ng-template #courseScheduleEl>
-  <h1>课程表</h1>
+  <div class="flex-between my10">
+    <span>
+      <nz-radio-group [(ngModel)]="params.week" (ngModelChange)="switchWeek()">
+        <label nz-radio-button [nzValue]="0">单周</label>
+        <label nz-radio-button [nzValue]="1">双周</label>
+      </nz-radio-group>
+    </span>
+    <span>
+      <i
+        nz-icon
+        nzType="info-circle"
+        nzTheme="twotone"
+        nz-tooltip
+        nzTooltipPlacement="bottom"
+        nzTooltipTitle="点击课表以 选中/取消选中 该节次"
+        class="mr5"
+        *ngIf="editable"
+      ></i>
+      <button nz-button (click)="editable = !editable" *ngIf="editable" class="mr5">取消</button>
+      <button nz-button nzType="primary" (click)="editable = !editable">{{ editable ? '保存编辑' : '编辑' }}</button>
+    </span>
+  </div>
+  <schedule [param]="params" [editable]="editable"></schedule>
 </ng-template>
