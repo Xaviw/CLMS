@@ -10,6 +10,18 @@
   height: 50px;
 }
 
+.edit-check {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    bottom: -12px;
+    left: -8px;
+  }
+}
+
 :host ::ng-deep {
   .ant-checkbox {
     display: none;
