@@ -1,3 +1,4 @@
+import { AddCourseComponent } from './components/add-course/add-course.component';
 import { ModifyProfileComponent } from '@shared/components/modify-profile/modify-profile.component';
 import { UserModifyDrawerComponent } from './components/user-modify-drawer/user-modify-drawer.component';
 import { CascadeConditionComponent } from './components/cascade-condition/cascade-condition.component';
@@ -17,6 +18,7 @@ const COMPONENTS: Array<Type<any>> = [
   CascadeConditionComponent,
   UserModifyDrawerComponent,
   ModifyProfileComponent,
+  AddCourseComponent,
 ];
 const DIRECTIVES: Array<Type<any>> = [EmptyDirective];
 const PIPES: Array<Type<any>> = [FromNowPipe];

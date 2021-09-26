@@ -7,7 +7,7 @@
     [showFilter]="['grade', 'course', 'courseUserSearch', 'myCourse', 'courseSearch']"
   ></cascade-condition>
   <div class="my10">
-    <button nz-button nzType="primary" (click)="addCourseDrawer.open()">添加课程</button>
+    <button nz-button nzType="primary" (click)="addCourseEl.open()">添加课程</button>
   </div>
   <div class="card-area" empty [emptyData]="courseCardData" emptyInfo="暂无课程...">
     <course-card class="card" *ngFor="let item of courseCardData" [data]="item"></course-card>
@@ -21,73 +21,4 @@
   </div>
 </div>
 
-<!-- 添加课程抽屉 -->
-<nz-drawer
-  [nzClosable]="false"
-  [nzVisible]="addCourseDrawer.visible"
-  nzPlacement="right"
-  nzTitle="添加课程"
-  (nzOnClose)="addCourseDrawer.close()"
->
-  <ng-container *nzDrawerContent>
-    <form nz-form [formGroup]="addCourseDrawer.validateForm" nzLayout="vertical">
-      <nz-form-item>
-        <nz-form-label nzFor="name" nzRequired>课程名称：</nz-form-label>
-        <nz-form-control nzErrorTip="课程名称不能为空！">
-          <input nz-input formControlName="name" id="name" placeholder="请输入课程名称" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="teacher" nzRequired>教师：</nz-form-label>
-        <nz-form-control nzErrorTip="教师：不能为空！">
-          <nz-select
-            #teacherSearchEl
-            nzAllowClear
-            nzShowSearch
-            nzServerSearch
-            formControlName="teacher"
-            (nzOpenChange)="addCourseDrawer.selectOpen($event)"
-            (nzOnSearch)="addCourseDrawer.selectSearch($event)"
-            (ngModelChange)="addCourseDrawer.selectChange($event)"
-            (compositionstart)="addCourseDrawer.flag = false"
-            (compositionend)="addCourseDrawer.flag = true"
-            (keyup)="addCourseDrawer.keyUp($event)"
-          >
-            <ng-container *ngFor="let item of addCourseDrawer.teacherList">
-              <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
-            </ng-container>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="isRequired" nzRequired>是否必修：</nz-form-label>
-        <nz-form-control>
-          <nz-switch
-            formControlName="isRequired"
-            nzCheckedChildren="是"
-            nzUnCheckedChildren="否"
-            (ngModelChange)="addCourseDrawer.requiredChange($event)"
-          ></nz-switch>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item *ngIf="addCourseDrawer.validateForm.get('isRequired')?.value">
-        <nz-form-label nzFor="class" nzRequired>班级：</nz-form-label>
-        <nz-form-control nzErrorTip="班级不能为空！">
-          <input nz-input formControlName="class" id="class" placeholder="请选择班级" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="weekRange" nzRequired>周次范围：</nz-form-label>
-        <nz-form-control nzErrorTip="周次范围不能为空！">
-          <input nz-input formControlName="weekRange" id="weekRange" placeholder="请输入周次范围" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="description">课程描述：</nz-form-label>
-        <nz-form-control>
-          <textarea nz-input formControlName="description" id="description" placeholder="请输入课程描述"></textarea>
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-</nz-drawer>
+<add-course #addCourseEl></add-course>

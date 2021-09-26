@@ -1,0 +1,105 @@
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  nzPlacement="right"
+  [nzFooter]="footerTpl"
+  nzTitle="添加课程"
+  (nzOnClose)="close()"
+>
+  <ng-container *nzDrawerContent>
+    <form nz-form [formGroup]="validateForm" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzFor="name" nzRequired>课程名称：</nz-form-label>
+        <nz-form-control nzErrorTip="课程名称不能为空！">
+          <input nz-input formControlName="name" id="name" placeholder="请输入课程名称" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="teacher" nzRequired>教师：</nz-form-label>
+        <nz-form-control nzErrorTip="教师：不能为空！">
+          <nz-select
+            #teacherSearchEl
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="teacher"
+            (nzOpenChange)="selectOpen($event)"
+            (ngModelChange)="selectChange($event)"
+            (compositionstart)="flag = false"
+            (compositionend)="flag = true"
+            (keyup)="selectSearch($event)"
+          >
+            <ng-container *ngFor="let item of teacherList">
+              <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="isRequired" nzRequired>是否必修：</nz-form-label>
+        <nz-form-control>
+          <nz-switch
+            formControlName="isRequired"
+            nzCheckedChildren="是"
+            nzUnCheckedChildren="否"
+            (ngModelChange)="requiredChange($event)"
+          ></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="validateForm.get('isRequired')?.value">
+        <nz-form-label nzFor="class" nzRequired>班级：</nz-form-label>
+        <nz-form-control nzErrorTip="班级不能为空！">
+          <nz-select
+            nzMode="multiple"
+            [nzDropdownStyle]="{ display: 'none' }"
+            nzPlaceHolder="选择班级"
+            formControlName="class"
+            (click)="class.visible = true"
+          >
+          </nz-select>
+          <!-- [(ngModel)]="class.list" -->
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="weekRange" nzRequired>周次范围：</nz-form-label>
+        <nz-form-control nzErrorTip="周次范围不能为空！">
+          <input nz-input formControlName="weekRange" id="weekRange" placeholder="请输入周次范围" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="description">课程描述：</nz-form-label>
+        <nz-form-control>
+          <textarea nz-input formControlName="description" id="description" placeholder="请输入课程描述"></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button style="margin-right: 8px" (click)="cancel()">取消</button>
+      <button nz-button nzType="primary" (click)="handleOk()">{{ operationText }}</button>
+    </div>
+  </ng-template>
+</nz-drawer>
+
+<!-- 班级选择Modal -->
+<nz-modal
+  [(nzVisible)]="class.visible"
+  nzWidth="520"
+  nzTitle="选择班级"
+  (nzOnCancel)="class.cancel()"
+  (nzOnOk)="class.handleOk()"
+>
+  <ng-container *nzModalContent>
+    <cascade-condition
+      (cascadeEmitter)="class.getConditions($event)"
+      [showFilter]="['grade', 'college', 'major', 'class', 'chargeClass']"
+    ></cascade-condition>
+    <div class="my10">
+      <span style="font-weight: bold">已选班级：</span>
+      <nz-tag *ngFor="let tag of class.list" nzMode="closeable" (nzOnClose)="class.tagClose(tag.id)">{{
+        tag.name
+      }}</nz-tag>
+    </div>
+  </ng-container>
+</nz-modal>
