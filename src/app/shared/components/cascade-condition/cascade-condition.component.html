@@ -8,35 +8,35 @@
   </div>
   <div class="type-row" *ngIf="grade.show">
     <span class="type">所在年级：</span>
-    <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="switchGrade()">
+    <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="emitCascade('grade', $event)">
       <label nz-radio-button [nzValue]="0">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of grade.data">{{ item }}</label>
     </nz-radio-group>
   </div>
   <div class="type-row" *ngIf="college.show">
     <span class="type">所在学院：</span>
-    <nz-radio-group [(ngModel)]="college.value" (ngModelChange)="getMajor($event)">
+    <nz-radio-group [(ngModel)]="college.value" (ngModelChange)="emitCascade('college', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of college.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
   <div class="type-row" *ngIf="major.show">
     <span class="type">所在专业：</span>
-    <nz-radio-group [(ngModel)]="major.value" (ngModelChange)="getClass($event)">
+    <nz-radio-group [(ngModel)]="major.value" (ngModelChange)="emitCascade('major', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of major.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
   <div class="type-row" *ngIf="class.show">
     <span class="type">所在班级：</span>
-    <nz-radio-group [(ngModel)]="class.value" (ngModelChange)="emitCascade()">
+    <nz-radio-group [(ngModel)]="class.value" (ngModelChange)="emitCascade('class', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of class.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
   <div class="type-row" *ngIf="chargeClass.show">
     <span class="type">我的班级：</span>
-    <nz-radio-group [(ngModel)]="chargeClass.value">
+    <nz-radio-group [(ngModel)]="chargeClass.value" (ngModelChange)="emitCascade('chargeClass', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.class_id" *ngFor="let item of chargeClass.data">
         {{ item.class_name }}
@@ -45,7 +45,7 @@
   </div>
   <div class="type-row" *ngIf="course.show">
     <span class="type">课程：</span>
-    <nz-radio-group [(ngModel)]="course.value" (ngModelChange)="emitCascade()">
+    <nz-radio-group [(ngModel)]="course.value" (ngModelChange)="emitCascade('course', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.code" *ngFor="let item of course.data">
         {{ item.name }}
@@ -54,7 +54,7 @@
   </div>
   <div class="type-row" *ngIf="myCourse.show">
     <span class="type">我的课程：</span>
-    <nz-radio-group [(ngModel)]="myCourse.value" (ngModelChange)="onLocationCourse()">
+    <nz-radio-group [(ngModel)]="myCourse.value" (ngModelChange)="emitCascade('myCourse', $event)">
       <label nz-radio-button nzValue="0">全部</label>
       <label nz-radio-button [nzValue]="item.id" *ngFor="let item of myCourse.data">
         {{ item.name }}
@@ -70,10 +70,10 @@
           nz-input
           placeholder="搜索姓名或帐号"
           [(ngModel)]="userSearch.value"
-          (keyup)="$event.which === 13 ? onSearchUser() : null"
+          (keyup)="$event.which === 13 ? emitCascade('userSearch') : null"
         />
         <ng-template #userSearchButton>
-          <button nz-button nzType="primary" nzSearch (click)="onSearchUser()">
+          <button nz-button nzType="primary" nzSearch (click)="emitCascade('userSearch')">
             <i nz-icon nzType="search"></i>
           </button>
         </ng-template>
@@ -89,10 +89,10 @@
           nz-input
           placeholder="搜索授课教师姓名或帐号"
           [(ngModel)]="courseUserSearch.value"
-          (keyup)="$event.which === 13 ? onSearchCourseTeacher() : null"
+          (keyup)="$event.which === 13 ? emitCascade('courseUserSearch') : null"
         />
         <ng-template #courseUserSearchButton>
-          <button nz-button nzType="primary" nzSearch (click)="onSearchCourseTeacher()">
+          <button nz-button nzType="primary" nzSearch (click)="emitCascade('courseUserSearch')">
             <i nz-icon nzType="search"></i>
           </button>
         </ng-template>
@@ -103,10 +103,10 @@
           nz-input
           placeholder="搜索课程名称"
           [(ngModel)]="courseSearch.value"
-          (keyup)="$event.which === 13 ? onSearchCourse() : null"
+          (keyup)="$event.which === 13 ? emitCascade('courseSearch') : null"
         />
         <ng-template #courseSearchButton>
-          <button nz-button nzType="primary" nzSearch (click)="onSearchCourse()">
+          <button nz-button nzType="primary" nzSearch (click)="emitCascade('courseSearch')">
             <i nz-icon nzType="search"></i>
           </button>
         </ng-template>
