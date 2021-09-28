@@ -1,9 +1,6 @@
 <div class="view_scroll padding-y padding20-x">
   <cascade-condition
     (cascadeEmitter)="getConditions($event)"
-    (searchCourseTeacher)="queryCourseByTeacher($event)"
-    (searchCourse)="queryCourse($event)"
-    (locationCourse)="locationCourse($event)"
     [showFilter]="['grade', 'course', 'courseUserSearch', 'myCourse', 'courseSearch']"
   ></cascade-condition>
   <div class="my10">

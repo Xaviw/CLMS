@@ -57,7 +57,7 @@ export class UserModifyDrawerComponent implements OnInit {
 
   // 获取专业信息
   getMajor(id: string) {
-    this.service.getMajor({ grade: this.formGroup.controls.grade.value as number, college_id: id }).subscribe((res) => {
+    this.service.getMajor({ grade: this.formGroup.controls.grade.value as string, college_id: id }).subscribe((res) => {
       this.major = res as any[];
     });
   }
@@ -66,7 +66,7 @@ export class UserModifyDrawerComponent implements OnInit {
   getClass(id: string) {
     this.service
       .getClass({
-        grade: this.formGroup.controls.grade.value as number,
+        grade: this.formGroup.controls.grade.value as string,
         college_id: this.formGroup.controls.college.value as string,
         major_id: id,
       })

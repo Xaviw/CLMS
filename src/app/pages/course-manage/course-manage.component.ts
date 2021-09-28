@@ -25,7 +25,6 @@ export class CourseManageComponent implements OnInit {
   getConditions(param: any) {
     console.log('param: ', param);
     this.service.getCourseCardByCascade(param).subscribe((res) => {
-      console.log('res: ', res);
       this.courseCardData = res as CourseCard[];
     });
   }

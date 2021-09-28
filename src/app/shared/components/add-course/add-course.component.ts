@@ -25,8 +25,12 @@ export class AddCourseComponent implements OnInit {
       this.class.visible = false;
       this.class.list = [];
     },
-    getConditions: (e: Event) => {
-      console.log(e);
+    getConditions: (e: any) => {
+      if (e.code === 'class' && !this.class.list.some((item) => item.id === e.data.class.id)) {
+        this.class.list.push(e.data.class);
+      } else if (e.code === 'chargeClass' && !this.class.list.some((item) => item.id === e.data.chargeClass.id)) {
+        this.class.list.push(e.data.chargeClass);
+      }
     },
     tagClose: (id: string) => {
       const index = this.class.list.findIndex((item) => item.id === id);

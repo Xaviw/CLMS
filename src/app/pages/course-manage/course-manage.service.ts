@@ -7,7 +7,7 @@ export class CourseManageService {
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
   // 获取年级下课程
-  getCoursesByGrade(grade: number) {
+  getCoursesByGrade(grade: string) {
     const url = '/grade/course';
     return this.http.post(url, { grade });
   }

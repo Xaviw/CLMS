@@ -32,6 +32,11 @@
     display: flex;
     align-items: center;
   }
+  .empty-info {
+    line-height: 40px;
+    color: #afafaf;
+    margin-left: 16px;
+  }
 }
 
 .search-input {
