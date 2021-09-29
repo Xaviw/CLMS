@@ -27,6 +27,10 @@ export class CourseDetailComponent implements OnInit {
     });
   }
 
+  editCourse(e: Event) {
+    console.log(e);
+  }
+
   switchWeek() {
     this.params = { ...this.params };
   }

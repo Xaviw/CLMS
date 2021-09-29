@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CacheService } from '@app/core/services/cache.service';
+import { validateForm } from '@app/shared/utils/utils';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -20,10 +21,14 @@ export class AddCourseComponent implements OnInit {
   class = {
     visible: false,
     list: <{ id: string; name: string }[]>[],
-    handleOk: () => {},
+    handleOk: () => {
+      this.validateForm.get('class')?.patchValue(this.class.list.map((item) => item.id));
+      this.class.visible = false;
+    },
     cancel: () => {
       this.class.visible = false;
       this.class.list = [];
+      this.validateForm.get('class')?.reset();
     },
     getConditions: (e: any) => {
       if (e.code === 'class' && !this.class.list.some((item) => item.id === e.data.class.id)) {
@@ -32,13 +37,22 @@ export class AddCourseComponent implements OnInit {
         this.class.list.push(e.data.chargeClass);
       }
     },
+    // 删除组件中tag
     tagClose: (id: string) => {
       const index = this.class.list.findIndex((item) => item.id === id);
       this.class.list.splice(index, 1);
     },
+    // 删除表单中班级tag，同步删除组件中tag
+    tagChange: (e: string[]) => {
+      for (let i = 0; i < this.class.list.length; i++) {
+        if (!e.some((item) => item === this.class.list[i].id)) {
+          this.class.list.splice(i, 1);
+        }
+      }
+    },
   };
 
-  flag = true;
+  flag = true; // 标记Input事件结束（跳过拼音录入阶段）
   visible = false;
   searchSubject = new Subject<string>();
   keyWord = null;
@@ -48,12 +62,16 @@ export class AddCourseComponent implements OnInit {
     teacher: [null, [Validators.required]],
     isRequired: [true, [Validators.required]],
     class: [null, [Validators.required]],
-    weekRange: [null, [Validators.required]],
+    startWeek: [null, [Validators.required]],
+    endWeek: [null, [Validators.required]],
     description: [null, []],
   });
   handleOk() {
-    const value = this.validateForm.getRawValue();
-    this.operation.emit(value);
+    validateForm(this.validateForm.controls);
+    if (this.validateForm.valid) {
+      const value = this.validateForm.getRawValue();
+      this.operation.emit(value);
+    }
   }
   requiredChange(e: Event) {
     if (e) {

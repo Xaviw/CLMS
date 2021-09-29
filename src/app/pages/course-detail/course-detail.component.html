@@ -112,3 +112,5 @@
   </div>
   <schedule [param]="params" [editable]="editable"></schedule>
 </ng-template>
+
+<add-course #addCourseEl (operation)="editCourse($event)"></add-course>
