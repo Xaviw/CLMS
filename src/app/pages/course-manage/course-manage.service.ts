@@ -14,12 +14,12 @@ export class CourseManageService {
 
   // 获取我的课程
   getMyCourse() {
-    const url = '/course/mine';
+    const url = '/user/getClassByUser';
     return this.http.get(url);
   }
 
   // 级联参数查询课程卡片
-  getCourseCardByCascade(param: { year: number; courseCode: string }) {
+  getCourseCardByCascade(param: { code: string }) {
     const url = '/course';
     return this.http.post(url, param);
   }
@@ -28,5 +28,15 @@ export class CourseManageService {
   deleteCourse(param: { courseId: string }) {
     const url = '';
     return this.http.post(url, param);
+  }
+
+  // 获取课程信息
+  // getCourseDetail(id: string) {
+  //   const url = `/course/${id}`;
+  //   return this.http.get(url);
+  // }
+  getCourseDetail() {
+    const url = `/course/info`;
+    return this.http.get(url);
   }
 }

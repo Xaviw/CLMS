@@ -1,11 +1,27 @@
+import { CourseManageService } from './../course-manage/course-manage.service';
 import { User } from '@app/shared/types/commonTypes';
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+interface CourseInfo {
+  courseName: string;
+  courseId: string;
+  teacherName: string;
+  teacherId: string;
+  isCompulsory: boolean;
+  classes?: Array<{ id: string; name: string }>;
+  description?: string;
+  count?: number;
+  startWeek: number;
+  endWeek: number;
+  studentCount?: number;
+}
 
 @Component({
   selector: 'app-course-detail',
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.scss'],
+  providers: [CourseManageService],
 })
 export class CourseDetailComponent implements OnInit {
   studentList: User[] = [];
@@ -18,12 +34,20 @@ export class CourseDetailComponent implements OnInit {
     week: 0, // 单双周
   };
   editable = false; // 启用编辑
+  detailInfo?: CourseInfo; // 课程信息
+  classText?: string;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private activatedRoute: ActivatedRoute, private service: CourseManageService) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {
       this.params.courseId = res.id;
+      this.service.getCourseDetail().subscribe((res) => {
+        this.detailInfo = res as CourseInfo;
+        if ((res as CourseInfo).classes) {
+          this.classText = (res as CourseInfo).classes?.map((item) => item.name).join('，');
+        }
+      });
     });
   }
 

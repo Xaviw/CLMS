@@ -22,6 +22,8 @@ import {
   BulbOutline,
   ContainerOutline,
   UpOutline,
+  LikeOutline,
+  LikeTwoTone,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -45,6 +47,8 @@ const icons = [
   BulbOutline,
   ContainerOutline,
   UpOutline,
+  LikeOutline,
+  LikeTwoTone,
 ];
 
 @NgModule({

@@ -23,24 +23,20 @@ export class CourseManageComponent implements OnInit {
 
   // 接收级联参数
   getConditions(param: any) {
-    console.log('param: ', param);
-    this.service.getCourseCardByCascade(param).subscribe((res) => {
+    let code;
+    if (param.code === 'class') code = param.data.class.id;
+    else if (param.code === 'chargeClass') code = param.data.chargeClass.id;
+    this.service.getCourseCardByCascade({ code }).subscribe((res) => {
       this.courseCardData = res as CourseCard[];
     });
   }
 
   // 搜索教师所教课程
-  queryCourseByTeacher(e: Event) {
-    console.log(e);
-  }
+  queryCourseByTeacher(e: Event) {}
 
   // 搜索教师所教课程
-  queryCourse(e: Event) {
-    console.log(e);
-  }
+  queryCourse(e: Event) {}
 
   // 定位自己的课程
-  locationCourse(e: Event) {
-    console.log(e);
-  }
+  locationCourse(e: Event) {}
 }

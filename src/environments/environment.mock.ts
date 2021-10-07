@@ -2,6 +2,6 @@ export const environment = {
   production: false,
   systemName: '机房管理系统',
   secreteKey: '',
-  api: 'https://www.fastmock.site/mock/e44ab71b73c76e937c9e889cdb35f6f8/api',
+  api: 'https://mock.apipost.cn/app/mock/project/5be6e221-f8ad-4923-8981-9be7fb60f7b7',
   avatarPath: '../assets/images/',
 };

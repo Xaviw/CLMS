@@ -8,7 +8,7 @@
   <div class="type-row" *ngIf="grade.show">
     <span class="type">所在年级：</span>
     <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="emitCascade('grade')">
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of grade.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
@@ -19,7 +19,7 @@
       (ngModelChange)="emitCascade('college')"
       *ngIf="hasAll || college.data!.length; else empty"
     >
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of college.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
@@ -30,7 +30,7 @@
       (ngModelChange)="emitCascade('major')"
       *ngIf="hasAll || major.data!.length; else empty"
     >
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of major.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
@@ -41,14 +41,14 @@
       (ngModelChange)="emitCascade('class')"
       *ngIf="hasAll || class.data!.length; else empty"
     >
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of class.data">{{ item.name }}</label>
     </nz-radio-group>
   </div>
   <div class="type-row" *ngIf="chargeClass.show">
     <span class="type">我的班级：</span>
     <nz-radio-group [(ngModel)]="chargeClass.value" (ngModelChange)="emitCascade('chargeClass')">
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of chargeClass.data">
         {{ item.name }}
       </label>
@@ -61,7 +61,7 @@
       (ngModelChange)="emitCascade('course')"
       *ngIf="hasAll || course.data!.length; else empty"
     >
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of course.data">
         {{ item.name }}
       </label>
@@ -70,7 +70,7 @@
   <div class="type-row" *ngIf="myCourse.show">
     <span class="type">我的课程：</span>
     <nz-radio-group [(ngModel)]="myCourse.value" (ngModelChange)="emitCascade('myCourse')">
-      <label nz-radio-button nzValue="0" *ngIf="hasAll">全部</label>
+      <label nz-radio-button [nzValue]="all" *ngIf="hasAll">全部</label>
       <label nz-radio-button [nzValue]="item" *ngFor="let item of myCourse.data">
         {{ item.name }}
       </label>

@@ -1,5 +1,6 @@
+import { validateForm } from '@shared/utils/utils';
 import { CommonService } from './../../../core/services/common.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PermissionSetupService } from '@app/pages/permission-setup/permission-setup.service';
 import { UserManageService } from '@app/pages/user-manage/user-manage.service';
@@ -12,7 +13,8 @@ import * as dayjs from 'dayjs';
   styleUrls: ['./user-modify-drawer.component.scss'],
   providers: [UserManageService, PermissionSetupService],
 })
-export class UserModifyDrawerComponent implements OnInit {
+export class UserModifyDrawerComponent implements OnInit, OnChanges {
+  @Input() default: any;
   visible = false;
   isAdd = false;
   formGroup = this.fb.group({
@@ -41,11 +43,31 @@ export class UserModifyDrawerComponent implements OnInit {
     // 初始化当前四个年级
     let maxGrade = dayjs().month() > 8 ? dayjs().year() : dayjs().year() - 1;
     for (let i = 3; i >= 0; i--) {
-      this.grade.push(maxGrade - i);
+      this.grade.push(String(maxGrade - i));
     }
 
     this.getCollege();
     this.getRoles();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes.default.firstChange) {
+      const param = changes.default.currentValue;
+      if (param.year !== '0') {
+        this.formGroup.patchValue({ grade: param.year });
+      }
+      if (param.college_id !== '0') {
+        this.formGroup.patchValue({ college: param.college_id });
+        this.getMajor(param.college);
+      }
+      if (param.profession_id !== '0') {
+        this.formGroup.patchValue({ major: param.profession_id });
+        this.getClass(param.profession_id);
+      }
+      if (param.class_id !== '0') {
+        this.formGroup.patchValue({ class: param.class_id });
+      }
+    }
   }
 
   // 获取学院信息
@@ -57,7 +79,7 @@ export class UserModifyDrawerComponent implements OnInit {
 
   // 获取专业信息
   getMajor(id: string) {
-    this.service.getMajor({ grade: this.formGroup.controls.grade.value as string, college_id: id }).subscribe((res) => {
+    this.service.getMajor({ year: this.formGroup.controls.grade.value as string, collegeId: id }).subscribe((res) => {
       this.major = res as any[];
     });
   }
@@ -66,9 +88,9 @@ export class UserModifyDrawerComponent implements OnInit {
   getClass(id: string) {
     this.service
       .getClass({
-        grade: this.formGroup.controls.grade.value as string,
-        college_id: this.formGroup.controls.college.value as string,
-        major_id: id,
+        year: this.formGroup.controls.grade.value as string,
+        collegeId: this.formGroup.controls.college.value as string,
+        professionId: id,
       })
       .subscribe((res) => {
         this.class = res as any[];
@@ -90,7 +112,11 @@ export class UserModifyDrawerComponent implements OnInit {
     this.visible = false;
   };
 
-  update = () => {};
+  update = () => {
+    validateForm(this.formGroup.controls);
+  };
 
-  add = () => {};
+  add = () => {
+    validateForm(this.formGroup.controls);
+  };
 }

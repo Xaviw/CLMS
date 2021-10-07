@@ -41,10 +41,18 @@ const routes: Routes = [
         },
       },
       {
-        path: 'user-manage',
+        path: 'teacher-manage',
         loadChildren: () => import('./user-manage/user-manage.module').then((m) => m.UserManageModule),
         data: {
-          title: '用户管理',
+          title: '教师管理',
+          needLogin: true,
+        },
+      },
+      {
+        path: 'student-manage',
+        loadChildren: () => import('./user-manage/user-manage.module').then((m) => m.UserManageModule),
+        data: {
+          title: '学生管理',
           needLogin: true,
         },
       },

@@ -1,6 +1,6 @@
 <nz-page-header class="site-page-header">
-  <nz-page-header-title>数据结构与算法</nz-page-header-title>
-  <nz-page-header-subtitle>必修</nz-page-header-subtitle>
+  <nz-page-header-title>{{ detailInfo?.courseName }}</nz-page-header-title>
+  <nz-page-header-subtitle>{{ detailInfo?.isCompulsory ? '必修' : '选修' }}</nz-page-header-subtitle>
   <nz-page-header-extra>
     <button nz-button nzType="primary">编辑</button>
     <button nz-button nzDanger nzType="primary">删除</button>
@@ -9,16 +9,24 @@
     <div class="content">
       <div class="main">
         <nz-descriptions nzSize="small" [nzColumn]="2">
-          <nz-descriptions-item nzTitle="教师" [nzSpan]="1">谢科</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">第 1-20 周</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="班级" [nzSpan]="1">计科一班</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">暂无描述...</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="教师" [nzSpan]="1">{{ detailInfo?.teacherName }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">
+            第 {{ detailInfo?.startWeek }}-{{ detailInfo?.endWeek }} 周
+          </nz-descriptions-item>
+          <nz-descriptions-item nzTitle="班级" [nzSpan]="1">{{ classText ?? '未设置班级...' }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">{{
+            detailInfo?.description ?? '无课程描述...'
+          }}</nz-descriptions-item>
         </nz-descriptions>
       </div>
       <div class="extra">
         <div>
-          <nz-statistic nzTitle="总节次" [nzValue]="40"></nz-statistic>
-          <nz-statistic nzTitle="学生人数" [nzValue]="58" style="margin: 0 32px"></nz-statistic>
+          <nz-statistic nzTitle="总节次" [nzValue]="detailInfo?.count ?? '未设置课程表...'"></nz-statistic>
+          <nz-statistic
+            nzTitle="学生人数"
+            [nzValue]="detailInfo?.studentCount ?? '未导入学生...'"
+            style="margin: 0 32px"
+          ></nz-statistic>
         </div>
       </div>
     </div>

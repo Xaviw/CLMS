@@ -52,7 +52,12 @@
       <nz-form-item>
         <nz-form-label nzFor="major" nzRequired>专业：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="majorErrorTpl">
-          <nz-select id="major" formControlName="major" (ngModelChange)="getClass($event)">
+          <nz-select
+            id="major"
+            formControlName="major"
+            (ngModelChange)="getClass($event)"
+            nzNotFoundContent="请先选择上层条件"
+          >
             <nz-option *ngFor="let item of major" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
           </nz-select>
           <ng-template #majorErrorTpl let-control>
@@ -63,7 +68,7 @@
       <nz-form-item>
         <nz-form-label nzFor="class" nzRequired>班级：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="classErrorTpl">
-          <nz-select id="class" formControlName="class">
+          <nz-select id="class" formControlName="class" nzNotFoundContent="请先选择上层条件">
             <nz-option *ngFor="let item of class" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
           </nz-select>
           <ng-template #classErrorTpl let-control>

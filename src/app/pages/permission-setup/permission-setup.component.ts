@@ -113,7 +113,6 @@ export class PermissionSetupComponent implements OnInit {
   getRolePages(origin: NzTreeNodeOptions) {
     this.service.getRolePages(origin.key).subscribe((res) => {
       origin.pages = res;
-      console.log('origin: ', origin);
     });
   }
 
@@ -121,13 +120,11 @@ export class PermissionSetupComponent implements OnInit {
   getRolePageActions(origin: NzTreeNodeOptions) {
     this.service.getRolePages(origin.key).subscribe((res) => {
       origin.actions = res;
-      console.log('origin: ', origin);
     });
   }
 
   // 单击角色
   roleClick(e: NzFormatEmitEvent) {
-    console.log('e: ', e);
     if (this.activeRole !== e.node) {
       this.activeRole = e.node!;
       if (!e.node?.origin.pages.length || !e.node?.origin.actions.length) {

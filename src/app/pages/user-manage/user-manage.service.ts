@@ -8,31 +8,36 @@ export class UserManageService {
 
   // 获取学院信息
   getCollege() {
-    const url = '/college';
+    const url = '/management/getAllCollege';
     return this.http.get(url);
   }
 
   // 获取专业信息
-  getMajor(param: { grade: string; college_id: string }) {
-    const url = '/major';
+  getMajor(param: { year: string; collegeId: string }) {
+    const url = '/management/getAllProfession';
     return this.http.post(url, param);
   }
 
   // 获取班级信息
-  getClass(param: { grade: string; college_id: string; major_id: string }) {
-    const url = '/class';
+  getClass(param: { year: string; collegeId: string; professionId: string }) {
+    const url = '/management/getAllClass';
     return this.http.post(url, param);
   }
 
   // 获取教师关联班级
   getChargeClass() {
-    const url = '/class/own';
+    const url = '/user/getClassByUser';
     return this.http.get(url);
   }
 
   // 查询用户
   queryUser(param: any) {
-    const url = '/user/query';
+    const url = '/user/getUserByCondition';
     return this.http.post(url, param);
+  }
+
+  downloadTemplate() {
+    const url = '/user/downloadErrorUser';
+    return this.http.get(url, { observe: 'response', responseType: 'blob' });
   }
 }

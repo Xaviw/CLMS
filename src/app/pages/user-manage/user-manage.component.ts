@@ -3,6 +3,7 @@ import { UserManageService } from './user-manage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { User, Role } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-user-manage',
@@ -42,6 +43,14 @@ export class UserManageComponent implements OnInit {
     this.getRoles();
   }
 
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+    }
+    if (info.file.status === 'done') {
+    } else if (info.file.status === 'error') {
+    }
+  }
+
   // 添加用户
   addUser() {
     this.userDrawerEl.formGroup.reset();
@@ -56,8 +65,6 @@ export class UserManageComponent implements OnInit {
 
   // 查询用户
   queryUser(isFirst = false) {
-    this.param.pageIndex = this.pageIndex;
-    this.param.pageSize = this.pageSize;
     this.service.queryUser(this.param).subscribe((res: any) => {
       this.listOfData = res.data as any[];
       if (isFirst) this.total = res.total;
@@ -73,9 +80,32 @@ export class UserManageComponent implements OnInit {
 
   // 接收参数
   getConditions(param: any) {
-    this.param = param;
     this.setOfCheckedId.clear();
-    this.queryUser(true);
+    this.param = {
+      count: this.pageIndex,
+      offset: this.pageSize,
+    };
+    if (['grade', 'college', 'major', 'class'].includes(param.code)) {
+      this.param = {
+        ...this.param,
+        profession_id: param.data.major.id,
+        year: param.data.grade.id,
+        college_id: param.data.college.id,
+        class_id: param.data.class.id,
+      };
+      this.queryUser(true);
+    } else if (param.code === 'chargeClass') {
+      this.param = {
+        ...this.param,
+        class_id: param.data.chargeClass.id,
+      };
+    } else if (param.code === 'userSearch') {
+      this.param = {
+        ...this.param,
+        keyword: param.data.userSearch.value,
+      };
+    }
+    // this.queryUser(true);
   }
 
   // 添加/删除选中
@@ -116,5 +146,30 @@ export class UserManageComponent implements OnInit {
   // 删除用户
   deleteUser() {
     let param = this.setOfCheckedId.keys();
+  }
+
+  downloadTemplate() {
+    this.service.downloadTemplate().subscribe((res: any) => {
+      if (res) {
+        // 获取文件名
+        let fileName = res.headers.get('content-disposition').split('=')[1];
+        // 获取数据类型
+        let type = res.headers.get('content-type').split(';')[0];
+        let blob = new Blob([res.body], { type: type });
+        const a = document.createElement('a');
+        // 创建URL
+        const blobUrl = window.URL.createObjectURL(blob);
+        a.download = fileName;
+        a.href = blobUrl;
+        document.body.appendChild(a);
+        // 下载文件
+        a.click();
+        // 释放内存
+        URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+      } else {
+        console.log('error', res);
+      }
+    });
   }
 }

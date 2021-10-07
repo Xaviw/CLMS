@@ -9,9 +9,9 @@ interface filterType {
 }
 
 interface condition {
-  value: string | null | filterType; // 选中值
+  value: filterType | null; // 选中值
   text: string;
-  data?: any[]; // 所有值
+  data?: filterType[]; // 所有值
   show: boolean; // 是否显示
   next?: any; // 级联下级
   previous?: any; // 级联上级
@@ -44,6 +44,7 @@ export class CascadeConditionComponent implements OnInit {
   conditions: any[] = [];
   // 教师还是学生
   @Input() isStudent = true;
+  all = { id: '0', name: '全部' };
   // 单双周
   week: condition = {
     value: null,
@@ -70,12 +71,12 @@ export class CascadeConditionComponent implements OnInit {
     hasAll: true,
     getData: (cascade = false) => {
       if (this.grade.hasAll && cascade) {
-        this.grade.value = '0';
+        this.grade.value = this.all;
       }
       let maxGrade = dayjs().month() > 8 ? dayjs().year() : dayjs().year() - 1;
-      const data = [];
+      const data: filterType[] = [];
       for (let i = 3; i >= 0; i--) {
-        data.push({ id: String(maxGrade - i), name: maxGrade - i });
+        data.push({ id: String(maxGrade - i), name: String(maxGrade - i) });
       }
       this.grade.data = data;
     },
@@ -91,7 +92,7 @@ export class CascadeConditionComponent implements OnInit {
     hasAll: true,
     getData: (cascade = false) => {
       if (this.college.hasAll && cascade) {
-        this.college.value = '0';
+        this.college.value = this.all;
       }
       this.userService.getCollege().subscribe((res) => {
         this.college.data = res as filterType[];
@@ -109,10 +110,13 @@ export class CascadeConditionComponent implements OnInit {
     hasAll: true,
     getData: (cascade = false) => {
       if (this.major.hasAll && cascade) {
-        this.major.value = '0';
+        this.major.value = this.all;
       }
       this.userService
-        .getMajor({ grade: this.grade.value as string, college_id: this.college.value as string })
+        .getMajor({
+          year: (this.grade.value as filterType).id,
+          collegeId: (this.college.value as filterType).id,
+        })
         .subscribe((res) => {
           this.major.data = res as filterType[];
         });
@@ -128,13 +132,13 @@ export class CascadeConditionComponent implements OnInit {
     previous: null,
     getData: (cascade = false) => {
       if (this.class.hasAll && cascade) {
-        this.class.value = '0';
+        this.class.value = this.all;
       }
       this.userService
         .getClass({
-          grade: this.grade.value as string,
-          college_id: this.college.value as string,
-          major_id: this.major.value as string,
+          year: (this.grade.value as filterType).id,
+          collegeId: (this.college.value as filterType).id,
+          professionId: (this.major.value as filterType).id,
         })
         .subscribe((res) => {
           this.class.data = res as filterType[];
@@ -150,7 +154,7 @@ export class CascadeConditionComponent implements OnInit {
     hasAll: true,
     getData: (cascade = false) => {
       if (this.chargeClass.hasAll && cascade) {
-        this.chargeClass.value = '0';
+        this.chargeClass.value = this.all;
       }
       this.userService.getChargeClass().subscribe((res) => {
         this.chargeClass.data = res as filterType[];
@@ -167,9 +171,9 @@ export class CascadeConditionComponent implements OnInit {
     previous: null,
     getData: (cascade = false) => {
       if (this.course.hasAll && cascade) {
-        this.course.value = '0';
+        this.course.value = this.all;
       }
-      this.courseService.getCoursesByGrade(this.grade.value as string).subscribe((res) => {
+      this.courseService.getCoursesByGrade((this.grade.value as filterType).id).subscribe((res) => {
         this.course.data = res as filterType[];
       });
     },
@@ -183,7 +187,7 @@ export class CascadeConditionComponent implements OnInit {
     hasAll: true,
     getData: (cascade = false) => {
       if (this.myCourse.hasAll && cascade) {
-        this.myCourse.value = '0';
+        this.myCourse.value = this.all;
       }
       this.courseService.getMyCourse().subscribe((res) => {
         this.myCourse.data = res as filterType[];
@@ -247,6 +251,7 @@ export class CascadeConditionComponent implements OnInit {
         param.data[item] = field.value;
       }
     }
+    console.log(param);
     this.cascadeEmitter.emit(param);
   }
 
@@ -258,23 +263,24 @@ export class CascadeConditionComponent implements OnInit {
   }
   // next层递归，处理重新获取下层数据以及重新选中
   recursionNext(item: condition) {
-    if (item.show)
+    if (item.show) {
       this.conditions.push({
         text: item.text,
-        value: item.value === '0' ? '全部' : (item?.value as filterType)?.name ?? item?.value,
+        value: (item.value as filterType).name ?? item.value,
       });
-    if (item.next?.length && item.show) {
-      // 有级联条件->递推获取数据
-      for (const iterator of item.next) {
-        if (item.value && item.value !== '0') {
-          // 有选中值，获取下层数据
-          iterator.getData(true);
-        } else {
-          // 无选中值，重设下层数据
-          iterator.data = [];
-          iterator.value = iterator.hasAll ? '0' : null;
+      if (item.next?.length) {
+        // 有级联条件->递推获取数据
+        for (const iterator of item.next) {
+          if (item.value && item.value.id !== '0' && iterator.show) {
+            // 有选中值，获取下层数据
+            iterator.getData(true);
+          } else {
+            // 无选中值，重设下层数据
+            iterator.data = [];
+            iterator.value = iterator.hasAll ? this.all : null;
+          }
+          this.recursionNext(iterator);
         }
-        this.recursionNext(iterator);
       }
     }
   }
@@ -283,12 +289,13 @@ export class CascadeConditionComponent implements OnInit {
     // 直接点击下层 全部 选项，如果上层未选中值->设为全部
     if (item.previous?.length && item.show) {
       for (const iterator of item?.previous) {
-        if (item.previous?.length && item.value === '0' && !iterator.value) {
-          iterator.value = '0';
+        if (item.previous?.length && (item.value as filterType).id === '0' && !iterator.value) {
+          iterator.value = this.all;
         }
+        console.log(iterator);
         this.conditions.unshift({
           text: iterator.text,
-          value: iterator.value === '0' ? '全部' : (iterator?.value as filterType)?.name,
+          value: (iterator.value as filterType).name,
         });
         this.recursionPrevious(iterator);
       }
