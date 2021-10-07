@@ -1,0 +1,21 @@
+.week-range {
+  display: grid;
+  grid-template-columns: 0 1fr 30px 1fr;
+  nz-input-number {
+    width: 100%;
+  }
+  .left {
+    border-right: none;
+  }
+  .right {
+    border-left: none;
+  }
+  .center {
+    width: 30px;
+    height: 32px;
+    pointer-events: none;
+    background-color: rgb(255, 255, 255);
+    border-left: 0;
+    border-right: 0;
+  }
+}

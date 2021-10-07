@@ -31,6 +31,10 @@ export class CourseManageComponent implements OnInit {
     });
   }
 
+  addCourse(e: Event) {
+    console.log(e);
+  }
+
   // 搜索教师所教课程
   queryCourseByTeacher(e: Event) {}
 

@@ -1,4 +1,5 @@
 <nz-drawer
+  nzWidth="300px"
   [nzClosable]="false"
   [nzVisible]="visible"
   nzPlacement="right"
@@ -55,16 +56,25 @@
             nzPlaceHolder="选择班级"
             formControlName="class"
             (click)="class.visible = true"
+            (ngModelChange)="class.tagChange($event)"
           >
+            <nz-option *ngFor="let item of class.list" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
           </nz-select>
           <!-- [(ngModel)]="class.list" -->
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzFor="weekRange" nzRequired>周次范围：</nz-form-label>
-        <nz-form-control nzErrorTip="周次范围不能为空！">
-          <input nz-input formControlName="weekRange" id="weekRange" placeholder="请输入周次范围" />
-        </nz-form-control>
+        <nz-input-group nzCompact class="week-range">
+          <nz-form-control nzErrorTip="请输入起始周！">
+            <nz-input-number formControlName="startWeek" [nzMin]="1" [nzStep]="1" class="left"></nz-input-number>
+          </nz-form-control>
+          <input type="text" disabled nz-input placeholder="~" class="center" />
+          <nz-form-control nzErrorTip="请输入结束周！">
+            <nz-input-number formControlName="endWeek" [nzMin]="1" [nzStep]="1" class="right"></nz-input-number>
+          </nz-form-control>
+        </nz-input-group>
+        <!-- </nz-form-control> -->
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzFor="description">课程描述：</nz-form-label>
