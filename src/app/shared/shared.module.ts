@@ -1,3 +1,4 @@
+import { TextFromPipe } from './pipes/text-from.pipe';
 import { AddCourseComponent } from './components/add-course/add-course.component';
 import { ModifyProfileComponent } from '@shared/components/modify-profile/modify-profile.component';
 import { UserModifyDrawerComponent } from './components/user-modify-drawer/user-modify-drawer.component';
@@ -21,7 +22,7 @@ const COMPONENTS: Array<Type<any>> = [
   AddCourseComponent,
 ];
 const DIRECTIVES: Array<Type<any>> = [EmptyDirective];
-const PIPES: Array<Type<any>> = [FromNowPipe];
+const PIPES: Array<Type<any>> = [FromNowPipe, TextFromPipe];
 
 @NgModule({
   imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule, ...SHARED_ZORRO_MODULES],

@@ -1,5 +1,5 @@
 import { CourseManageService } from './../course-manage.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CourseCard } from '@app/shared/types/commonTypes';
 
 @Component({
@@ -11,12 +11,16 @@ import { CourseCard } from '@app/shared/types/commonTypes';
 export class CourseCardComponent implements OnInit {
   // 卡片信息
   @Input() data!: CourseCard;
+  // 删除后刷新
+  @Output() delete: EventEmitter<any> = new EventEmitter();
 
   constructor(private service: CourseManageService) {}
 
   ngOnInit() {}
 
   deleteCourse() {
-    this.service.deleteCourse({ courseId: this.data.courseId }).subscribe();
+    this.service.deleteCourse({ courseId: this.data.courseId }).subscribe((res) => {
+      this.delete.emit();
+    });
   }
 }

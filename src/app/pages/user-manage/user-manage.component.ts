@@ -1,7 +1,8 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
 import { UserManageService } from './user-manage.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { User, Role } from '@app/shared/types/commonTypes';
+import { User, Role, FilterType } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
@@ -22,6 +23,7 @@ export class UserManageComponent implements OnInit {
   listOfData: User[] = [];
   setOfCheckedId = new Set<string>(); // 已选中集合
   param: any;
+  type!: number;
   // 权限Modal
   roleModal = {
     roles: <Role[]>[],
@@ -34,21 +36,39 @@ export class UserManageComponent implements OnInit {
     cancel: () => {
       this.roleModal.visible = false;
     },
-    setRole: () => {},
+    setRole: () => {
+      console.log(this.roleModal.value);
+    },
+  };
+  // 导入用户抽屉
+  importDrawer = {
+    visible: false,
+    message: '成功20，失败2',
+    open: () => {
+      this.importDrawer.visible = true;
+    },
+    close: () => {
+      this.importDrawer.visible = false;
+    },
+    handleChange: (info: NzUploadChangeParam) => {
+      if (info.file.status !== 'uploading') {
+      }
+      if (info.file.status === 'done') {
+      } else if (info.file.status === 'error') {
+      }
+    },
   };
 
-  constructor(private service: UserManageService, private commonService: CommonService) {}
+  constructor(
+    private service: UserManageService,
+    private commonService: CommonService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.getRoles();
-  }
-
-  handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-    }
-    if (info.file.status === 'done') {
-    } else if (info.file.status === 'error') {
-    }
+    this.type = this.router.url === '/teacher-manage' ? 1 : 0;
   }
 
   // 添加用户
@@ -58,17 +78,46 @@ export class UserManageComponent implements OnInit {
   }
   // 修改用户
   modifyUser(data: any) {
+    const param = {
+      ...data,
+      role: data.role.map((item: FilterType) => item.id),
+    };
     this.userDrawerEl.formGroup.reset();
-    this.userDrawerEl.formGroup.patchValue(data);
+    this.userDrawerEl.formGroup.patchValue(param);
     this.userDrawerEl.open();
   }
 
   // 查询用户
   queryUser(isFirst = false) {
-    this.service.queryUser(this.param).subscribe((res: any) => {
-      this.listOfData = res.data as any[];
-      if (isFirst) this.total = res.total;
-    });
+    this.service
+      .queryUser({ ...this.param, pageIndex: this.pageIndex, pageSize: this.pageSize, type: this.type })
+      .subscribe((res: any) => {
+        this.listOfData = res.data as any[];
+        if (isFirst) {
+          this.total = res.total;
+        }
+      });
+  }
+
+  // 搜索用户
+  searchUser(isFirst = false) {
+    this.service
+      .searchUser({ ...this.param, pageIndex: this.pageIndex, pageSize: this.pageSize, type: this.type })
+      .subscribe((res: any) => {
+        this.listOfData = res.data as any[];
+        if (isFirst) {
+          this.total = res.total;
+        }
+      });
+  }
+
+  // 换页/页尺寸
+  getUser() {
+    if (this.param?.keyword) {
+      this.searchUser();
+    } else {
+      this.queryUser();
+    }
   }
 
   // 获取所有角色
@@ -81,31 +130,26 @@ export class UserManageComponent implements OnInit {
   // 接收参数
   getConditions(param: any) {
     this.setOfCheckedId.clear();
-    this.param = {
-      count: this.pageIndex,
-      offset: this.pageSize,
-    };
+    this.pageIndex = 1;
     if (['grade', 'college', 'major', 'class'].includes(param.code)) {
       this.param = {
-        ...this.param,
-        profession_id: param.data.major.id,
-        year: param.data.grade.id,
-        college_id: param.data.college.id,
-        class_id: param.data.class.id,
+        major: param.data.major.id,
+        grade: param.data.grade.id,
+        college: param.data.college.id,
+        class: param.data.class.id,
       };
       this.queryUser(true);
     } else if (param.code === 'chargeClass') {
       this.param = {
-        ...this.param,
-        class_id: param.data.chargeClass.id,
+        class: param.data.chargeClass.id,
       };
+      this.queryUser(true);
     } else if (param.code === 'userSearch') {
       this.param = {
-        ...this.param,
         keyword: param.data.userSearch.value,
       };
     }
-    // this.queryUser(true);
+    this.searchUser(true);
   }
 
   // 添加/删除选中
@@ -171,5 +215,10 @@ export class UserManageComponent implements OnInit {
         console.log('error', res);
       }
     });
+  }
+
+  // 导出用户
+  output() {
+    this.service.output(this.param).subscribe();
   }
 }

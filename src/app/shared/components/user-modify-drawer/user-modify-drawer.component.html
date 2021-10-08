@@ -79,7 +79,7 @@
       <nz-form-item>
         <nz-form-label nzFor="role" nzRequired>用户角色：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="roleErrorTpl">
-          <nz-select id="role" formControlName="role">
+          <nz-select nzMode="multiple" id="role" formControlName="role">
             <nz-option *ngFor="let item of roles" [nzValue]="item.key" [nzLabel]="item.title"></nz-option>
           </nz-select>
           <ng-template #roleErrorTpl let-control>

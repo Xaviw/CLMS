@@ -53,19 +53,19 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (!changes.default.firstChange) {
       const param = changes.default.currentValue;
-      if (param.year !== '0') {
-        this.formGroup.patchValue({ grade: param.year });
+      if (param.grade !== '0') {
+        this.formGroup.patchValue({ grade: param.grade });
       }
-      if (param.college_id !== '0') {
-        this.formGroup.patchValue({ college: param.college_id });
+      if (param.college !== '0') {
+        this.formGroup.patchValue({ college: param.college });
         this.getMajor(param.college);
       }
-      if (param.profession_id !== '0') {
-        this.formGroup.patchValue({ major: param.profession_id });
-        this.getClass(param.profession_id);
+      if (param.major !== '0') {
+        this.formGroup.patchValue({ major: param.major });
+        this.getClass(param.major);
       }
-      if (param.class_id !== '0') {
-        this.formGroup.patchValue({ class: param.class_id });
+      if (param.class !== '0') {
+        this.formGroup.patchValue({ class: param.class });
       }
     }
   }
@@ -79,7 +79,7 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   // 获取专业信息
   getMajor(id: string) {
-    this.service.getMajor({ year: this.formGroup.controls.grade.value as string, collegeId: id }).subscribe((res) => {
+    this.service.getMajor({ grade: this.formGroup.controls.grade.value as string, college: id }).subscribe((res) => {
       this.major = res as any[];
     });
   }
@@ -88,9 +88,9 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
   getClass(id: string) {
     this.service
       .getClass({
-        year: this.formGroup.controls.grade.value as string,
-        collegeId: this.formGroup.controls.college.value as string,
-        professionId: id,
+        grade: this.formGroup.controls.grade.value as string,
+        college: this.formGroup.controls.college.value as string,
+        major: id,
       })
       .subscribe((res) => {
         this.class = res as any[];
@@ -114,9 +114,11 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   update = () => {
     validateForm(this.formGroup.controls);
+    console.log(this.formGroup.getRawValue());
   };
 
   add = () => {
     validateForm(this.formGroup.controls);
+    console.log(this.formGroup.getRawValue());
   };
 }

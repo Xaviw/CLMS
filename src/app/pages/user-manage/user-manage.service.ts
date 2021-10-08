@@ -13,13 +13,13 @@ export class UserManageService {
   }
 
   // 获取专业信息
-  getMajor(param: { year: string; collegeId: string }) {
+  getMajor(param: { grade: string; college: string }) {
     const url = '/management/getAllProfession';
     return this.http.post(url, param);
   }
 
   // 获取班级信息
-  getClass(param: { year: string; collegeId: string; professionId: string }) {
+  getClass(param: { grade: string; college: string; major: string }) {
     const url = '/management/getAllClass';
     return this.http.post(url, param);
   }
@@ -36,8 +36,20 @@ export class UserManageService {
     return this.http.post(url, param);
   }
 
+  // 搜索用户
+  searchUser(param: { keyword: string; type: number }) {
+    const url = '';
+    return this.http.post(url, param);
+  }
+
   downloadTemplate() {
     const url = '/user/downloadErrorUser';
     return this.http.get(url, { observe: 'response', responseType: 'blob' });
+  }
+
+  // 导出
+  output(param: any) {
+    const url = '/user/exportUser';
+    return this.http.post(url, param);
   }
 }

@@ -2,22 +2,7 @@ import { CourseManageService } from './../../../pages/course-manage/course-manag
 import { UserManageService } from '@pages/user-manage/user-manage.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as dayjs from 'dayjs';
-
-interface filterType {
-  id: string;
-  name: string;
-}
-
-interface condition {
-  value: filterType | null; // 选中值
-  text: string;
-  data?: filterType[]; // 所有值
-  show: boolean; // 是否显示
-  next?: any; // 级联下级
-  previous?: any; // 级联上级
-  hasAll?: boolean; // 是否有全部选项
-  getData?: Function; // 取值方法
-}
+import { Condition, FilterType } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'cascade-condition',
@@ -46,7 +31,7 @@ export class CascadeConditionComponent implements OnInit {
   @Input() isStudent = true;
   all = { id: '0', name: '全部' };
   // 单双周
-  week: condition = {
+  week: Condition = {
     value: null,
     text: '周次',
     data: [
@@ -62,7 +47,7 @@ export class CascadeConditionComponent implements OnInit {
     show: false,
   };
   // 年级
-  grade: condition = {
+  grade: Condition = {
     value: null,
     text: '年级',
     data: [],
@@ -74,7 +59,7 @@ export class CascadeConditionComponent implements OnInit {
         this.grade.value = this.all;
       }
       let maxGrade = dayjs().month() > 8 ? dayjs().year() : dayjs().year() - 1;
-      const data: filterType[] = [];
+      const data: FilterType[] = [];
       for (let i = 3; i >= 0; i--) {
         data.push({ id: String(maxGrade - i), name: String(maxGrade - i) });
       }
@@ -82,7 +67,7 @@ export class CascadeConditionComponent implements OnInit {
     },
   };
   // 学院
-  college: condition = {
+  college: Condition = {
     value: null,
     text: '学院',
     data: [],
@@ -95,12 +80,12 @@ export class CascadeConditionComponent implements OnInit {
         this.college.value = this.all;
       }
       this.userService.getCollege().subscribe((res) => {
-        this.college.data = res as filterType[];
+        this.college.data = res as FilterType[];
       });
     },
   };
   // 专业
-  major: condition = {
+  major: Condition = {
     value: null,
     text: '专业',
     data: [],
@@ -114,16 +99,16 @@ export class CascadeConditionComponent implements OnInit {
       }
       this.userService
         .getMajor({
-          year: (this.grade.value as filterType).id,
-          collegeId: (this.college.value as filterType).id,
+          grade: (this.grade.value as FilterType).id,
+          college: (this.college.value as FilterType).id,
         })
         .subscribe((res) => {
-          this.major.data = res as filterType[];
+          this.major.data = res as FilterType[];
         });
     },
   };
   // 班级
-  class: condition = {
+  class: Condition = {
     value: null,
     text: '班级',
     data: [],
@@ -136,17 +121,17 @@ export class CascadeConditionComponent implements OnInit {
       }
       this.userService
         .getClass({
-          year: (this.grade.value as filterType).id,
-          collegeId: (this.college.value as filterType).id,
-          professionId: (this.major.value as filterType).id,
+          grade: (this.grade.value as FilterType).id,
+          college: (this.college.value as FilterType).id,
+          major: (this.major.value as FilterType).id,
         })
         .subscribe((res) => {
-          this.class.data = res as filterType[];
+          this.class.data = res as FilterType[];
         });
     },
   };
   // 教师关联班级
-  chargeClass: condition = {
+  chargeClass: Condition = {
     value: null,
     text: '我的班级',
     data: [],
@@ -157,12 +142,12 @@ export class CascadeConditionComponent implements OnInit {
         this.chargeClass.value = this.all;
       }
       this.userService.getChargeClass().subscribe((res) => {
-        this.chargeClass.data = res as filterType[];
+        this.chargeClass.data = res as FilterType[];
       });
     },
   };
   // 课程
-  course: condition = {
+  course: Condition = {
     value: null,
     text: '课程',
     data: [],
@@ -173,13 +158,13 @@ export class CascadeConditionComponent implements OnInit {
       if (this.course.hasAll && cascade) {
         this.course.value = this.all;
       }
-      this.courseService.getCoursesByGrade((this.grade.value as filterType).id).subscribe((res) => {
-        this.course.data = res as filterType[];
+      this.courseService.getCoursesByGrade((this.grade.value as FilterType).id).subscribe((res) => {
+        this.course.data = res as FilterType[];
       });
     },
   };
   // 教师关联课程
-  myCourse: condition = {
+  myCourse: Condition = {
     value: null,
     text: '我的课程',
     data: [],
@@ -190,24 +175,24 @@ export class CascadeConditionComponent implements OnInit {
         this.myCourse.value = this.all;
       }
       this.courseService.getMyCourse().subscribe((res) => {
-        this.myCourse.data = res as filterType[];
+        this.myCourse.data = res as FilterType[];
       });
     },
   };
   // 用户管理搜索用户
-  userSearch: condition = {
+  userSearch: Condition = {
     value: null,
     text: '用户',
     show: false,
   };
   // 课程管理搜索教师
-  courseUserSearch: condition = {
+  courseUserSearch: Condition = {
     value: null,
     text: '教师',
     show: false,
   };
   // 课程管理搜索课程
-  courseSearch: condition = {
+  courseSearch: Condition = {
     value: null,
     text: '课程',
     show: false,
@@ -256,17 +241,17 @@ export class CascadeConditionComponent implements OnInit {
   }
 
   // 递推获取级联数据
-  getCascadeData(item: condition) {
+  getCascadeData(item: Condition) {
     this.conditions = [];
     this.recursionPrevious(item);
     this.recursionNext(item);
   }
   // next层递归，处理重新获取下层数据以及重新选中
-  recursionNext(item: condition) {
+  recursionNext(item: Condition) {
     if (item.show) {
       this.conditions.push({
         text: item.text,
-        value: (item.value as filterType).name ?? item.value,
+        value: (item.value as FilterType)?.name ?? item.value,
       });
       if (item.next?.length) {
         // 有级联条件->递推获取数据
@@ -285,17 +270,17 @@ export class CascadeConditionComponent implements OnInit {
     }
   }
   // previous层递归，处理未选中任何值时直接点击中层条件
-  recursionPrevious(item: condition) {
+  recursionPrevious(item: Condition) {
     // 直接点击下层 全部 选项，如果上层未选中值->设为全部
     if (item.previous?.length && item.show) {
       for (const iterator of item?.previous) {
-        if (item.previous?.length && (item.value as filterType).id === '0' && !iterator.value) {
+        if (item.previous?.length && (item.value as FilterType).id === '0' && !iterator.value) {
           iterator.value = this.all;
         }
         console.log(iterator);
         this.conditions.unshift({
           text: iterator.text,
-          value: (iterator.value as filterType).name,
+          value: (iterator.value as FilterType).name,
         });
         this.recursionPrevious(iterator);
       }

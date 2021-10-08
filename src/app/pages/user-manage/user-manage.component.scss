@@ -39,3 +39,16 @@
   width: 180px;
   margin: 5px 10px;
 }
+
+.import-info {
+  margin-top: 10px;
+  border: 1px #444 dashed;
+  border-radius: 5px;
+  .import-message {
+    border-bottom: 1px #555 dashed;
+    padding: 20px 0;
+  }
+  .import-button {
+    padding: 5px 0;
+  }
+}

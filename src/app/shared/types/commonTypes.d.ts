@@ -95,3 +95,44 @@ declare interface CourseCard {
   startWeek?: number;
   endWeek?: number;
 }
+
+declare interface FilterType {
+  id: string;
+  name: string;
+}
+
+declare interface Condition {
+  value: FilterType | null; // 选中值
+  text: string;
+  data?: FilterType[]; // 所有值
+  show: boolean; // 是否显示
+  next?: any; // 级联下级
+  previous?: any; // 级联上级
+  hasAll?: boolean; // 是否有全部选项
+  getData?: Function; // 取值方法
+}
+
+// 课程添加基础信息
+declare interface CourseAddInfo {
+  name: string;
+  teacher: string;
+  isCompulsory: boolean;
+  class?: string[];
+  startWeek: number;
+  endWeek: number;
+  description?: string;
+}
+// 课程信息
+declare interface CourseDetailInfo {
+  courseName: string;
+  courseId: string;
+  teacherName: string;
+  teacherId: string;
+  isCompulsory: boolean;
+  class?: Array<{ id: string; name: string }>;
+  description?: string;
+  count?: number;
+  startWeek: number;
+  endWeek: number;
+  studentCount?: number;
+}

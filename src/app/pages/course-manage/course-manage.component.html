@@ -7,7 +7,7 @@
     <button nz-button nzType="primary" (click)="addCourseEl.open()">添加课程</button>
   </div>
   <div class="card-area" empty [emptyData]="courseCardData" emptyInfo="暂无课程...">
-    <course-card class="card" *ngFor="let item of courseCardData" [data]="item"></course-card>
+    <course-card class="card" *ngFor="let item of courseCardData" [data]="item" (delete)="refresh()"></course-card>
     <!-- 占位空标签，用于flex对齐 -->
     <div class="card"></div>
     <div class="card"></div>

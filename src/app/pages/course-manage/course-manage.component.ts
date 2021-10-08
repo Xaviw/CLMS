@@ -1,11 +1,7 @@
-import { CacheService } from './../../core/services/cache.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AddCourseComponent } from './../../shared/components/add-course/add-course.component';
 import { CourseManageService } from './course-manage.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { CourseCard } from '@app/shared/types/commonTypes';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NzSelectComponent } from 'ng-zorro-antd/select';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CourseCard, CourseAddInfo } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'course-manage',
@@ -16,6 +12,10 @@ import { NzSelectComponent } from 'ng-zorro-antd/select';
 export class CourseManageComponent implements OnInit {
   // 课程卡片信息
   courseCardData: CourseCard[] = [];
+  // 请求参数缓存
+  param?: any;
+  // 添加课程抽屉
+  @ViewChild('addCourseEl') addCourseEl!: AddCourseComponent;
 
   constructor(private service: CourseManageService) {}
 
@@ -23,24 +23,41 @@ export class CourseManageComponent implements OnInit {
 
   // 接收级联参数
   getConditions(param: any) {
-    let code;
-    if (param.code === 'class') code = param.data.class.id;
-    else if (param.code === 'chargeClass') code = param.data.chargeClass.id;
-    this.service.getCourseCardByCascade({ code }).subscribe((res) => {
-      this.courseCardData = res as CourseCard[];
+    this.param = param;
+    if (['course', 'grade'].includes(param.code)) {
+      this.service
+        .getCourseCardByCascade({ code: param.data.course.id, grade: param.data.grade.id })
+        .subscribe((res) => {
+          this.courseCardData = res as CourseCard[];
+        });
+    } else if (param.code === 'chargeClass') {
+      this.service.getCourseCardByMine({ code: param.data.chargeClass.id }).subscribe((res) => {
+        this.courseCardData = res as CourseCard[];
+      });
+    } else if (param.code === 'courseUserSearch') {
+      this.service.getCourseCardBySearchTeacher({ keyword: param.data.courseUserSearch }).subscribe((res) => {
+        this.courseCardData = res as CourseCard[];
+      });
+    } else if (param.code === 'courseSearch') {
+      this.service.getCourseCardBySearchCourse({ keyword: param.data.courseSearch }).subscribe((res) => {
+        this.courseCardData = res as CourseCard[];
+      });
+    }
+  }
+
+  // 添加课程
+  addCourse(e: CourseAddInfo) {
+    this.service.addCourse(e).subscribe((res) => {
+      this.addCourseEl.reset();
+      this.addCourseEl.close();
+      this.refresh();
     });
   }
 
-  addCourse(e: Event) {
-    console.log(e);
+  // 刷新
+  refresh() {
+    if (this.param) {
+      this.getConditions(this.param);
+    }
   }
-
-  // 搜索教师所教课程
-  queryCourseByTeacher(e: Event) {}
-
-  // 搜索教师所教课程
-  queryCourse(e: Event) {}
-
-  // 定位自己的课程
-  locationCourse(e: Event) {}
 }

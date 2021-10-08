@@ -1,21 +1,8 @@
+import { AddCourseComponent } from './../../shared/components/add-course/add-course.component';
 import { CourseManageService } from './../course-manage/course-manage.service';
-import { User } from '@app/shared/types/commonTypes';
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-interface CourseInfo {
-  courseName: string;
-  courseId: string;
-  teacherName: string;
-  teacherId: string;
-  isCompulsory: boolean;
-  classes?: Array<{ id: string; name: string }>;
-  description?: string;
-  count?: number;
-  startWeek: number;
-  endWeek: number;
-  studentCount?: number;
-}
+import { CourseDetailInfo, User } from '@app/shared/types/commonTypes';
+import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-detail',
@@ -24,29 +11,26 @@ interface CourseInfo {
   providers: [CourseManageService],
 })
 export class CourseDetailComponent implements OnInit {
+  @ViewChild('addCourseEl') addCourseEl!: AddCourseComponent;
   studentList: User[] = [];
   checked: boolean = false;
   indeterminate: boolean = false;
   setOfCheckedId = new Set<string>(); // 已选中集合
   // 课表参数
   params = {
-    courseId: null,
+    courseId: '',
     week: 0, // 单双周
   };
   editable = false; // 启用编辑
-  detailInfo?: CourseInfo; // 课程信息
-  classText?: string;
+  detailInfo!: CourseDetailInfo; // 课程信息
 
-  constructor(private activatedRoute: ActivatedRoute, private service: CourseManageService) {}
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private service: CourseManageService) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {
       this.params.courseId = res.id;
       this.service.getCourseDetail().subscribe((res) => {
-        this.detailInfo = res as CourseInfo;
-        if ((res as CourseInfo).classes) {
-          this.classText = (res as CourseInfo).classes?.map((item) => item.name).join('，');
-        }
+        this.detailInfo = res as CourseDetailInfo;
       });
     });
   }
@@ -83,5 +67,12 @@ export class CourseDetailComponent implements OnInit {
   onItemChecked(id: string, checked: boolean): void {
     this.updateCheckedSet(id, checked);
     this.refreshCheckedStatus();
+  }
+
+  // 删除课程
+  deleteCourse() {
+    this.service.deleteCourse({ courseId: this.params.courseId }).subscribe((res) => {
+      this.router.navigateByUrl('/course-manage');
+    });
   }
 }
