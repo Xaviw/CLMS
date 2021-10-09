@@ -1,12 +1,12 @@
 import { CourseManageService } from './../../../pages/course-manage/course-manage.service';
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CacheService } from '@app/core/services/cache.service';
-import { validateForm } from '@app/shared/utils/utils';
+import { deepClone, validateForm } from '@app/shared/utils/utils';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { CourseAddInfo, CourseDetailInfo } from '@app/shared/types/commonTypes';
+import { CourseAddInfo, CourseDetailInfo, FilterType } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'add-course',
@@ -16,25 +16,8 @@ import { CourseAddInfo, CourseDetailInfo } from '@app/shared/types/commonTypes';
 export class AddCourseComponent implements OnInit {
   // 抽屉确认
   @Input() operationText = '添加';
-  @Input()
-  set default(v: CourseDetailInfo) {
-    if (v) {
-      console.log('v: ', v);
-      this.teacherList = [{ label: v.teacherName + '-' + v.teacherId, value: v.teacherId }];
-      this.validateForm.patchValue({
-        name: v.courseName,
-        teacher: v.teacherId,
-        isCompulsory: v.isCompulsory,
-        startWeek: v.startWeek,
-        endWeek: v.endWeek,
-        description: v.description,
-      });
-      if (v.class?.length) {
-        this.class.list = v.class;
-        this.validateForm.get('class')?.patchValue(v.class.map((item) => item.id));
-      }
-    }
-  }
+  _default?: CourseDetailInfo;
+  @Input() default?: CourseDetailInfo;
   @Output() operation: EventEmitter<any> = new EventEmitter();
   // 教师搜索框
   @ViewChild('teacherSearchEl') teacherSearchEl!: NzSelectComponent;
@@ -48,8 +31,9 @@ export class AddCourseComponent implements OnInit {
     },
     cancel: () => {
       this.class.visible = false;
-      this.class.list = [];
-      this.validateForm.get('class')?.reset();
+      this.class.list = deepClone(this._default?.class) ?? [];
+      console.log(this.class.list === this._default?.class);
+      this.validateForm.get('class')?.patchValue(this._default?.class?.map((item) => item.id) ?? null);
     },
     getConditions: (e: any) => {
       if (e.code === 'class' && !this.class.list.some((item) => item.id === e.data.class.id)) {
@@ -135,10 +119,14 @@ export class AddCourseComponent implements OnInit {
   }
   reset() {
     this.validateForm.reset();
-    // 默认选中自己
-    const user = this.cache.userInfo;
-    this.teacherList = [{ value: user.account, label: user.name + '-' + user.account }];
-    this.validateForm.get('teacher')?.patchValue(user.account);
+    if (this._default) {
+      this.defaultPatch(this._default);
+    } else {
+      // 默认选中自己
+      const user = this.cache.userInfo;
+      this.teacherList = [{ value: user.account, label: user.name + '-' + user.account }];
+      this.validateForm.get('teacher')?.patchValue(user.account);
+    }
   }
 
   constructor(private fb: FormBuilder, public cache: CacheService, private service: CourseManageService) {}
@@ -147,10 +135,32 @@ export class AddCourseComponent implements OnInit {
     this.reset();
     // 添加课程--搜索教师触发
     this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((keyword) => {
-      console.log('keyword: ', keyword);
       this.service.queryTeacherList(keyword).subscribe((result) => {
         this.teacherList = result as { value: string; label: string }[];
       });
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes?.default?.currentValue && !this._default) {
+      this._default = deepClone(changes.default.currentValue);
+      this.defaultPatch(this._default!);
+    }
+  }
+
+  defaultPatch(v: CourseDetailInfo) {
+    this.teacherList = [{ label: v.teacherName + '-' + v.teacherId, value: v.teacherId }];
+    this.validateForm.patchValue({
+      name: v.courseName,
+      teacher: v.teacherId,
+      isCompulsory: v.isCompulsory,
+      startWeek: v.startWeek,
+      endWeek: v.endWeek,
+      description: v.description,
+    });
+    if (v.class?.length) {
+      this.class.list = [...v.class];
+      this.validateForm.get('class')?.patchValue(v.class.map((item: FilterType) => item.id));
+    }
   }
 }
