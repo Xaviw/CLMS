@@ -24,7 +24,7 @@
           <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">
             第 {{ detailInfo?.startWeek }}-{{ detailInfo?.endWeek }} 周
           </nz-descriptions-item>
-          <nz-descriptions-item nzTitle="班级" [nzSpan]="1">{{
+          <nz-descriptions-item nzTitle="班级" [nzSpan]="1" *ngIf="detailInfo?.isCompulsory">{{
             (detailInfo?.class | textFrom) ?? '未设置班级...'
           }}</nz-descriptions-item>
           <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">{{
@@ -59,7 +59,7 @@
 <ng-template #studentListEl>
   <div class="flex-between my10">
     <span>
-      <button nz-button nzType="primary">添加学生</button>
+      <button nz-button nzType="primary" (click)="addStudent.open()">添加学生</button>
       <button nz-button nzType="primary" style="margin-left: 10px">导入学生</button>
     </span>
     <span>

@@ -8,5 +8,6 @@ const route: Routes = [{ path: '', component: UserManageComponent }];
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(route)],
   declarations: [UserManageComponent],
+  exports: [UserManageComponent],
 })
 export class UserManageModule {}

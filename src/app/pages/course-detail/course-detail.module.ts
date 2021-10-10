@@ -1,3 +1,4 @@
+import { UserManageModule } from './../user-manage/user-manage.module';
 import { Routes, RouterModule } from '@angular/router';
 import { SharedModule } from './../../shared/shared.module';
 import { NgModule } from '@angular/core';

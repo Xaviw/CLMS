@@ -7,7 +7,7 @@ import { CommonService } from '@app/core/services/common.service';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
-  selector: 'app-user-manage',
+  selector: 'user-manage',
   templateUrl: './user-manage.component.html',
   styleUrls: ['./user-manage.component.scss'],
   providers: [UserManageService],
