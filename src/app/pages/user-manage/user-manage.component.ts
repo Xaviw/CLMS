@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
 import { UserManageService } from './user-manage.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { User, Role, FilterType } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
@@ -13,6 +13,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
   providers: [UserManageService],
 })
 export class UserManageComponent implements OnInit {
+  @Input() checkMode = false;
   @ViewChild('userModifyDrawer') userDrawerEl!: UserModifyDrawerComponent;
   pageIndex = 1;
   pageSize = 20;

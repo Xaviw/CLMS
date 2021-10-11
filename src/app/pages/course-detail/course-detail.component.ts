@@ -31,9 +31,9 @@ export class CourseDetailComponent implements OnInit {
     open: () => {
       const modal = this.modal.create({
         nzTitle: '选择学生',
-        nzWidth: '70%',
+        nzWidth: '90%',
         nzBodyStyle: {
-          height: window.innerHeight * 0.6 + 'px',
+          height: window.innerHeight * 0.7 + 'px',
           overflow: 'auto',
         },
         nzContent: UserManageComponent,

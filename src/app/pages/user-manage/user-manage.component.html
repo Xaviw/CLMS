@@ -3,7 +3,7 @@
     (cascadeEmitter)="getConditions($event)"
     [showFilter]="['grade', 'college', 'major', 'class', 'chargeClass', 'userSearch']"
   ></cascade-condition>
-  <div class="flex-between my10">
+  <div class="flex-between my10" *ngIf="!checkMode">
     <div>
       <button nz-button nzType="primary" class="mr5" (click)="userDrawerEl.open()" [disabled]="!param">添加用户</button>
       <button nz-button nzType="primary" class="mr5" [disabled]="!param" (click)="importDrawer.open()">导入用户</button>
@@ -86,9 +86,9 @@
           <th>姓名</th>
           <th>性别</th>
           <th>学院</th>
-          <th>专业</th>
-          <th>班级</th>
-          <th>班主任</th>
+          <th *ngIf="type===0">专业</th>
+          <th *ngIf="type===0">班级</th>
+          <th *ngIf="type===0">班主任</th>
           <th>角色</th>
           <th>状态</th>
           <th nzAlign="center">操作</th>
@@ -104,9 +104,9 @@
           <td>{{ data.name }}</td>
           <td>{{ data.gender }}</td>
           <td>{{ data.college }}</td>
-          <td>{{ data.major }}</td>
-          <td>{{ data.class }}</td>
-          <td>{{ data.chargeTeacher }}</td>
+          <td *ngIf="type===0">{{ data.major }}</td>
+          <td *ngIf="type===0">{{ data.class }}</td>
+          <td *ngIf="type===0">{{ data.chargeTeacher }}</td>
           <td>{{ data.role | textFrom }}</td>
           <td>{{ data.status }}</td>
           <td nzAlign="center"><button nz-button nzType="link" (click)="modifyUser(data)">修改用户</button></td>
