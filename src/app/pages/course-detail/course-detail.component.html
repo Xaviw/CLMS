@@ -1,65 +1,67 @@
-<nz-page-header class="site-page-header">
-  <nz-page-header-title>{{ detailInfo?.courseName }}</nz-page-header-title>
-  <nz-page-header-subtitle>{{ detailInfo?.isCompulsory ? '必修' : '选修' }}</nz-page-header-subtitle>
-  <nz-page-header-extra>
-    <button nz-button nzType="primary" (click)="addCourseEl.open()">编辑</button>
-    <button
-      nz-button
-      nzDanger
-      nzType="primary"
-      nz-popconfirm
-      nzPopconfirmTitle="确认删除?"
-      nzOkText="确认"
-      nzCancelText="取消"
-      (nzOnConfirm)="deleteCourse()"
-    >
-      删除
-    </button>
-  </nz-page-header-extra>
-  <nz-page-header-content>
-    <div class="content">
-      <div class="main">
-        <nz-descriptions nzSize="small" [nzColumn]="2">
-          <nz-descriptions-item nzTitle="教师" [nzSpan]="1">{{ detailInfo?.teacherName }}</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">
-            第 {{ detailInfo?.startWeek }}-{{ detailInfo?.endWeek }} 周
-          </nz-descriptions-item>
-          <nz-descriptions-item nzTitle="班级" [nzSpan]="1" *ngIf="detailInfo?.isCompulsory">{{
-            (detailInfo?.class | textFrom) ?? '未设置班级...'
-          }}</nz-descriptions-item>
-          <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">{{
-            detailInfo?.description ?? '无课程描述...'
-          }}</nz-descriptions-item>
-        </nz-descriptions>
-      </div>
-      <div class="extra">
-        <div>
-          <nz-statistic nzTitle="总节次" [nzValue]="detailInfo?.count ?? '未设置课程表...'"></nz-statistic>
-          <nz-statistic
-            nzTitle="学生人数"
-            [nzValue]="detailInfo?.studentCount ?? '未导入学生...'"
-            style="margin: 0 32px"
-          ></nz-statistic>
+<div class="view_scroll">
+  <nz-page-header class="site-page-header">
+    <nz-page-header-title>{{ detailInfo?.courseName }}</nz-page-header-title>
+    <nz-page-header-subtitle>{{ detailInfo?.isCompulsory ? '必修' : '选修' }}</nz-page-header-subtitle>
+    <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="addCourseEl.open()">编辑</button>
+      <button
+        nz-button
+        nzDanger
+        nzType="primary"
+        nz-popconfirm
+        nzPopconfirmTitle="确认删除?"
+        nzOkText="确认"
+        nzCancelText="取消"
+        (nzOnConfirm)="deleteCourse()"
+      >
+        删除
+      </button>
+    </nz-page-header-extra>
+    <nz-page-header-content>
+      <div class="content">
+        <div class="main">
+          <nz-descriptions nzSize="small" [nzColumn]="2">
+            <nz-descriptions-item nzTitle="教师" [nzSpan]="1">{{ detailInfo?.teacherName }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="课程时间" [nzSpan]="1">
+              第 {{ detailInfo?.startWeek }}-{{ detailInfo?.endWeek }} 周
+            </nz-descriptions-item>
+            <nz-descriptions-item nzTitle="班级" [nzSpan]="1" *ngIf="detailInfo?.isCompulsory">{{
+              (detailInfo?.class | textFrom) ?? '未设置班级...'
+            }}</nz-descriptions-item>
+            <nz-descriptions-item nzTitle="课程描述" [nzSpan]="1">{{
+              detailInfo?.description ?? '无课程描述...'
+            }}</nz-descriptions-item>
+          </nz-descriptions>
+        </div>
+        <div class="extra">
+          <div>
+            <nz-statistic nzTitle="总节次" [nzValue]="detailInfo?.count ?? '未设置课程表...'"></nz-statistic>
+            <nz-statistic
+              nzTitle="学生人数"
+              [nzValue]="detailInfo?.studentCount ?? '未导入学生...'"
+              style="margin: 0 32px"
+            ></nz-statistic>
+          </div>
         </div>
       </div>
-    </div>
-  </nz-page-header-content>
-  <nz-page-header-footer>
-    <nz-tabset [nzSelectedIndex]="0">
-      <nz-tab nzTitle="学生列表">
-        <ng-template [ngTemplateOutlet]="studentListEl"></ng-template>
-      </nz-tab>
-      <nz-tab nzTitle="课程表">
-        <ng-template [ngTemplateOutlet]="courseScheduleEl"></ng-template>
-      </nz-tab>
-    </nz-tabset>
-  </nz-page-header-footer>
-</nz-page-header>
+    </nz-page-header-content>
+    <nz-page-header-footer>
+      <nz-tabset [nzSelectedIndex]="0">
+        <nz-tab nzTitle="学生列表">
+          <ng-template [ngTemplateOutlet]="studentListEl"></ng-template>
+        </nz-tab>
+        <nz-tab nzTitle="课程表">
+          <ng-template [ngTemplateOutlet]="courseScheduleEl"></ng-template>
+        </nz-tab>
+      </nz-tabset>
+    </nz-page-header-footer>
+  </nz-page-header>
+</div>
 
 <ng-template #studentListEl>
   <div class="flex-between my10">
     <span>
-      <button nz-button nzType="primary" (click)="addStudent.open()">添加学生</button>
+      <button nz-button nzType="primary" (click)="addStudent.create(tplFooter)">添加学生</button>
       <button nz-button nzType="primary" style="margin-left: 10px">导入学生</button>
     </span>
     <span>
@@ -72,7 +74,10 @@
         nzTooltipTitle="多选用户以执行批量操作"
         class="mr5"
       ></i>
-      <button nz-button nzDanger nzType="primary">删除学生</button>
+      <span class="reminder mr5" *ngIf="setOfCheckedId.size">已选中{{ setOfCheckedId.size }}人</span>
+      <button nz-button nzDanger nzType="primary" [disabled]="setOfCheckedId.size === 0" (click)="deleteStudent()">
+        删除学生
+      </button>
     </span>
   </div>
   <div class="view_scroll">
@@ -108,12 +113,13 @@
   </div>
 </ng-template>
 
+<!-- 课程表 -->
 <ng-template #courseScheduleEl>
   <div class="flex-between my10">
     <span>
-      <nz-radio-group [(ngModel)]="params.week" (ngModelChange)="switchWeek()">
-        <label nz-radio-button [nzValue]="0">单周</label>
-        <label nz-radio-button [nzValue]="1">双周</label>
+      <nz-radio-group [(ngModel)]="params.weekTime" *ngIf="detailInfo?.weekTime === 1">
+        <label nz-radio-button [nzValue]="1">单周</label>
+        <label nz-radio-button [nzValue]="2">双周</label>
       </nz-radio-group>
     </span>
     <span>
@@ -127,11 +133,25 @@
         class="mr5"
         *ngIf="editable"
       ></i>
-      <button nz-button (click)="editable = !editable" *ngIf="editable" class="mr5">取消</button>
-      <button nz-button nzType="primary" (click)="editable = !editable">{{ editable ? '保存编辑' : '编辑' }}</button>
+      <button nz-button (click)="editable = false" *ngIf="editable" class="mr5">取消</button>
+      <button nz-button nzType="primary" (click)="edit()">
+        {{ editable ? '保存编辑' : '编辑' }}
+      </button>
     </span>
   </div>
-  <schedule [param]="params" [editable]="editable"></schedule>
+  <schedule #scheduleEl [param]="params" [editable]="editable"></schedule>
 </ng-template>
 
-<add-course #addCourseEl (operation)="editCourse($event)" [default]="detailInfo"></add-course>
+<add-course #addCourseEl (operation)="editCourse($event)" operationText="修改" [default]="detailInfo"></add-course>
+
+<ng-template #tplFooter let-ref="modalRef">
+  <div>
+    <div class="flex-between">
+      <span>已选中： {{ addStudent.instance.setOfCheckedId.size }} 人</span>
+      <div>
+        <button nz-button (click)="ref.destroy()">取消</button>
+        <button nz-button nzType="primary" (click)="addStudent.handleOk()">确定</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

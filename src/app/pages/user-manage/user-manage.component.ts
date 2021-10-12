@@ -14,6 +14,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 })
 export class UserManageComponent implements OnInit {
   @Input() checkMode = false;
+  @Input() defaultChecked?: string[];
   @ViewChild('userModifyDrawer') userDrawerEl!: UserModifyDrawerComponent;
   pageIndex = 1;
   pageSize = 20;
@@ -70,6 +71,13 @@ export class UserManageComponent implements OnInit {
   ngOnInit() {
     this.getRoles();
     this.type = this.router.url === '/teacher-manage' ? 1 : 0;
+    if (this.defaultChecked?.length) {
+      for (const item of this.defaultChecked) {
+        if (!this.setOfCheckedId.has(item)) {
+          this.setOfCheckedId.add(item);
+        }
+      }
+    }
   }
 
   // 添加用户
@@ -130,7 +138,9 @@ export class UserManageComponent implements OnInit {
 
   // 接收参数
   getConditions(param: any) {
-    this.setOfCheckedId.clear();
+    if (!this.checkMode) {
+      this.setOfCheckedId.clear();
+    }
     this.pageIndex = 1;
     if (['grade', 'college', 'major', 'class'].includes(param.code)) {
       this.param = {

@@ -56,13 +56,31 @@ export class CourseManageService {
   }
 
   // 获取课程信息
-  // getCourseDetail(id: string) {
-  //   const url = `/course/${id}`;
-  //   return this.http.get(url);
-  // }
-  getCourseDetail() {
+  getCourseDetail(id: string) {
     const url = `/course/getCourseById`;
-    return this.http.get(url);
+    return this.http.post(url, { courseId: id });
+  }
+
+  // 修改课程基础信息
+  modifyCourseInfo(
+    param: {
+      courseId: string;
+    } & CourseAddInfo,
+  ) {
+    const url = '/course/updateCourse';
+    return this.http.post(url, param);
+  }
+
+  // 获取课程学生
+  getCourseStudent(id: string) {
+    const url = `/course/getStudentById`;
+    return this.http.post(url, { courseId: id });
+  }
+
+  // 删除课程学生
+  deleteCourseStudent(param: { course_id: string; user_id: string[] }) {
+    const url = '/course/deleteStuInCourse';
+    return this.http.post(url, param);
   }
 
   // 查询教师

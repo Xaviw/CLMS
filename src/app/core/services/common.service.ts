@@ -26,8 +26,8 @@ export class CommonService {
     return this.http.post(url, { page_id: param });
   }
 
-  // 获取个人课程表
-  getOwnClassSchedule(param: any) {
+  // 获取课程表
+  getCourseSchedule(param: any) {
     const url = '/courseSchedule';
     return this.http.post(url, param);
   }
@@ -36,5 +36,17 @@ export class CommonService {
   getRoles() {
     const url = '/permissions/getAllRoles';
     return this.http.get(url);
+  }
+
+  // 获取机房列表（id--name)
+  getLabList() {
+    const url = '/lab/list';
+    return this.http.get(url);
+  }
+
+  // 修改某课程课表
+  modifyCourseSchedule(param: { courseId: string; weekTime?: number; data: Array<{ labId: string } | null>[] }) {
+    const url = '';
+    return this.http.post(url, param);
   }
 }

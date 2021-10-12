@@ -6,7 +6,7 @@ import { deepClone, validateForm } from '@app/shared/utils/utils';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { CourseAddInfo, CourseDetailInfo, FilterType } from '@app/shared/types/commonTypes';
+import { CourseDetailInfo, FilterType } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'add-course',
@@ -69,6 +69,7 @@ export class AddCourseComponent implements OnInit {
     class: [null, [Validators.required]],
     startWeek: [null, [Validators.required]],
     endWeek: [null, [Validators.required]],
+    weekTime: [false, [Validators.required]],
     description: [null, []],
   });
   handleOk() {
@@ -156,6 +157,7 @@ export class AddCourseComponent implements OnInit {
       isCompulsory: v.isCompulsory,
       startWeek: v.startWeek,
       endWeek: v.endWeek,
+      weekTime: v.weekTime,
       description: v.description,
     });
     if (v.class?.length) {

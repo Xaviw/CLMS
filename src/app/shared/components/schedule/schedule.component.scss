@@ -8,6 +8,15 @@
 .check {
   font-size: 1.2rem;
   height: 50px;
+  padding-bottom: 29px;
+}
+
+.select-list {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  left: 5px;
+  z-index: 9;
 }
 
 .edit-check {
@@ -25,5 +34,11 @@
 :host ::ng-deep {
   .ant-checkbox {
     display: none;
+  }
+  .ant-table-tbody > tr.ant-table-row:hover > td {
+    background: transparent;
+  }
+  .ant-table-tbody > tr.ant-table-row > td:hover {
+    background: #ececec;
   }
 }

@@ -120,6 +120,7 @@ declare interface CourseAddInfo {
   class?: string[];
   startWeek: number;
   endWeek: number;
+  weekTime: number;
   description?: string;
 }
 // 课程信息
@@ -134,5 +135,6 @@ declare interface CourseDetailInfo {
   count?: number;
   startWeek: number;
   endWeek: number;
+  weekTime: number;
   studentCount?: number;
 }

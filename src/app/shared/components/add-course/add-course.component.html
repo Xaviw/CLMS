@@ -4,7 +4,7 @@
   [nzVisible]="visible"
   nzPlacement="right"
   [nzFooter]="footerTpl"
-  nzTitle="添加课程"
+  [nzTitle]="operationText + '课程'"
   (nzOnClose)="close()"
 >
   <ng-container *nzDrawerContent>
@@ -74,7 +74,12 @@
             <nz-input-number formControlName="endWeek" [nzMin]="1" [nzStep]="1" class="right"></nz-input-number>
           </nz-form-control>
         </nz-input-group>
-        <!-- </nz-form-control> -->
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="weekTime">是否区分单双周：</nz-form-label>
+        <nz-form-control>
+          <nz-switch formControlName="weekTime" nzCheckedChildren="是" nzUnCheckedChildren="否"></nz-switch>
+        </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label nzFor="description">课程描述：</nz-form-label>

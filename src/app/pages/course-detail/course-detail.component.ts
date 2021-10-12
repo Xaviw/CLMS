@@ -1,8 +1,9 @@
+import { ScheduleComponent } from './../../shared/components/schedule/schedule.component';
 import { UserManageComponent } from './../user-manage/user-manage.component';
 import { AddCourseComponent } from './../../shared/components/add-course/add-course.component';
 import { CourseManageService } from './../course-manage/course-manage.service';
-import { CourseDetailInfo, User } from '@app/shared/types/commonTypes';
-import { Component, OnInit, EventEmitter, ViewChild, ViewContainerRef } from '@angular/core';
+import { CourseDetailInfo, User, CourseAddInfo } from '@app/shared/types/commonTypes';
+import { Component, OnInit, EventEmitter, ViewChild, ViewContainerRef, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
@@ -14,6 +15,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 export class CourseDetailComponent implements OnInit {
   @ViewChild('addCourseEl') addCourseEl!: AddCourseComponent;
+  @ViewChild('scheduleEl') scheduleEl!: ScheduleComponent;
   studentList: User[] = [];
   checked: boolean = false;
   indeterminate: boolean = false;
@@ -21,14 +23,14 @@ export class CourseDetailComponent implements OnInit {
   // 课表参数
   params = {
     courseId: '',
-    week: 0, // 单双周
+    weekTime: 1, // 单双周
   };
   editable = false; // 启用编辑
   detailInfo!: CourseDetailInfo; // 课程信息
   // 添加学生Modal
   addStudent = {
-    visible: false,
-    open: () => {
+    instance: <any>null,
+    create: (tplFooter: TemplateRef<{}>) => {
       const modal = this.modal.create({
         nzTitle: '选择学生',
         nzWidth: '90%',
@@ -37,31 +39,21 @@ export class CourseDetailComponent implements OnInit {
           overflow: 'auto',
         },
         nzContent: UserManageComponent,
+        nzComponentParams: {
+          checkMode: true,
+          defaultChecked: ['1', '2', '3'],
+        },
+        nzMaskClosable: false,
         nzViewContainerRef: this.viewContainerRef,
-        nzOnOk: () => new Promise((resolve) => setTimeout(resolve, 1000)),
-        nzFooter: [
-          {
-            label: 'change component title from outside',
-            onClick: (componentInstance) => {
-              // componentInstance!.title = 'title in inner component is changed';
-            },
-          },
-        ],
+        nzFooter: tplFooter,
       });
       const instance = modal.getContentComponent();
-      modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
-      // Return a result when closed
-      modal.afterClose.subscribe((result) => console.log('[afterClose] The result is:', result));
-
-      // delay until modal instance created
-      // setTimeout(() => {
-      //   instance.subtitle = 'sub title is changed';
-      // }, 2000);
+      this.addStudent.instance = instance;
     },
-    cancel: () => {
-      this.addStudent.visible = false;
+    handleOk: () => {
+      console.log(this.addStudent.instance);
+      console.log((this.addStudent.instance as UserManageComponent).setOfCheckedId);
     },
-    handleOk: () => {},
   };
 
   constructor(
@@ -74,19 +66,35 @@ export class CourseDetailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {
+      // 从路径获取课程id
       this.params.courseId = res.id;
-      this.service.getCourseDetail().subscribe((res) => {
-        this.detailInfo = res as CourseDetailInfo;
-      });
+      this.getCourseDetail();
+      this.getCourseStudent();
     });
   }
 
-  editCourse(e: Event) {
-    console.log(e);
+  // 获取课程基础信息
+  getCourseDetail() {
+    this.service.getCourseDetail(this.params.courseId).subscribe((res) => {
+      this.detailInfo = res as CourseDetailInfo;
+      if (this.detailInfo.weekTime === 0) {
+        this.params.weekTime = 0;
+      }
+    });
   }
 
-  switchWeek() {
-    this.params = { ...this.params };
+  // 获取课程学生信息
+  getCourseStudent() {
+    this.service.getCourseStudent(this.params.courseId).subscribe((res) => {
+      this.studentList = res as User[];
+    });
+  }
+
+  // 修改课程基础信息
+  editCourse(e: CourseAddInfo) {
+    this.service.modifyCourseInfo({ ...e, courseId: this.params.courseId }).subscribe((res) => {
+      this.getCourseDetail();
+    });
   }
 
   onAllChecked(checked: boolean): void {
@@ -120,5 +128,22 @@ export class CourseDetailComponent implements OnInit {
     this.service.deleteCourse({ courseId: this.params.courseId }).subscribe((res) => {
       this.router.navigateByUrl('/course-manage');
     });
+  }
+
+  // 删除学生
+  deleteStudent() {
+    this.service
+      .deleteCourseStudent({ course_id: this.params.courseId, user_id: Array.from(this.setOfCheckedId) })
+      .subscribe((res) => {
+        this.getCourseStudent();
+      });
+  }
+
+  edit() {
+    if (this.editable) {
+      this.scheduleEl.saveEdit();
+    } else {
+      this.editable = true;
+    }
   }
 }
