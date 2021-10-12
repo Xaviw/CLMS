@@ -95,3 +95,8 @@ export function deepClone(target: any, map = new WeakMap()): any {
     return target;
   }
 }
+
+// 简单对象比较
+// export function simpleEqual(a: object | Array<any>, b: object | Array<any>) {
+//   return JSON.stringify(a) === JSON.stringify(b);
+// }

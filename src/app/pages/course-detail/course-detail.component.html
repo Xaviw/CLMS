@@ -117,7 +117,11 @@
 <ng-template #courseScheduleEl>
   <div class="flex-between my10">
     <span>
-      <nz-radio-group [(ngModel)]="params.weekTime" *ngIf="detailInfo?.weekTime === 1">
+      <nz-radio-group
+        [ngModel]="params.weekTime"
+        (ngModelChange)="weekTimeChange($event)"
+        *ngIf="detailInfo?.weekTime === 1"
+      >
         <label nz-radio-button [nzValue]="1">单周</label>
         <label nz-radio-button [nzValue]="2">双周</label>
       </nz-radio-group>

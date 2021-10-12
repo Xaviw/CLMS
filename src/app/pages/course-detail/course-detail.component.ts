@@ -21,10 +21,7 @@ export class CourseDetailComponent implements OnInit {
   indeterminate: boolean = false;
   setOfCheckedId = new Set<string>(); // 已选中集合
   // 课表参数
-  params = {
-    courseId: '',
-    weekTime: 1, // 单双周
-  };
+  params!: { courseId: string; weekTime: number };
   editable = false; // 启用编辑
   detailInfo!: CourseDetailInfo; // 课程信息
   // 添加学生Modal
@@ -67,19 +64,19 @@ export class CourseDetailComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {
       // 从路径获取课程id
-      this.params.courseId = res.id;
-      this.getCourseDetail();
-      this.getCourseStudent();
+      this.getCourseDetail(res.id);
     });
   }
 
   // 获取课程基础信息
-  getCourseDetail() {
-    this.service.getCourseDetail(this.params.courseId).subscribe((res) => {
+  getCourseDetail(id?: string) {
+    this.service.getCourseDetail(id ?? this.params.courseId).subscribe((res) => {
       this.detailInfo = res as CourseDetailInfo;
-      if (this.detailInfo.weekTime === 0) {
-        this.params.weekTime = 0;
-      }
+      this.params = {
+        courseId: id ?? this.params.courseId,
+        weekTime: this.detailInfo.weekTime,
+      };
+      this.getCourseStudent();
     });
   }
 
@@ -145,5 +142,12 @@ export class CourseDetailComponent implements OnInit {
     } else {
       this.editable = true;
     }
+  }
+
+  weekTimeChange(e: number) {
+    this.params = {
+      courseId: this.params.courseId,
+      weekTime: e,
+    };
   }
 }

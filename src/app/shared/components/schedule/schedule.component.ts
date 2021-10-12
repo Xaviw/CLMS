@@ -26,13 +26,12 @@ export class ScheduleComponent implements OnInit, OnChanges {
     return this._param;
   }
   set param(v) {
-    console.log('v: ', v);
-    if (v.weekTime === 0) {
-      delete v.weekTime;
+    if (v) {
+      console.log('v: ', v);
+      this._param = v;
+      this.singleCourse = v?.courseId ? true : false;
+      this.getCourseSchedule();
     }
-    this._param = v;
-    this.singleCourse = v?.courseId ? true : false;
-    this.getCourseSchedule();
   }
 
   // 机房列表
