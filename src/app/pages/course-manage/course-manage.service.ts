@@ -27,7 +27,7 @@ export class CourseManageService {
 
   // 我的课程获取课程卡片
   getCourseCardByMine(param: { code: string }) {
-    const url = '/course/getCourseByMine';
+    const url = '/course/getCourseByNameUser';
     return this.http.post(url, param);
   }
 
@@ -39,7 +39,7 @@ export class CourseManageService {
 
   // 课程搜索获取课程卡片
   getCourseCardBySearchCourse(param: { keyword: string }) {
-    const url = '/course/searchCourse';
+    const url = '/course/getCourseByName';
     return this.http.post(url, param);
   }
 
@@ -75,6 +75,12 @@ export class CourseManageService {
   getCourseStudent(id: string) {
     const url = `/course/getStudentById`;
     return this.http.post(url, { courseId: id });
+  }
+
+  // 课程添加学生
+  addCourseStudent(param: { course_id: string; user_id: string[] }) {
+    const url = '/course/addStuInCourse';
+    return this.http.post(url, param);
   }
 
   // 删除课程学生

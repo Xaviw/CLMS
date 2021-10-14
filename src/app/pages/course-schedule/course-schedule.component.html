@@ -1,0 +1,16 @@
+<div class="view_scroll padding">
+  <cascade-condition
+    (cascadeEmitter)="getConditions($event)"
+    [showFilter]="['grade', 'college', 'major', 'class', 'chargeClass', 'myCourse', 'courseSearch', 'userSearch']"
+    [hasAll]="false"
+    [searchMode]="true"
+  ></cascade-condition>
+  <div class="my10" style="overflow: auto">
+    <nz-radio-group [ngModel]="weekTime" (ngModelChange)="weekTimeChange($event)" [hidden]="weekTime === 0">
+      <label nz-radio-button [nzValue]="1">单周</label>
+      <label nz-radio-button [nzValue]="2">双周</label>
+    </nz-radio-group>
+    <button nz-button nzType="primary" (click)="output()" style="float: right">导出</button>
+  </div>
+  <schedule #scheduleEl [param]="param"></schedule>
+</div>

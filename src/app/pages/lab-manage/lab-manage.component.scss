@@ -1,0 +1,13 @@
+.card-area {
+  min-height: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.card {
+  width: 300px;
+  margin: 10px 20px;
+  flex-grow: 1;
+}

@@ -58,11 +58,12 @@
   </nz-page-header>
 </div>
 
+<!-- 学生列表 -->
 <ng-template #studentListEl>
   <div class="flex-between my10">
     <span>
       <button nz-button nzType="primary" (click)="addStudent.create(tplFooter)">添加学生</button>
-      <button nz-button nzType="primary" style="margin-left: 10px">导入学生</button>
+      <button nz-button nzType="primary" style="margin-left: 10px" (click)="uploadDrawerEl.open()">导入学生</button>
     </span>
     <span>
       <i
@@ -137,17 +138,19 @@
         class="mr5"
         *ngIf="editable"
       ></i>
-      <button nz-button (click)="editable = false" *ngIf="editable" class="mr5">取消</button>
+      <button nz-button (click)="cancelEdit()" *ngIf="editable" class="mr5">取消</button>
       <button nz-button nzType="primary" (click)="edit()">
         {{ editable ? '保存编辑' : '编辑' }}
       </button>
     </span>
   </div>
-  <schedule #scheduleEl [param]="params" [editable]="editable"></schedule>
+  <schedule #scheduleEl [param]="params" [editable]="editable" (cancelEdit)="cancelEdit()"></schedule>
 </ng-template>
 
+<!-- 修改课程抽屉 -->
 <add-course #addCourseEl (operation)="editCourse($event)" operationText="修改" [default]="detailInfo"></add-course>
 
+<!-- 添加学生Modal Footer -->
 <ng-template #tplFooter let-ref="modalRef">
   <div>
     <div class="flex-between">
@@ -159,3 +162,6 @@
     </div>
   </div>
 </ng-template>
+
+<!-- 导入学生抽屉 -->
+<upload-drawer #uploadDrawerEl url="" templateUrl="" errorUrl="" title="导入学生"></upload-drawer>

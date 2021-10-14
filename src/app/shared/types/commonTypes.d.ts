@@ -110,6 +110,7 @@ declare interface Condition {
   previous?: any; // 级联上级
   hasAll?: boolean; // 是否有全部选项
   getData?: Function; // 取值方法
+  [propName: string]: any;
 }
 
 // 课程添加基础信息

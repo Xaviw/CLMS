@@ -1,4 +1,4 @@
-<nz-table class="view" #scheduleTable [nzData]="schedule" nzShowPagination="false" nzSize="middle" nzBordered>
+<nz-table #scheduleTable [nzData]="schedule" nzShowPagination="false" nzSize="middle" nzBordered>
   <thead>
     <tr>
       <th nzAlign="center" nzWidth="60px"></th>
@@ -33,14 +33,15 @@
       </tr>
     </ng-container>
     <ng-container *ngIf="editable">
-      <tr *ngFor="let item of editList; let i = index">
+      <tr class="select-none" *ngFor="let item of editList; let i = index">
         <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
         <td nzAlign="center" *ngFor="let class of item; let j = index" style="position: relative">
           <div
             class="flex-center check edit-check"
             [ngStyle]="{ opacity: class ? 1 : 0 }"
             nz-checkbox
-            [(ngModel)]="editList[i][j]"
+            [ngModel]="editList[i][j]"
+            (click)="checkChange(i, j)"
           >
             <i nz-icon nzType="check-circle" nzTheme="twotone"></i>
           </div>

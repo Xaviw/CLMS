@@ -37,19 +37,24 @@ export class UserManageService {
   }
 
   // 搜索用户
-  searchUser(param: { keyword: string; type: number }) {
-    const url = '';
+  searchUser(param: { keyword: string; type: number; pageIndex: number; PageSize: number }) {
+    const url = '/user/findUser';
     return this.http.post(url, param);
   }
 
-  downloadTemplate() {
-    const url = '/user/downloadErrorUser';
-    return this.http.get(url, { observe: 'response', responseType: 'blob' });
+  // 强制下线
+  makeOffLine(ids: string[]) {
+    const url = '/user/logoutById';
+    return this.http.post(url, { user_ids: ids });
   }
-
-  // 导出
-  output(param: any) {
-    const url = '/user/exportUser';
-    return this.http.post(url, param);
+  // 重置密码
+  resetDefaultPassword(ids: string[]) {
+    const url = '/user/resetPassword';
+    return this.http.post(url, { user_ids: ids });
+  }
+  // 删除用户
+  deleteUsers(ids: string[]) {
+    const url = '/user/deleteUser';
+    return this.http.post(url, { user_ids: ids });
   }
 }

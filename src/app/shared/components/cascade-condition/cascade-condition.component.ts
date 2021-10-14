@@ -1,8 +1,12 @@
+import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { CourseManageService } from './../../../pages/course-manage/course-manage.service';
 import { UserManageService } from '@pages/user-manage/user-manage.service';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import * as dayjs from 'dayjs';
+import * as _ from 'lodash';
 import { Condition, FilterType } from '@app/shared/types/commonTypes';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'cascade-condition',
@@ -11,10 +15,17 @@ import { Condition, FilterType } from '@app/shared/types/commonTypes';
   providers: [UserManageService, CourseManageService],
 })
 export class CascadeConditionComponent implements OnInit {
+  @ViewChild('userSearchEl') userSearchEl!: NzSelectComponent;
+  @ViewChild('courseSearchEl') courseSearchEl!: NzSelectComponent;
+  userSearchSubject = new Subject<string>();
+  courseSearchSubject = new Subject<string>();
   // 级联参数发射器
-  @Output() cascadeEmitter: EventEmitter<any> = new EventEmitter();
+  @Output()
+  cascadeEmitter: EventEmitter<any> = new EventEmitter();
   // 是否显示全部
   @Input() hasAll = true;
+  // 搜索模式
+  @Input() searchMode = false;
   // 显示字段筛选
   @Input()
   set showFilter(arr: string[]) {
@@ -27,25 +38,10 @@ export class CascadeConditionComponent implements OnInit {
   fields: string[] = [];
   // 当前条件
   conditions: any[] = [];
+  isFullCondition: boolean = true;
   // 教师还是学生
   @Input() isStudent = true;
   all = { id: '0', name: '全部' };
-  // 单双周
-  week: Condition = {
-    value: null,
-    text: '周次',
-    data: [
-      {
-        id: 'single',
-        name: '单周',
-      },
-      {
-        id: 'double',
-        name: '双周',
-      },
-    ],
-    show: false,
-  };
   // 年级
   grade: Condition = {
     value: null,
@@ -182,8 +178,28 @@ export class CascadeConditionComponent implements OnInit {
   // 用户管理搜索用户
   userSearch: Condition = {
     value: null,
+    searchValue: null,
     text: '用户',
     show: false,
+    flag: true,
+    list: [],
+    selectOpen: (e: boolean) => {
+      if (e) this.userSearch.searchValue = null;
+    },
+    selectChange: (e: any) => {
+      this.userSearch.value = e;
+      this.emitCascade('userSearch');
+    },
+    selectSearch: (e: KeyboardEvent) => {
+      if (this.userSearch.flag && e.key !== 'process') {
+        const keyWord = this.userSearchEl.originElement.nativeElement.children[0]
+          .getAttribute('ng-reflect-value')
+          .trim();
+        if (keyWord.trim()) {
+          this.userSearchSubject.next(keyWord);
+        }
+      }
+    },
   };
   // 课程管理搜索教师
   courseUserSearch: Condition = {
@@ -194,8 +210,28 @@ export class CascadeConditionComponent implements OnInit {
   // 课程管理搜索课程
   courseSearch: Condition = {
     value: null,
+    searchValue: null,
     text: '课程',
     show: false,
+    flag: true,
+    list: [],
+    selectOpen: (e: boolean) => {
+      if (e) this.courseSearch.searchValue = null;
+    },
+    selectChange: (e: any) => {
+      this.courseSearch.value = e;
+      this.emitCascade('courseSearch');
+    },
+    selectSearch: (e: KeyboardEvent) => {
+      if (this.courseSearch.flag && e.key !== 'process') {
+        const keyWord = this.courseSearchEl.originElement.nativeElement.children[0]
+          .getAttribute('ng-reflect-value')
+          .trim();
+        if (keyWord.trim()) {
+          this.courseSearchSubject.next(keyWord);
+        }
+      }
+    },
   };
   // 添加/修改用户抽屉
   infoDrawer = {};
@@ -222,10 +258,29 @@ export class CascadeConditionComponent implements OnInit {
         field.hasAll = this.hasAll;
       }
     }
+    // Subject
+    this.userSearchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((keyword) => {
+      this.userService.searchUser({ keyword, type: 2, pageIndex: 1, PageSize: 99999 }).subscribe((result) => {
+        this.userSearch.list = (result as any).data;
+      });
+    });
+    this.courseSearchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((keyword) => {
+      this.courseService.getCourseCardBySearchCourse({ keyword }).subscribe((result) => {
+        this.courseSearch.list = result;
+      });
+    });
   }
 
   emitCascade(code: string) {
-    this.getCascadeData((this as any)[code]);
+    const t = (this as any)[code];
+    if (
+      !t.value ||
+      (t.value instanceof String && !t.value.trim) ||
+      (typeof t.value === 'object' && _.isEmpty(t.value))
+    ) {
+      return;
+    }
+    this.getCascadeData(t);
     const param: any = {
       code,
       data: {},
@@ -236,7 +291,6 @@ export class CascadeConditionComponent implements OnInit {
         param.data[item] = field.value;
       }
     }
-    console.log(param);
     this.cascadeEmitter.emit(param);
   }
 
@@ -245,6 +299,7 @@ export class CascadeConditionComponent implements OnInit {
     this.conditions = [];
     this.recursionPrevious(item);
     this.recursionNext(item);
+    this.isFullCondition = !this.conditions.some((item) => !item.value);
   }
   // next层递归，处理重新获取下层数据以及重新选中
   recursionNext(item: Condition) {
@@ -277,7 +332,6 @@ export class CascadeConditionComponent implements OnInit {
         if (item.previous?.length && (item.value as FilterType).id === '0' && !iterator.value) {
           iterator.value = this.all;
         }
-        console.log(iterator);
         this.conditions.unshift({
           text: iterator.text,
           value: (iterator.value as FilterType).name,

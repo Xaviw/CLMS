@@ -1,10 +1,4 @@
 <div class="check-block">
-  <div class="type-row" *ngIf="week.show">
-    <span class="type">单双周：</span>
-    <nz-radio-group [(ngModel)]="week.value">
-      <label nz-radio-button [nzValue]="item" *ngFor="let item of week.data">{{ item.name }}</label>
-    </nz-radio-group>
-  </div>
   <div class="type-row" *ngIf="grade.show">
     <span class="type">所在年级：</span>
     <nz-radio-group [(ngModel)]="grade.value" (ngModelChange)="emitCascade('grade')">
@@ -79,7 +73,12 @@
   <div class="type-row" *ngIf="userSearch.show || courseUserSearch.show || courseSearch.show">
     <span class="type">其他：</span>
     <div>
-      <nz-input-group nzSearch [nzAddOnAfter]="userSearchButton" class="search-input" *ngIf="userSearch.show">
+      <nz-input-group
+        nzSearch
+        [nzAddOnAfter]="userSearchButton"
+        class="search-input"
+        *ngIf="userSearch.show && !searchMode"
+      >
         <input
           type="text"
           nz-input
@@ -93,11 +92,31 @@
           </button>
         </ng-template>
       </nz-input-group>
+      <nz-select
+        #userSearchEl
+        *ngIf="searchMode && userSearch.show"
+        nzAllowClear
+        nzShowSearch
+        nzServerSearch
+        nzPlaceHolder="搜索姓名或帐号"
+        style="width: 180px"
+        class="search-input"
+        [(ngModel)]="userSearch.value"
+        (nzOpenChange)="userSearch.selectOpen($event)"
+        (ngModelChange)="userSearch.selectChange($event)"
+        (compositionstart)="userSearch.flag = false"
+        (compositionend)="userSearch.flag = true"
+        (keyup)="userSearch.selectSearch($event)"
+      >
+        <ng-container *ngFor="let item of userSearch.list">
+          <nz-option [nzValue]="item.account" [nzLabel]="item.name + '-' + item.account"></nz-option>
+        </ng-container>
+      </nz-select>
       <nz-input-group
         nzSearch
         [nzAddOnAfter]="courseUserSearchButton"
         class="search-input"
-        *ngIf="courseUserSearch.show"
+        *ngIf="courseUserSearch.show && !searchMode"
       >
         <input
           type="text"
@@ -112,11 +131,16 @@
           </button>
         </ng-template>
       </nz-input-group>
-      <nz-input-group nzSearch [nzAddOnAfter]="courseSearchButton" class="search-input" *ngIf="courseSearch.show">
+      <nz-input-group
+        nzSearch
+        [nzAddOnAfter]="courseSearchButton"
+        class="search-input"
+        *ngIf="courseSearch.show && !searchMode"
+      >
         <input
           type="text"
           nz-input
-          placeholder="搜索课程名称"
+          placeholder="搜索课程"
           [(ngModel)]="courseSearch.value"
           (keyup)="$event.which === 13 ? emitCascade('courseSearch') : null"
         />
@@ -126,12 +150,50 @@
           </button>
         </ng-template>
       </nz-input-group>
+      <nz-select
+        #courseSearchEl
+        *ngIf="searchMode && courseSearch.show"
+        nzAllowClear
+        nzShowSearch
+        nzServerSearch
+        nzPlaceHolder="搜索课程"
+        style="width: 180px"
+        class="search-input"
+        [(ngModel)]="courseSearch.value"
+        (nzOpenChange)="courseSearch.selectOpen($event)"
+        (ngModelChange)="courseSearch.selectChange($event)"
+        (compositionstart)="courseSearch.flag = false"
+        (compositionend)="courseSearch.flag = true"
+        (keyup)="courseSearch.selectSearch($event)"
+      >
+        <ng-container *ngFor="let item of courseSearch.list">
+          <nz-option
+            nzCustomContent
+            [nzValue]="{ id: item.courseId, name: item.courseName }"
+            [nzLabel]="item.courseName"
+          >
+            <div>
+              <div class="flex-between">
+                <span>{{ item.teacherName }}</span
+                ><span>{{ item.teacherId }}</span>
+              </div>
+              <div class="flex-between">
+                <span class="mr10">{{ item.courseName }}</span
+                ><span>{{ item.description }}</span>
+              </div>
+            </div>
+          </nz-option>
+        </ng-container>
+      </nz-select>
     </div>
   </div>
   <div class="type-row" *ngIf="conditions.length">
     <span class="type">当前条件：</span>
     <div class="empty-info">
-      <nz-tag nzColor="#108ee9" *ngFor="let tag of conditions">{{ tag.text }}：{{ tag.value }}</nz-tag>
+      <nz-tag nzColor="#108ee9" *ngFor="let tag of conditions">
+        {{ tag.text }}：{{ tag.value?.name ?? tag.value }}
+      </nz-tag>
+      <span nz-typography nzType="danger" *ngIf="!isFullCondition">请补全查询条件！</span>
     </div>
   </div>
 </div>

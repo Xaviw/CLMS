@@ -73,6 +73,31 @@ const routes: Routes = [
           skipPermission: true,
         },
       },
+      {
+        path: 'course-schedule',
+        loadChildren: () => import('./course-schedule/course-schedule.module').then((m) => m.CourseScheduleModule),
+        data: {
+          title: '课程表',
+          needLogin: true,
+        },
+      },
+      {
+        path: 'lab-manage',
+        loadChildren: () => import('./lab-manage/lab-manage.module').then((m) => m.LabManageModule),
+        data: {
+          title: '机房列表',
+          needLogin: true,
+        },
+      },
+      {
+        path: 'lab-manage/:id',
+        loadChildren: () => import('./lab-detail/lab-detail.module').then((m) => m.LabDetailModule),
+        data: {
+          title: '机房详细',
+          needLogin: true,
+          skipPermission: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局../shared/components/modify-profile/modify-profile.module

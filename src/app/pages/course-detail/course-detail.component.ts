@@ -6,6 +6,7 @@ import { CourseDetailInfo, User, CourseAddInfo } from '@app/shared/types/commonT
 import { Component, OnInit, EventEmitter, ViewChild, ViewContainerRef, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { UploadDrawerComponent } from '@app/shared/components/upload-drawer/upload-drawer.component';
 
 @Component({
   selector: 'app-course-detail',
@@ -16,6 +17,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class CourseDetailComponent implements OnInit {
   @ViewChild('addCourseEl') addCourseEl!: AddCourseComponent;
   @ViewChild('scheduleEl') scheduleEl!: ScheduleComponent;
+  @ViewChild('uploadDrawerEl') uploadDrawerEl!: UploadDrawerComponent;
   studentList: User[] = [];
   checked: boolean = false;
   indeterminate: boolean = false;
@@ -38,7 +40,7 @@ export class CourseDetailComponent implements OnInit {
         nzContent: UserManageComponent,
         nzComponentParams: {
           checkMode: true,
-          defaultChecked: ['1', '2', '3'],
+          defaultChecked: this.studentList.map((item) => item.account),
         },
         nzMaskClosable: false,
         nzViewContainerRef: this.viewContainerRef,
@@ -50,6 +52,9 @@ export class CourseDetailComponent implements OnInit {
     handleOk: () => {
       console.log(this.addStudent.instance);
       console.log((this.addStudent.instance as UserManageComponent).setOfCheckedId);
+      // this.service.addCourseStudent().subscribe(res => {
+      //   this.getCourseDetail();
+      // })
     },
   };
 
@@ -144,6 +149,11 @@ export class CourseDetailComponent implements OnInit {
     }
   }
 
+  cancelEdit() {
+    this.editable = false;
+  }
+
+  // 切换单双周
   weekTimeChange(e: number) {
     this.params = {
       courseId: this.params.courseId,

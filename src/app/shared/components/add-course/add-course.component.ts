@@ -2,11 +2,12 @@ import { CourseManageService } from './../../../pages/course-manage/course-manag
 import { Component, Input, OnInit, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CacheService } from '@app/core/services/cache.service';
-import { deepClone, validateForm } from '@app/shared/utils/utils';
+import { validateForm } from '@app/shared/utils/utils';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CourseDetailInfo, FilterType } from '@app/shared/types/commonTypes';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'add-course',
@@ -31,7 +32,7 @@ export class AddCourseComponent implements OnInit {
     },
     cancel: () => {
       this.class.visible = false;
-      this.class.list = deepClone(this._default?.class) ?? [];
+      this.class.list = _.cloneDeep(this._default?.class) ?? [];
       console.log(this.class.list === this._default?.class);
       this.validateForm.get('class')?.patchValue(this._default?.class?.map((item) => item.id) ?? null);
     },
@@ -144,7 +145,7 @@ export class AddCourseComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.default?.currentValue && !this._default) {
-      this._default = deepClone(changes.default.currentValue);
+      this._default = _.cloneDeep(changes.default.currentValue);
       this.defaultPatch(this._default!);
     }
   }

@@ -31,6 +31,10 @@
   }
 }
 
+.select-none {
+  user-select: none;
+}
+
 :host ::ng-deep {
   .ant-checkbox {
     display: none;

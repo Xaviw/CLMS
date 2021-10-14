@@ -49,4 +49,35 @@ export class CommonService {
     const url = '';
     return this.http.post(url, param);
   }
+
+  // 下载文件
+  download(url: string, param?: any) {
+    return (
+      param
+        ? this.http.post(url, param, { observe: 'response', responseType: 'blob' })
+        : this.http.get(url, { observe: 'response', responseType: 'blob' })
+    ).subscribe((res: any) => {
+      if (res) {
+        // 获取文件名
+        let fileName = res.headers.get('content-disposition').split('=')[1];
+        // 获取数据类型
+        let type = res.headers.get('content-type').split(';')[0];
+        let blob = new Blob([res.body], { type: type });
+        const a = document.createElement('a');
+        // 创建URL
+        const blobUrl = window.URL.createObjectURL(blob);
+        a.download = fileName;
+        a.href = blobUrl;
+        document.body.appendChild(a);
+        // 下载文件
+        a.click();
+        // 释放内存
+        URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+      } else {
+        console.log('error', res);
+        this.message.error('下载失败，请尝试重新下载！');
+      }
+    });
+  }
 }

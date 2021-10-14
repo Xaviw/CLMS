@@ -1,0 +1,22 @@
+<!-- 导入用户抽屉 -->
+<nz-drawer [nzVisible]="visible" [nzTitle]="title" [nzWidth]="width" (nzOnClose)="close()">
+  <ng-container *nzDrawerContent>
+    <div class="flex-between">
+      <nz-upload
+        [nzAction]="url"
+        [nzShowUploadList]="nzShowUploadList"
+        (nzChange)="handleChange($event)"
+        [nzAccept]="nzAccept"
+      >
+        <button nz-button nzType="primary" [nzLoading]="loading">导入用户</button>
+      </nz-upload>
+      <button nz-button *ngIf="templateUrl" (click)="downloadTemplate()">下载模板</button>
+    </div>
+    <div class="import-info" *ngIf="text">
+      <div class="flex-center import-message">{{ text }}</div>
+      <div class="flex-center import-button">
+        <button nz-button nzDanger (click)="downloadErrorList()">下载导入失败名单</button>
+      </div>
+    </div>
+  </ng-container>
+</nz-drawer>

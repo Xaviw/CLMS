@@ -1,3 +1,4 @@
+import { UploadDrawerComponent } from './components/upload-drawer/upload-drawer.component';
 import { TextFromPipe } from './pipes/text-from.pipe';
 import { AddCourseComponent } from './components/add-course/add-course.component';
 import { ModifyProfileComponent } from '@shared/components/modify-profile/modify-profile.component';
@@ -20,6 +21,7 @@ const COMPONENTS: Array<Type<any>> = [
   UserModifyDrawerComponent,
   ModifyProfileComponent,
   AddCourseComponent,
+  UploadDrawerComponent,
 ];
 const DIRECTIVES: Array<Type<any>> = [EmptyDirective];
 const PIPES: Array<Type<any>> = [FromNowPipe, TextFromPipe];

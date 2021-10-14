@@ -5,9 +5,9 @@
   ></cascade-condition>
   <div class="flex-between mt10" *ngIf="!checkMode">
     <div>
-      <button nz-button nzType="primary" class="mr5" (click)="userDrawerEl.open()" [disabled]="!param">添加用户</button>
-      <button nz-button nzType="primary" class="mr5" [disabled]="!param" (click)="importDrawer.open()">导入用户</button>
-      <button nz-button nzType="primary" *ngIf="listOfData?.length">导出用户</button>
+      <button nz-button nzType="primary" class="mr5" (click)="userDrawerEl.open()">添加用户</button>
+      <button nz-button nzType="primary" class="mr5" (click)="uploadDrawerEl.open()">导入用户</button>
+      <button nz-button nzType="primary" [disabled]="!listOfData?.length">导出用户</button>
     </div>
     <div>
       <i
@@ -140,24 +140,9 @@
 </nz-modal>
 
 <!-- 导入用户抽屉 -->
-<nz-drawer [nzVisible]="importDrawer.visible" nzTitle="导入用户" nzWidth="300px" (nzOnClose)="importDrawer.close()">
-  <ng-container *nzDrawerContent>
-    <div class="flex-between">
-      <nz-upload
-        nzAction="/user/importUser"
-        [nzShowUploadList]="false"
-        (nzChange)="importDrawer.handleChange($event)"
-        nzAccept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      >
-        <button nz-button nzType="primary">导入用户</button>
-      </nz-upload>
-      <button nz-button>下载模板</button>
-    </div>
-    <div class="import-info">
-      <div class="flex-center import-message">{{ importDrawer.message }}</div>
-      <div class="flex-center import-button">
-        <button nz-button nzDanger (click)="downloadTemplate()">下载导入失败名单</button>
-      </div>
-    </div>
-  </ng-container>
-</nz-drawer>
+<upload-drawer
+  #uploadDrawerEl
+  url="/user/importUser"
+  errorUrl="/user/downloadErrorUser"
+  templateUrl="/user/downloadTemplate"
+></upload-drawer>

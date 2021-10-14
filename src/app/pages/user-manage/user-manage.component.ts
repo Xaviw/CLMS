@@ -1,3 +1,5 @@
+import { UploadDrawerComponent } from './../../shared/components/upload-drawer/upload-drawer.component';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
 import { UserManageService } from './user-manage.service';
@@ -16,6 +18,7 @@ export class UserManageComponent implements OnInit {
   @Input() checkMode = false;
   @Input() defaultChecked?: string[];
   @ViewChild('userModifyDrawer') userDrawerEl!: UserModifyDrawerComponent;
+  @ViewChild('uploadDrawerEl') uploadDrawerEl!: UploadDrawerComponent;
   pageIndex = 1;
   pageSize = 20;
   total = 0;
@@ -42,42 +45,26 @@ export class UserManageComponent implements OnInit {
       console.log(this.roleModal.value);
     },
   };
-  // 导入用户抽屉
-  importDrawer = {
-    visible: false,
-    message: '成功20，失败2',
-    open: () => {
-      this.importDrawer.visible = true;
-    },
-    close: () => {
-      this.importDrawer.visible = false;
-    },
-    handleChange: (info: NzUploadChangeParam) => {
-      if (info.file.status !== 'uploading') {
-      }
-      if (info.file.status === 'done') {
-      } else if (info.file.status === 'error') {
-      }
-    },
-  };
 
   constructor(
     private service: UserManageService,
     private commonService: CommonService,
-    private activatedRoute: ActivatedRoute,
+    private message: NzMessageService,
     private router: Router,
   ) {}
 
   ngOnInit() {
     this.getRoles();
     this.type = this.router.url === '/teacher-manage' ? 1 : 0;
-    if (this.defaultChecked?.length) {
-      for (const item of this.defaultChecked) {
-        if (!this.setOfCheckedId.has(item)) {
-          this.setOfCheckedId.add(item);
+    setTimeout(() => {
+      if (this.defaultChecked?.length) {
+        for (const item of this.defaultChecked) {
+          if (!this.setOfCheckedId.has(item)) {
+            this.setOfCheckedId.add(item);
+          }
         }
       }
-    }
+    });
   }
 
   // 添加用户
@@ -157,10 +144,10 @@ export class UserManageComponent implements OnInit {
       this.queryUser(true);
     } else if (param.code === 'userSearch') {
       this.param = {
-        keyword: param.data.userSearch.value,
+        keyword: param.data.userSearch?.value.trim(),
       };
+      this.searchUser(true);
     }
-    this.searchUser(true);
   }
 
   // 添加/删除选中
@@ -192,44 +179,26 @@ export class UserManageComponent implements OnInit {
 
   // 强制下线
   logout() {
-    let param = this.setOfCheckedId.keys();
+    let param = Array.from(this.setOfCheckedId.keys());
+    this.service.makeOffLine(param).subscribe((res) => {
+      this.getUser();
+    });
   }
   // 重置密码
   resetPWD() {
-    let param = this.setOfCheckedId.keys();
+    let param = Array.from(this.setOfCheckedId.keys());
+    this.service.resetDefaultPassword(param).subscribe();
   }
   // 删除用户
   deleteUser() {
-    let param = this.setOfCheckedId.keys();
-  }
-
-  downloadTemplate() {
-    this.service.downloadTemplate().subscribe((res: any) => {
-      if (res) {
-        // 获取文件名
-        let fileName = res.headers.get('content-disposition').split('=')[1];
-        // 获取数据类型
-        let type = res.headers.get('content-type').split(';')[0];
-        let blob = new Blob([res.body], { type: type });
-        const a = document.createElement('a');
-        // 创建URL
-        const blobUrl = window.URL.createObjectURL(blob);
-        a.download = fileName;
-        a.href = blobUrl;
-        document.body.appendChild(a);
-        // 下载文件
-        a.click();
-        // 释放内存
-        URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-      } else {
-        console.log('error', res);
-      }
+    let param = Array.from(this.setOfCheckedId.keys());
+    this.service.deleteUsers(param).subscribe((res) => {
+      this.getUser();
     });
   }
 
   // 导出用户
   output() {
-    this.service.output(this.param).subscribe();
+    this.commonService.download('/user/exportUser', this.param);
   }
 }
