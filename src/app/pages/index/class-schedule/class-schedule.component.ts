@@ -4,11 +4,6 @@ import { _session } from '@app/shared/utils/Storage';
 import { User } from '@app/shared/types/commonTypes';
 import { IndexService } from '../index.service';
 
-enum week {
-  'single',
-  'double',
-}
-
 @Component({
   selector: 'class-schedule',
   templateUrl: './class-schedule.component.html',
@@ -16,21 +11,20 @@ enum week {
   providers: [IndexService],
 })
 export class ClassScheduleComponent implements OnInit {
-  user: User = this.cache.userInfo;
-  week: week = week.single; // 单双周
+  week = 1; // 单双周
   param = {
-    userId: this.user?.account,
-    time: this.week,
+    userId: this.cache.userInfo?.account,
+    weekTime: this.week,
   };
 
   constructor(public cache: CacheService) {}
 
   ngOnInit() {}
 
-  switchWeek(e: week) {
+  switchWeek(e: number) {
     this.param = {
-      userId: this.user.account,
-      time: this.week,
+      userId: this.cache.userInfo?.account,
+      weekTime: this.week,
     };
   }
 }

@@ -1,8 +1,8 @@
 <div class="header">
   <span class="title">课程表</span>
-  <nz-radio-group [(ngModel)]="week" (ngModelChange)="switchWeek($event)">
-    <label nz-radio-button [nzValue]="0">单周</label>
-    <label nz-radio-button [nzValue]="1">双周</label>
+  <nz-radio-group [ngModel]="week" (ngModelChange)="switchWeek($event)">
+    <label nz-radio-button [nzValue]="1">单周</label>
+    <label nz-radio-button [nzValue]="2">双周</label>
   </nz-radio-group>
 </div>
 <schedule [param]="param"></schedule>

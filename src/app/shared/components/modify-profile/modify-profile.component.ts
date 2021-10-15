@@ -20,8 +20,6 @@ export class ModifyProfileComponent implements OnInit {
   visible = false;
   // 保存修改loading
   isOkLoading = false;
-  // 用户信息
-  userInfo = this.cache.userInfo;
   // 新密码
   PWD: string | undefined;
   // 确认密码
@@ -58,11 +56,6 @@ export class ModifyProfileComponent implements OnInit {
       pwd: [{ value: null, disabled: !this.canEdit }, [Validators.required]],
       confirmPwd: [null, [Validators.required, this.confirmValidator()]],
     });
-    this.pwdForm.patchValue({
-      name: this.userInfo?.name,
-      account: this.userInfo?.account,
-      pwd: '******',
-    });
   }
 
   // 确认密码验证
@@ -74,6 +67,11 @@ export class ModifyProfileComponent implements OnInit {
 
   // 打开Modal
   show(): void {
+    this.pwdForm.patchValue({
+      name: this.cache.userInfo?.name,
+      account: this.cache.userInfo?.account,
+      pwd: '******',
+    });
     this.visible = true;
   }
 

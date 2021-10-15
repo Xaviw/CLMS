@@ -1,10 +1,49 @@
-<div class="view_scroll padding card-area" empty [emptyData]="[1, 2, 3]" emptyInfo="暂无课程...">
-  <lab-card></lab-card>
-  <!-- 占位空标签，用于flex对齐 -->
-  <div class="card"></div>
-  <div class="card"></div>
-  <div class="card"></div>
-  <div class="card"></div>
-  <div class="card"></div>
-  <div class="card"></div>
+<div class="view_scroll padding">
+  <div class="my10" style="overflow: auto">
+    <button nz-button nzType="primary" style="float: right" (click)="addLabDrawer.visible = true">添加机房</button>
+  </div>
+  <div class="card-area" empty [emptyData]="labList" emptyInfo="没有机房信息...">
+    <lab-card class="card" *ngFor="let lab of labList" [labInfo]="lab" (refresh)="getLabList()"></lab-card>
+    <!-- 占位空标签，用于flex对齐 -->
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
 </div>
+
+<!-- 添加机房抽屉 -->
+<nz-drawer
+  nzWidth="300px"
+  [nzClosable]="false"
+  [nzVisible]="addLabDrawer.visible"
+  nzPlacement="right"
+  [nzFooter]="footerTpl"
+  nzTitle="添加机房"
+  (nzOnClose)="addLabDrawer.visible = false"
+>
+  <ng-container *nzDrawerContent>
+    <form nz-form [formGroup]="addLabDrawer.formGroup" nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzFor="name" nzRequired>机房名称：</nz-form-label>
+        <nz-form-control nzErrorTip="机房名称不能为空！">
+          <input nz-input formControlName="name" id="name" placeholder="请输入机房名称" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="description">机房描述：</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="description" id="description" placeholder="请输入机房描述" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+  <ng-template #footerTpl>
+    <div style="float: right">
+      <button nz-button style="margin-right: 8px" (click)="addLabDrawer.cancel()">取消</button>
+      <button nz-button nzType="primary" (click)="addLabDrawer.handleOk()">添加</button>
+    </div>
+  </ng-template>
+</nz-drawer>

@@ -1,3 +1,48 @@
-<p>
-  lab-card works!
-</p>
+<nz-card style="width: 100%" [nzCover]="coverTemplate" [nzActions]="[viewDetail, delete, setStatus]">
+  <nz-tag nzColor="green" class="status-tag" *ngIf="labInfo?.status === labStatus.open">开放中</nz-tag>
+  <nz-tag nzColor="red" class="status-tag" *ngIf="labInfo?.status === labStatus.close">未开放</nz-tag>
+  <nz-tag nzColor="gray" class="status-tag" *ngIf="labInfo?.status === labStatus.repair">维修中</nz-tag>
+  <div class="flex-between">
+    <nz-card-meta
+      [nzTitle]="labInfo?.name ?? ''"
+      [nzDescription]="labInfo?.description ?? '无描述...'"
+      style="position: relative"
+    ></nz-card-meta>
+    <span *ngIf="labInfo?.capacity">容量：{{ labInfo?.capacity }}人</span>
+  </div>
+</nz-card>
+<ng-template #coverTemplate>
+  <div
+    class="cover"
+    [style.background-image]="'url(' + labInfo.image || '../../../../assets/images/login_background.jpg' + ')'"
+  ></div>
+</ng-template>
+<ng-template #viewDetail>
+  <button nz-button nzType="link" nzSize="small" [routerLink]="['/lab-manage', labInfo.id]">查看详细</button>
+</ng-template>
+<ng-template #delete>
+  <button
+    nz-button
+    nzType="link"
+    nzDanger
+    nzSize="small"
+    nz-popconfirm
+    nzPopconfirmTitle="确认删除该机房?"
+    (nzOnConfirm)="(null)"
+    nzPopconfirmPlacement="bottom"
+  >
+    删除机房
+  </button>
+</ng-template>
+<ng-template #setStatus>
+  <button nz-button nzType="link" nzSize="small" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter">
+    设置状态
+  </button>
+  <nz-dropdown-menu #menu="nzDropdownMenu">
+    <ul nz-menu>
+      <li nz-menu-item (click)="setLabStatus(labStatus.open)">开放中</li>
+      <li nz-menu-item (click)="setLabStatus(labStatus.close)">未开放</li>
+      <li nz-menu-item (click)="setLabStatus(labStatus.repair)">维修中</li>
+    </ul>
+  </nz-dropdown-menu>
+</ng-template>

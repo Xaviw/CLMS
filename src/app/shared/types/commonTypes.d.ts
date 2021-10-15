@@ -139,3 +139,13 @@ declare interface CourseDetailInfo {
   weekTime: number;
   studentCount?: number;
 }
+
+// 机房列表信息
+declare interface LabListInfo {
+  id: string;
+  name: string;
+  description?: string;
+  capacity?: number;
+  status: number;
+  image?: string;
+}
