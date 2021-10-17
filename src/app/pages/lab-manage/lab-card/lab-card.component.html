@@ -8,7 +8,12 @@
       [nzDescription]="labInfo?.description ?? '无描述...'"
       style="position: relative"
     ></nz-card-meta>
-    <span *ngIf="labInfo?.capacity">容量：{{ labInfo?.capacity }}人</span>
+    <div class="flex-center" style="flex-direction: column">
+      <span *ngIf="labInfo?.capacity" style="margin-bottom: 8px">容量：{{ labInfo?.capacity }}人</span>
+      <span *ngIf="labInfo?.isFree !== undefined" nz-typography nzType="secondary">{{
+        labInfo?.isFree ? '当前空闲' : '当前有课'
+      }}</span>
+    </div>
   </div>
 </nz-card>
 <ng-template #coverTemplate>

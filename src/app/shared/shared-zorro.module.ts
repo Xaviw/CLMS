@@ -40,6 +40,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzImageModule } from 'ng-zorro-antd/image';
 
 export const SHARED_ZORRO_MODULES = [
   NzButtonModule,
@@ -86,4 +87,5 @@ export const SHARED_ZORRO_MODULES = [
   NzPageHeaderModule,
   NzDescriptionsModule,
   NzStatisticModule,
+  NzImageModule,
 ];

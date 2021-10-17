@@ -7,9 +7,15 @@ export class LabManageService {
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
   // 获取机房列表
-  getLabList() {
-    const url = '/lab/infoList';
+  getLabList(id?: string) {
+    const url = `/lab/infoList`;
     return this.http.get(url);
+  }
+
+  // 获取机房基础信息
+  getLabInfo(id: string) {
+    const url = '/lab/detailInfo';
+    return this.http.post(url, { labId: id });
   }
 
   // 删除机房

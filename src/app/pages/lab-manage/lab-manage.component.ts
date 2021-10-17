@@ -2,7 +2,7 @@ import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LabManageService } from './lab-manage.service';
 import { Component, OnInit } from '@angular/core';
-import { LabListInfo } from '@app/shared/types/commonTypes';
+import { LabInfo } from '@app/shared/types/commonTypes';
 
 @Component({
   selector: 'lab-manage',
@@ -11,7 +11,7 @@ import { LabListInfo } from '@app/shared/types/commonTypes';
   providers: [LabManageService],
 })
 export class LabManageComponent implements OnInit {
-  labList: LabListInfo[] = [];
+  labList: LabInfo[] = [];
   // 添加机房抽屉
   addLabDrawer = {
     visible: false,
@@ -43,7 +43,7 @@ export class LabManageComponent implements OnInit {
   // 获取机房列表
   getLabList() {
     this.service.getLabList().subscribe((res) => {
-      this.labList = res as LabListInfo[];
+      this.labList = res as LabInfo[];
     });
   }
 }

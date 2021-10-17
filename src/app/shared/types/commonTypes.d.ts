@@ -141,11 +141,14 @@ declare interface CourseDetailInfo {
 }
 
 // 机房列表信息
-declare interface LabListInfo {
+declare interface LabInfo {
   id: string;
   name: string;
   description?: string;
   capacity?: number;
   status: number;
   image?: string;
+  isFree?: boolean;
+  startFreeTime?: string;
+  endFreeTime?: string;
 }
