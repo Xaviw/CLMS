@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
@@ -7,7 +7,7 @@ import { statistic } from '@app/shared/types/commonTypes';
 
 interface setting {
   text: string;
-  func: Function;
+  value: number;
 }
 
 @Component({
@@ -23,6 +23,8 @@ export class InfoCardComponent implements OnInit, AfterViewInit {
   @Input() unit: string = '';
   // 设置相关
   @Input() settings: setting[] | undefined;
+  // 设置机房状态
+  @Output() setLabStatus: EventEmitter<any> = new EventEmitter();
   // 数据
   _chartData: statistic | undefined;
   @Input()

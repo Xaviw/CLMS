@@ -1,3 +1,4 @@
+import { CommonService } from '@app/core/services/common.service';
 import { LabManageService } from './../lab-manage.service';
 import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { LabInfo } from '@app/shared/types/commonTypes';
@@ -14,12 +15,12 @@ export class LabCardComponent implements OnInit {
   @ViewChild('labCoverEl') labCoverEl!: ElementRef;
   // 数据
   @Input() labInfo!: LabInfo;
-  // 删除后刷新
+  // 刷新
   @Output() refresh: EventEmitter<any> = new EventEmitter();
   // 状态枚举
   labStatus = LabStatus;
 
-  constructor(private service: LabManageService) {}
+  constructor(private service: LabManageService, private common: CommonService) {}
 
   ngOnInit() {}
 
@@ -32,8 +33,8 @@ export class LabCardComponent implements OnInit {
 
   // 设置机房状态
   setLabStatus(status: LabStatus) {
-    this.service.setLabStatus({ labId: this.labInfo.id, status }).subscribe((res) => {
-      this.labInfo = { ...this.labInfo, status };
+    this.common.setLabStatus({ labIds: [this.labInfo.id], status }).subscribe((res) => {
+      this.refresh.emit();
     });
   }
 }

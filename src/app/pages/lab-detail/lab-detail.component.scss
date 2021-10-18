@@ -1,15 +1,38 @@
+:host ::ng-deep {
+  .ant-upload.ant-upload-select-picture-card {
+    width: 128px;
+    height: 128px;
+    margin: auto;
+  }
+  .ant-upload-list-item-name,
+  .ant-upload-picture-card-wrapper {
+    width: auto;
+    position: sticky;
+    left: 0;
+  }
+}
+
+.shadow {
+  box-shadow: 9px 0px 8px -4px rgb(0 0 0 / 30%);
+}
+
 .image-group {
   display: flex;
   flex-wrap: nowrap;
-  background-color: azure;
-  .image {
-    max-width: 100%;
-    max-height: 100%;
-  }
+  overflow: auto;
+  padding: 5px 0;
   .image-container {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-    border: 1px solid #eee;
+    min-width: 128px;
+    height: 128px;
+    padding: 5px;
+    border: 1px dashed #d9d9d9;
+    .image {
+      max-width: 100%;
+      max-height: 100%;
+      cursor: pointer;
+    }
+  }
+  > *:not(:last-child) {
+    margin-right: 10px;
   }
 }

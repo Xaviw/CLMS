@@ -50,6 +50,12 @@ export class CommonService {
     return this.http.post(url, param);
   }
 
+  // 设置机房状态
+  setLabStatus(param: { labIds: string[]; status: number }) {
+    const url = '/lab/setLabStatus';
+    return this.http.post(url, param);
+  }
+
   // 下载文件
   download(url: string, param?: any) {
     return (

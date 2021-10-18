@@ -24,15 +24,15 @@ export class LabManageService {
     return this.http.post(url, { labId: id });
   }
 
-  // 设置机房状态
-  setLabStatus(param: { labId: string; status: number }) {
-    const url = '/lab/status';
-    return this.http.post(url, param);
-  }
-
   // 添加机房
   addLab(param: { name: string; description?: string }) {
     const url = '/lab/add';
+    return this.http.post(url, param);
+  }
+
+  // 修改机房信息
+  setLabInfo(param: { labId: string; name: string; description?: string }) {
+    const url = '';
     return this.http.post(url, param);
   }
 }

@@ -14,7 +14,7 @@
   </button>
   <nz-dropdown-menu #menu="nzDropdownMenu">
     <ul nz-menu>
-      <li nz-menu-item *ngFor="let item of settings" (click)="item.func()">{{ item.text }}</li>
+      <li nz-menu-item *ngFor="let item of settings" (click)="setLabStatus.emit(item.value)">{{ item.text }}</li>
     </ul>
   </nz-dropdown-menu>
 </div>

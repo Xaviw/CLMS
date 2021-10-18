@@ -1,3 +1,5 @@
+import { LabStatus } from '@app/shared/enum/enum';
+import { CommonService } from '@app/core/services/common.service';
 import { IndexService } from './index.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
@@ -19,15 +21,15 @@ export class IndexComponent implements OnInit {
   labSettings = [
     {
       text: '开放全部机房',
-      func: this.openAllLab,
+      value: LabStatus.open,
     },
     {
       text: '关闭全部机房',
-      func: this.closeAllLab,
+      value: LabStatus.close,
     },
     {
-      text: '全部维修完成',
-      func: this.allRepairSuccessful,
+      text: '维修全部机房',
+      value: LabStatus.repair,
     },
   ];
   // 设备统计信息
@@ -45,7 +47,7 @@ export class IndexComponent implements OnInit {
   // 报修申请统计数据
   repairApplyData: apply[] = [];
 
-  constructor(private service: IndexService) {}
+  constructor(private service: IndexService, private common: CommonService) {}
 
   ngOnInit() {
     this.getLabStatistic();
@@ -105,12 +107,10 @@ export class IndexComponent implements OnInit {
     });
   }
 
-  // 开放全部机房
-  openAllLab() {}
-
-  // 关闭全部机房
-  closeAllLab() {}
-
-  // 全部维修完成
-  allRepairSuccessful() {}
+  // 设置机房状态
+  setLabStatus(status: number) {
+    this.common.setLabStatus({ labIds: [], status }).subscribe((res) => {
+      this.getLabStatistic();
+    });
+  }
 }

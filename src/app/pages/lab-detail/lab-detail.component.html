@@ -1,5 +1,5 @@
 <div class="view_scroll">
-  <nz-page-header class="site-page-header">
+  <nz-page-header style="padding-bottom: 24px">
     <nz-page-header-title>{{ labInfo?.name }}</nz-page-header-title>
     <nz-page-header-subtitle>
       <nz-tag nzColor="green" class="status-tag" *ngIf="labInfo?.status === labStatus.open">开放中</nz-tag>
@@ -7,7 +7,7 @@
       <nz-tag nzColor="gray" class="status-tag" *ngIf="labInfo?.status === labStatus.repair">维修中</nz-tag>
     </nz-page-header-subtitle>
     <nz-page-header-extra>
-      <button nz-button nzType="primary" (click)="labDrawer.visible = true">编辑</button>
+      <button nz-button nzType="primary" (click)="labDrawer.open()">编辑</button>
       <button
         nz-button
         nzDanger
@@ -35,21 +35,20 @@
         }}</nz-descriptions-item>
       </nz-descriptions>
       <nz-image-group class="image-group">
-        <div class="image-container flex-center" *ngFor="let img of labInfo?.image">
-          <img nz-image [nzSrc]="img" alt="机房照片" nzFallback="../../../assets/images/errorImage.png" class="image" />
-        </div>
-        <!-- <nz-upload
+        <nz-upload
           nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          nzAccept="image/*"
+          [nzMultiple]="true"
           nzListType="picture-card"
-          [(nzFileList)]="fileList"
-          [nzShowButton]="fileList.length < 8"
-          [nzPreview]="handlePreview"
         >
           <div>
             <i nz-icon nzType="plus"></i>
-            <div style="margin-top: 8px">Upload</div>
+            <div style="margin-top: 8px">上传照片</div>
           </div>
-        </nz-upload> -->
+        </nz-upload>
+        <div class="image-container flex-center" *ngFor="let img of labInfo?.image">
+          <img nz-image [nzSrc]="img" alt="机房照片" nzFallback="../../../assets/images/errorImage.png" class="image" />
+        </div>
       </nz-image-group>
     </nz-page-header-content>
     <nz-page-header-footer>
@@ -85,30 +84,41 @@
   [nzClosable]="false"
   [nzVisible]="labDrawer.visible"
   nzPlacement="right"
-  [nzFooter]="footerTpl"
-  nzTitle="添加机房"
+  nzTitle="修改机房"
   (nzOnClose)="labDrawer.visible = false"
 >
   <ng-container *nzDrawerContent>
-    <form nz-form [formGroup]="labDrawer.formGroup" nzLayout="vertical">
-      <nz-form-item>
-        <nz-form-label nzFor="name" nzRequired>机房名称：</nz-form-label>
-        <nz-form-control nzErrorTip="机房名称不能为空！">
-          <input nz-input formControlName="name" id="name" placeholder="请输入机房名称" />
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="description">机房描述：</nz-form-label>
-        <nz-form-control>
-          <input nz-input formControlName="description" id="description" placeholder="请输入机房描述" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
-  </ng-container>
-  <ng-template #footerTpl>
-    <div style="float: right">
-      <button nz-button style="margin-right: 8px" (click)="labDrawer.cancel()">取消</button>
-      <button nz-button nzType="primary" (click)="labDrawer.handleOk()">添加</button>
+    <div style="margin-bottom: 24px">
+      <h5 nz-typography>修改机房状态:</h5>
+      <nz-select [(ngModel)]="labDrawer.status" style="width: 100%; margin-bottom: 24px">
+        <nz-option [nzValue]="labStatus.open" nzLabel="开放中"></nz-option>
+        <nz-option [nzValue]="labStatus.close" nzLabel="未开放"></nz-option>
+        <nz-option [nzValue]="labStatus.repair" nzLabel="维修中" nzDisabled></nz-option>
+      </nz-select>
+      <button nz-button nzType="primary" (click)="setLabStatus()">修改</button>
     </div>
-  </ng-template>
+    <nz-divider></nz-divider>
+    <div>
+      <h5 nz-typography>修改机房信息:</h5>
+      <form nz-form [formGroup]="labDrawer.formGroup" nzLayout="vertical">
+        <nz-form-item>
+          <nz-form-label nzFor="name" nzRequired>机房名称：</nz-form-label>
+          <nz-form-control nzErrorTip="机房名称不能为空！">
+            <input nz-input formControlName="name" id="name" placeholder="请输入机房名称" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="description">机房描述：</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="description" id="description" placeholder="请输入机房描述" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row>
+          <nz-form-control [nzSpan]="24">
+            <button nz-button nzType="primary" (click)="setLabInfo()">修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </div>
+  </ng-container>
 </nz-drawer>
