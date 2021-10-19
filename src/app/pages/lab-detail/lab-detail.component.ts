@@ -7,6 +7,7 @@ import { LabManageService } from './../lab-manage/lab-manage.service';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { validateForm } from '@app/shared/utils/utils';
+import { fromEvent } from 'rxjs';
 import * as dayjs from 'dayjs';
 
 @Component({
@@ -15,8 +16,7 @@ import * as dayjs from 'dayjs';
   styleUrls: ['./lab-detail.component.scss'],
   providers: [LabManageService],
 })
-export class LabDetailComponent implements OnInit, AfterViewInit, OnDestroy {
-  shadowObserve!: IntersectionObserver; // 观察上传按钮阴影是否显示
+export class LabDetailComponent implements OnInit, AfterViewInit {
   labInfo!: LabInfo; // 机房基础信息
   labStatus = LabStatus; // 机房状态枚举
   courseScheduleParam!: { labId: string; weekTime: number }; // 课程表参数
@@ -56,29 +56,14 @@ export class LabDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.shadowObserve = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.intersectionRatio < 1) {
-              document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.add('shadow');
-            } else {
-              document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.remove('shadow');
-            }
-          });
-        },
-        {
-          root: document.querySelector('.image-group'),
-          rootMargin: '0px 0px 0px -138px',
-          threshold: [0.9, 1],
-        },
-      );
-      this.shadowObserve.observe(document.getElementsByClassName('image-container').item(0)!);
-    }, 500);
-  }
-
-  ngOnDestroy() {
-    this.shadowObserve.disconnect();
+    // 监听照片列表滚动，添加上传按钮阴影
+    fromEvent(document.querySelector('.image-group')!, 'scroll').subscribe((e: Event) => {
+      if ((e.target! as any).scrollLeft > 0) {
+        document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.add('shadow');
+      } else {
+        document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.remove('shadow');
+      }
+    });
   }
 
   // 获取机房基础信息
@@ -145,5 +130,15 @@ export class LabDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (this.labInfo.description === this.labDrawer.formGroup.get('description')?.value) {
       this.message.warning('机房描述未发生变动！');
     }
+  }
+
+  // 删除照片
+  deletePicture(img: string) {
+    this.service.deletePicture(img).subscribe((res) => {
+      if (this.labInfo.image instanceof Array) {
+        const index = this.labInfo.image.findIndex((item) => item === img);
+        this.labInfo.image.splice(index, 1);
+      }
+    });
   }
 }

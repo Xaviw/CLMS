@@ -39,6 +39,7 @@
           nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           nzAccept="image/*"
           [nzMultiple]="true"
+          [nzShowUploadList]="false"
           nzListType="picture-card"
         >
           <div>
@@ -47,6 +48,9 @@
           </div>
         </nz-upload>
         <div class="image-container flex-center" *ngFor="let img of labInfo?.image">
+          <button nz-button nzDanger nzType="primary" nzSize="small" class="del-pic" (click)="deletePicture(img)">
+            删除
+          </button>
           <img nz-image [nzSrc]="img" alt="机房照片" nzFallback="../../../assets/images/errorImage.png" class="image" />
         </div>
       </nz-image-group>
@@ -64,8 +68,10 @@
   </nz-page-header>
 </div>
 
-<!-- 学生列表 -->
-<ng-template #seatingChartEl> </ng-template>
+<!-- 座位表 -->
+<ng-template #seatingChartEl>
+  <seating-chart></seating-chart>
+</ng-template>
 
 <!-- 课程表 -->
 <ng-template #courseScheduleEl>

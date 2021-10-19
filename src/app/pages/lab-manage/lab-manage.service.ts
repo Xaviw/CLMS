@@ -35,4 +35,10 @@ export class LabManageService {
     const url = '';
     return this.http.post(url, param);
   }
+
+  // 删除照片
+  deletePicture(img: string) {
+    const url = '';
+    return this.http.post(url, { image: img });
+  }
 }

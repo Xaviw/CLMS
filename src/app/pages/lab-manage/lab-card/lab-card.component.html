@@ -19,7 +19,9 @@
 <ng-template #coverTemplate>
   <div
     class="cover"
-    [style.background-image]="'url(' + labInfo.image || '../../../../assets/images/login_background.jpg' + ')'"
+    [style.background-image]="
+      'url(' + labInfo?.image?.length ? labInfo.image![0] : '../../../../assets/images/login_background.jpg' + ')'
+    "
   ></div>
 </ng-template>
 <ng-template #viewDetail>

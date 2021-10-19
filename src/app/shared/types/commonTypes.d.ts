@@ -147,7 +147,7 @@ declare interface LabInfo {
   description?: string;
   capacity?: number;
   status: number;
-  image?: string;
+  image?: string[];
   isFree?: boolean;
   startFreeTime?: string;
   endFreeTime?: string;
