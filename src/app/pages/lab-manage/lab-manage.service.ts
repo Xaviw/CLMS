@@ -41,4 +41,16 @@ export class LabManageService {
     const url = '';
     return this.http.post(url, { image: img });
   }
+
+  // 获取机房座位表
+  getSeatingChart(id: string) {
+    const url = '/lab/seat';
+    return this.http.post(url, { labId: id });
+  }
+
+  // 获取某日空闲时段
+  getFreeTimeRange(param: { labId: string; date: Date }) {
+    const url = '/lab/time';
+    return this.http.post(url, param);
+  }
 }

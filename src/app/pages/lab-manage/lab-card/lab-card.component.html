@@ -27,6 +27,7 @@
 <ng-template #viewDetail>
   <button nz-button nzType="link" nzSize="small" [routerLink]="['/lab-manage', labInfo.id]">查看详细</button>
 </ng-template>
+
 <ng-template #delete>
   <button
     nz-button
@@ -41,6 +42,7 @@
     删除机房
   </button>
 </ng-template>
+
 <ng-template #setStatus>
   <button nz-button nzType="link" nzSize="small" nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomCenter">
     设置状态
