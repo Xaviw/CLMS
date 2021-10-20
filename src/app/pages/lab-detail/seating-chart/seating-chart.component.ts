@@ -22,7 +22,9 @@ export class SeatingChartComponent implements OnInit {
   }
 
   freeTimeRange: number[] = []; // 空闲时间段
+  selectedTime: number = -1; // 选中的时间段
   seatingChart: Array<Array<number>> = []; // 机房座位表
+  originalChart: Array<Array<number>> = []; // 原始座位表
   color = [null, 'rgba(24,144,255,0.8)', 'rgba(128,128,128,0.8)', 'rgba(255,77,79,0.8)']; // 座位对应颜色
   date = new Date(); // 空闲时段日期，默认今天
 
@@ -47,6 +49,24 @@ export class SeatingChartComponent implements OnInit {
   getSeatingChart() {
     if (this.labId) {
       this.service.getSeatingChart(this.labId).subscribe((res) => {
+        this.seatingChart = res as Array<Array<number>>;
+        this.originalChart = res as Array<Array<number>>;
+      });
+    }
+  }
+
+  // 选中时间段
+  checkTime(value: number, index: number) {
+    if (this.selectedTime === index) {
+      this.selectedTime = -1;
+      this.seatingChart = this.originalChart;
+    } else {
+      this.selectedTime = index;
+      const param = {
+        labId: this.labId!,
+        time: value,
+      };
+      this.service.getFreeTimeChart(param).subscribe((res) => {
         this.seatingChart = res as Array<Array<number>>;
       });
     }

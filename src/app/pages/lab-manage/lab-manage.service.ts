@@ -53,4 +53,10 @@ export class LabManageService {
     const url = '/lab/time';
     return this.http.post(url, param);
   }
+
+  // 获取某时间段座位表
+  getFreeTimeChart(param: { labId: string; time: number }) {
+    const url = '/lab/time-chart';
+    return this.http.post(url, param);
+  }
 }

@@ -33,9 +33,14 @@
       <span>空闲时段：</span>
       <nz-date-picker [(ngModel)]="date" (ngModelChange)="dateChange($event)"></nz-date-picker>
     </div>
-    <div class="view_scroll">
+    <div class="view_scroll content">
       <ul nz-menu>
-        <li nz-menu-item *ngFor="let item of freeTimeRange">
+        <li
+          nz-menu-item
+          [nzSelected]="selectedTime === i"
+          *ngFor="let item of freeTimeRange; let i = index"
+          (click)="checkTime(item, i)"
+        >
           <i nz-icon nzType="clock-circle" nzTheme="twotone"></i><span>第{{ item }}节</span>
         </li>
       </ul>
