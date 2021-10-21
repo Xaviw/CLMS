@@ -4,6 +4,25 @@
   grid-template-columns: 1fr 300px;
   column-gap: 20px;
   position: relative;
+  ::ng-deep {
+    .ant-menu-inline,
+    .ant-menu-vertical,
+    .ant-menu-vertical-left {
+      border-right: none;
+    }
+    .ant-modal {
+      top: 50px;
+      height: 100%;
+    }
+    .ant-modal-body {
+      height: calc(100% - 107px);
+      overflow: auto;
+    }
+    .ant-modal {
+      height: 90%;
+      max-height: 90%;
+    }
+  }
 }
 
 .platform {
@@ -21,10 +40,12 @@
 .seating-chart {
   width: 100%;
   max-width: 1500px;
+  min-height: 500px;
   margin: 0 auto;
   display: grid;
   gap: 20px;
   .seat {
+    min-width: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,6 +63,9 @@
       width: 70%;
       max-width: 40px;
     }
+  }
+  .add-border {
+    border: 1px dashed #1890ff;
   }
 }
 
@@ -76,6 +100,7 @@
       position: absolute;
       width: 100%;
       height: calc(100% - 50px);
+      padding-right: 10px;
     }
     .label {
       display: flex;
