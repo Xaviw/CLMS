@@ -31,7 +31,6 @@ export class CourseManageComponent implements OnInit {
           this.courseCardData = res as CourseCard[];
         });
     } else if (param.code === 'myCourse') {
-      console.log(param);
       this.service.getCourseCardByMine({ code: param.data.myCourse.id }).subscribe((res) => {
         this.courseCardData = res as CourseCard[];
       });

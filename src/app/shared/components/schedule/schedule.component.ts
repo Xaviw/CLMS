@@ -34,7 +34,6 @@ export class ScheduleComponent implements OnInit {
   }
   set param(v) {
     if (v) {
-      console.log('v: ', v);
       this._param = v;
       this.singleCourse = v?.courseId ? true : false;
       this.getCourseSchedule();

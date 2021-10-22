@@ -17,8 +17,8 @@
         nzTooltipTitle="选择座位以查看设备信息或申请使用"
       ></i>
     </div>
-    <div class="view_scroll content">
-      <div class="flex-between my10">
+    <div>
+      <div class="flex-between border-bottom">
         <button
           nz-button
           nzType="primary"
@@ -39,17 +39,50 @@
         </button>
         <button nz-button nzType="primary" nzSize="small">申请使用整间教室</button>
       </div>
-      <nz-table #nzTable nzSize="small" nzBordered [nzData]="[]" [nzPageSize]="10">
-        <thead>
-          <tr>
-            <th>设备名</th>
-            <th>数量</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let i of nzTable.data"></tr>
-        </tbody>
-      </nz-table>
+      <div *ngIf="selectedSeat.length && selectedSeat[0] === 1">
+        <div class="flex-between border-bottom">
+          <span nz-typography nzType="danger" class="mr10">该座位设备不能正常使用？</span>
+          <button nz-button nzSize="small" nzDanger>设备报修</button>
+        </div>
+        <div class="padding-y">
+          {{ date | date: 'yyyy年MM月dd日' }}，第
+          <nz-select
+            nzSize="small"
+            nzMode="multiple"
+            nzPlaceHolder="请选择预约节次"
+            [(ngModel)]="courseTimes"
+            style="width: 129px"
+          >
+            <nz-option *ngFor="let item of freeTimeRange" [nzLabel]="item" [nzValue]="item"></nz-option> </nz-select
+          >节<br />
+          <div class="flex-between mt10">
+            <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
+            <button nz-button nzType="primary" nzSize="small">申请使用</button>
+          </div>
+        </div>
+      </div>
+      <div class="padding-y" *ngIf="selectedSeat.length && selectedSeat[0] === 2">
+        <span nz-typography nzType="danger">该座位设备无法正常使用，请选择正常状态座位！</span><br />
+        <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
+      </div>
+      <div class="padding-y" *ngIf="selectedSeat.length && selectedSeat[0] === 3">
+        <span nz-typography nzType="danger">该座位在所选时段已被预约，请重新选择座位或更换时段！</span><br />
+        <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
+      </div>
+      <div class="padding-y" *ngIf="selectedSeat.length && selectedSeat[0] === 4">
+        <div class="flex-between">
+          <span>已申请，等待管理员审核！</span>
+          <button nz-button nzType="primary" nzSize="small">查看详情</button>
+        </div>
+        <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
+      </div>
+      <div class="padding-y" *ngIf="selectedSeat.length && selectedSeat[0] === 5">
+        <div class="flex-between">
+          <span>申请已通过！</span>
+          <button nz-button nzType="primary" nzSize="small">查看详情</button>
+        </div>
+        <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
+      </div>
     </div>
   </div>
   <!-- 空闲时段 -->
@@ -85,14 +118,22 @@
       </div>
       <div class="label">
         <div [ngStyle]="{ 'background-color': color[3] }"></div>
-        <span>已预约</span>
+        <span>已被申请</span>
+      </div>
+      <div class="label">
+        <div [ngStyle]="{ 'background-color': color[4] }"></div>
+        <span>申请中</span>
+      </div>
+      <div class="label">
+        <div [ngStyle]="{ 'background-color': color[5] }"></div>
+        <span>申请通过</span>
       </div>
     </div>
   </div>
 </div>
 
 <!-- 座位表 -->
-<ng-template #chart let-data let-colorIndex="colorIndex" let-border="border">
+<ng-template #chart let-data let-colorIndex="colorIndex" let-border="border" let-isEdit="isEdit">
   <div
     class="seating-chart"
     [ngStyle]="{
@@ -105,7 +146,12 @@
   >
     <ng-container *ngFor="let row of data; let i = index">
       <ng-container *ngFor="let col of row; let j = index">
-        <div [ngClass]="{ 'add-border': border }" class="seat" *ngIf="col !== 0">
+        <div
+          [ngClass]="{ 'add-border': border }"
+          class="seat"
+          *ngIf="col !== 0"
+          (click)="clickSeat(col, isEdit, true, isEdit ? data : [i + 1, j + 1], i, j)"
+        >
           <svg viewBox="0 0 1024 1024" width="100%" height="100%" [ngStyle]="{ fill: color[colorIndex ?? col] }">
             <path
               d="M269.21 8.806h485.427c3.277.717 6.605 1.28 9.779 2.253 14.336 4.506 28.518 19.047 28.467 41.882-.256 77.619-.102 155.238-.102 232.857 0 3.175-.103 6.35-.615 9.472-3.174 19.712-20.633 34.663-41.728 34.51-61.696-.36-123.392-.103-185.088-.103h-4.3v16.896h4.25c15.82 0 31.64-.051 47.462 0 13.875.051 22.17 8.448 22.17 22.323v25.14h5.222c101.785 0 203.57 0 305.356.05 4.608 0 9.319.205 13.773 1.28 23.091 5.376 38.963 25.55 39.015 49.664.102 38.912.05 77.824 0 116.736 0 3.021-.256 6.093-.768 9.114-3.43 22.067-22.426 40.14-44.698 41.574-13.363.87-26.778.359-40.14.461h-4.2v357.171c0 1.792 0 3.584-.05 5.376-.512 18.74-13.722 34.51-32.154 38.4-2.15.461-4.3.82-6.502 1.23H810.29c-.921-.206-1.843-.513-2.765-.615a38.82 38.82 0 0 1-20.275-8.141c-11.008-8.602-16.025-20.02-15.974-33.843V870.605c-3.482.256-6.503.665-9.575.665-89.548.052-179.097.052-268.646-.05-4.864 0-9.933-.82-14.592-2.254-21.453-6.45-35.686-26.316-35.686-49.459-.052-67.277 0-134.605 0-201.881v-4.352H260.762v361.881c-.512 18.893-13.773 34.816-32.256 38.759-2.253.46-4.557.819-6.81 1.228h-67.072c-1.946-.307-3.942-.614-5.888-.972-19.968-4.045-33.28-20.276-33.28-40.756V612.966h-4.3c-11.623 0-23.194.052-34.817 0-28.16-.153-50.637-22.528-50.688-50.688-.102-39.219-.051-78.49 0-117.708 0-6.81 1.28-13.466 4.147-19.661 9.472-20.327 25.396-30.823 47.975-30.823h311.245c0-8.55.204-16.69-.052-24.78-.41-12.493 8.295-23.143 22.58-22.784 15.718.41 31.436.102 47.155.102h4.147v-16.896h-4.66c-61.9 0-123.8.051-185.753 0-22.681 0-41.165-17.869-41.165-40.14a93890.09 93890.09 0 0 1 0-240.18c0-18.074 13.005-34.458 30.516-39.014 2.508-.666 4.966-1.076 7.424-1.588zM426.496 449.69h90.829c43.571 0 87.142-.052 130.713 0 24.064.05 41.78 17.51 42.087 41.574.102 8.653.256 17.306-.103 25.958-.204 4.25-.972 8.653-2.355 12.647-5.99 17.357-21.248 27.494-40.857 27.494H172.134c-1.075 0-2.099 0-3.174-.051-22.784-.768-40.038-18.432-40.243-41.216-.103-8.448-.103-16.896.051-25.293.051-3.123.358-6.349 1.075-9.37 4.71-19.404 20.685-31.692 41.114-31.692h214.579v-14.285H78.08c-8.294 0-11.93 3.635-11.93 12.032v112.026c0 8.55 3.584 12.083 12.135 12.083H945.97c8.397 0 11.981-3.533 11.981-11.879V447.386c0-8.295-3.635-11.879-11.98-11.879h-88.27c-.716 0-1.638-.256-2.201.051-.82.461-1.895 1.28-1.997 1.997-.205 2.919 0 5.888-.154 8.858-.102 2.15.615 3.328 2.56 4.454 12.903 7.68 20.992 18.995 22.682 33.946 1.075 9.472.666 19.149.614 28.723 0 4.3-.358 8.653-1.28 12.851-4.761 21.453-24.832 36.967-46.284 36.096-22.324-.921-41.472-17.92-43.93-39.936-1.126-10.342-.82-20.838-.666-31.283.154-15.514 6.298-28.57 19.098-37.325 5.58-3.84 7.526-7.68 6.86-13.977-.46-4.455-.102-4.455-4.454-4.455H658.534c-7.782 0-15.616-.051-23.398.051-1.178 0-2.867.461-3.482 1.332-4.864 6.81-11.52 9.267-19.712 9.267-60.416-.103-120.883-.051-181.299-.051h-4.096c-.051 1.28-.051 2.201-.051 3.584zm344.883 291.43H483.482v77.414c0 7.834 3.584 11.264 11.468 11.264h264.807c8.14 0 11.571-3.43 11.571-11.468v-73.728c.051-1.076.051-2.202.051-3.482zM219.955 613.171c-1.331-.051-2.457-.153-3.584-.153-18.893 0-37.734.05-56.627-.052-3.072 0-3.84.87-3.84 3.892.051 117.606.051 235.161 0 352.768 0 3.072.87 3.89 3.891 3.89 18.893-.102 37.735-.05 56.627-.05h3.533V613.17zM752.077 50.534H276.07c-4.352 0-4.352 0-4.352 4.199v233.37h480.359V50.533zM867.84 973.261V613.274h-55.5V973.26h55.5zm-96.614-359.987H483.789v85.862h287.437v-85.862zM649.37 515.635v-24.269h-48.487v24.27h48.487zm-479.95-24.371v24.525c14.695 0 29.134.051 43.572-.103.614 0 1.69-1.638 1.69-2.508.153-6.196-.052-12.442.153-18.688.103-2.919-.973-3.482-3.635-3.482-12.851.102-25.754.051-38.605.051-1.024.051-2.048.154-3.174.205zm260.506-97.178h63.232c32.564 0 65.178-.05 97.741.052 2.714 0 3.687-.615 3.635-3.533-.05-3.175-2.048-2.611-3.84-2.611H429.926v6.092zM283.7 491.11c-9.165 0-17.971-.05-26.777.103-.564 0-1.588 1.69-1.639 2.56-.153 6.4 0 12.851-.102 19.251-.051 2.304.87 2.816 2.97 2.765 6.86-.103 13.67-.051 20.53-.051h5.018V491.11zm68.967 0c-9.063 0-17.767-.05-26.47.103-.666 0-1.793 1.382-1.793 2.099-.153 6.707-.051 13.466-.102 20.224 0 1.843.768 2.355 2.457 2.304 5.479-.051 10.957 0 16.436 0h9.523c-.051-8.346-.051-16.282-.051-24.73zm68.966 24.73v-24.73c-9.011 0-17.766-.05-26.47.103-.615 0-1.69 1.229-1.69 1.945-.154 6.861-.051 13.722-.102 20.583 0 1.997 1.126 2.15 2.662 2.15 4.966-.051 9.933 0 14.848 0 3.533-.051 7.066-.051 10.752-.051zm69.12-24.576h-28.058v24.371h28.058v-24.371zm69.069.051h-28.007v24.269h28.007v-24.269zm278.989 12.288c0-3.686.05-7.373 0-11.059-.052-3.789-2.407-6.4-5.53-6.451-3.277-.051-5.734 2.662-5.734 6.605-.052 7.27-.052 14.54 0 21.81.05 3.79 2.355 6.4 5.53 6.452 3.276.051 5.682-2.611 5.734-6.554.05-3.635 0-7.219 0-10.803zM504.013 329.882v16.69c4.966 0 9.779.052 14.592-.05.563 0 1.536-.922 1.587-1.434.102-5.018.051-10.035.051-15.206h-16.23z"
@@ -116,7 +162,11 @@
           </svg>
           <span [ngStyle]="{ color: color[colorIndex ?? col] }">{{ i + 1 }}-{{ j + 1 }}</span>
         </div>
-        <div [ngClass]="{ 'add-border': border }" *ngIf="col === 0"></div>
+        <div
+          [ngClass]="{ 'add-border': border }"
+          *ngIf="col === 0"
+          (click)="clickSeat(col, isEdit, false, isEdit ? data : [i + 1, j + 1], i, j)"
+        ></div>
       </ng-container>
     </ng-container>
   </div>
@@ -125,7 +175,8 @@
 <!-- 设置座位表 -->
 <nz-modal
   nzWidth="90%"
-  [nzBodyStyle]="{ padding: '10px' }"
+  [nzBodyStyle]="{ padding: '10px', overflow: 'auto', 'max-height': 'calc(100vh - 200px)' }"
+  [nzStyle]="{ top: '50px' }"
   [(nzVisible)]="settingChart.visible"
   [nzMaskClosable]="false"
   [nzKeyboard]="false"
@@ -162,7 +213,7 @@
       </div>
       <ng-template
         [ngTemplateOutlet]="chart"
-        [ngTemplateOutletContext]="{ $implicit: chartCopy, colorIndex: 1, border: true }"
+        [ngTemplateOutletContext]="{ $implicit: chartCopy, colorIndex: 1, border: true, isEdit: true }"
       ></ng-template>
     </div>
   </ng-container>

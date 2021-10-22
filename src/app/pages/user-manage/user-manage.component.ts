@@ -41,9 +41,7 @@ export class UserManageComponent implements OnInit {
     cancel: () => {
       this.roleModal.visible = false;
     },
-    setRole: () => {
-      console.log(this.roleModal.value);
-    },
+    setRole: () => {},
   };
 
   constructor(

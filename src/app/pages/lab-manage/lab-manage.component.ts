@@ -24,7 +24,6 @@ export class LabManageComponent implements OnInit {
       this.visible = false;
     },
     handleOk: () => {
-      console.log(this.addLabDrawer.formGroup.getRawValue());
       validateForm(this.addLabDrawer.formGroup.controls);
       if (this.addLabDrawer.formGroup.valid) {
         this.service.addLab(this.addLabDrawer.formGroup.getRawValue()).subscribe((res) => {

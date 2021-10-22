@@ -59,4 +59,10 @@ export class LabManageService {
     const url = '/lab/time-chart';
     return this.http.post(url, param);
   }
+
+  // 编辑座位表
+  editSeatingChart(param: { labId: string; chart: Array<Array<number>> }) {
+    const url = '';
+    return this.http.post(url, param);
+  }
 }

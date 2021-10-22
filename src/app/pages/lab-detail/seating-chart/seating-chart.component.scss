@@ -10,18 +10,6 @@
     .ant-menu-vertical-left {
       border-right: none;
     }
-    .ant-modal {
-      top: 50px;
-      height: 100%;
-    }
-    .ant-modal-body {
-      height: calc(100% - 107px);
-      overflow: auto;
-    }
-    .ant-modal {
-      height: 90%;
-      max-height: 90%;
-    }
   }
 }
 
@@ -71,7 +59,7 @@
 
 .side {
   display: grid;
-  grid-template-rows: 1fr 1fr 100px;
+  grid-template-rows: auto 1fr 100px;
   padding: 0 0 0 20px;
   border-left: 2px solid #1890ff;
   position: absolute;
@@ -114,5 +102,9 @@
         margin-bottom: 5px;
       }
     }
+  }
+  .border-bottom {
+    border-bottom: 1px dashed #d9d9d9;
+    padding: 10px 0;
   }
 }

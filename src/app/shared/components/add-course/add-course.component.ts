@@ -33,7 +33,6 @@ export class AddCourseComponent implements OnInit {
     cancel: () => {
       this.class.visible = false;
       this.class.list = _.cloneDeep(this._default?.class) ?? [];
-      console.log(this.class.list === this._default?.class);
       this.validateForm.get('class')?.patchValue(this._default?.class?.map((item) => item.id) ?? null);
     },
     getConditions: (e: any) => {

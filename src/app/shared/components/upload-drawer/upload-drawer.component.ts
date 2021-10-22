@@ -41,7 +41,6 @@ export class UploadDrawerComponent implements OnInit {
       this.loading = false;
       this.text = `成功${info.file.response.success}人，失败${info.file.response.failed}人`;
     } else if (info.file.status === 'error') {
-      console.log(info);
       this.loading = false;
       this.text = '';
       this.message.error('上传失败，请尝试重新上传！');

@@ -114,11 +114,9 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   update = () => {
     validateForm(this.formGroup.controls);
-    console.log(this.formGroup.getRawValue());
   };
 
   add = () => {
     validateForm(this.formGroup.controls);
-    console.log(this.formGroup.getRawValue());
   };
 }

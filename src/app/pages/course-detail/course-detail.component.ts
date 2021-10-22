@@ -50,8 +50,6 @@ export class CourseDetailComponent implements OnInit {
       this.addStudent.instance = instance;
     },
     handleOk: () => {
-      console.log(this.addStudent.instance);
-      console.log((this.addStudent.instance as UserManageComponent).setOfCheckedId);
       // this.service.addCourseStudent().subscribe(res => {
       //   this.getCourseDetail();
       // })

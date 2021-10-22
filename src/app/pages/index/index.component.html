@@ -5,12 +5,12 @@
     [chartData]="labStatistic"
     [settings]="labSettings"
     (setLabStatus)="setLabStatus($event)"
+    style="grid-area: 1/ 1/ 2/ 4"
   ></info-card>
-  <info-card title="设备信息" unit="件" [chartData]="equipmentStatistic"></info-card>
-  <info-card title="用户信息" unit="人" [chartData]="userStatistic"></info-card>
-  <apply-chart title="机房申请" viewDetail="" [chartData]="labApplyData"></apply-chart>
-  <apply-chart title="采购申请" viewDetail="" [chartData]="shopApplyData"></apply-chart>
-  <apply-chart title="设备报修" viewDetail="" [chartData]="repairApplyData"></apply-chart>
+  <info-card title="用户信息" unit="人" [chartData]="userStatistic" style="grid-area: 1/ 4/ 2/ 7"></info-card>
+  <apply-chart style="grid-area: 2/ 1/ 3/ 3" title="机房申请" viewDetail="" [chartData]="labApplyData"></apply-chart>
+  <apply-chart style="grid-area: 2/ 3/ 3/ 5" title="采购申请" viewDetail="" [chartData]="shopApplyData"></apply-chart>
+  <apply-chart style="grid-area: 2/ 5/ 3/ 7" title="设备报修" viewDetail="" [chartData]="repairApplyData"></apply-chart>
   <bulletin></bulletin>
   <line-chart></line-chart>
   <class-schedule></class-schedule>
