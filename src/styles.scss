@@ -9,6 +9,7 @@ $left-width: 300px;
 
   & > .header {
     height: $header-height;
+    line-height: $header-height;
     border-bottom: 1px solid #eee;
     padding: 0 10px;
 

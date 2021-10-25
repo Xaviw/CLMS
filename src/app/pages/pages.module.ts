@@ -98,6 +98,23 @@ const routes: Routes = [
           skipPermission: true,
         },
       },
+      {
+        path: 'application-list',
+        loadChildren: () => import('./application-list/application-list.module').then((m) => m.ApplicationListModule),
+        data: {
+          title: '申请列表',
+          needLogin: true,
+        },
+      },
+      {
+        path: 'apply',
+        loadChildren: () => import('./apply/apply.module').then((m) => m.ApplyModule),
+        data: {
+          title: '申请详细',
+          needLogin: true,
+          skipPermission: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局../shared/components/modify-profile/modify-profile.module

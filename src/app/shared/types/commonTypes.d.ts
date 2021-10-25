@@ -152,3 +152,22 @@ declare interface LabInfo {
   startFreeTime?: string;
   endFreeTime?: string;
 }
+
+// 申请列表请求参数
+interface ApplicationParam {
+  pageIndex: number;
+  pageSize: number;
+  sort: Array<{ key?: string; value?: number }>;
+  filter: Array<{ key?: string; value?: number[] }>;
+}
+
+// 申请信息
+declare interface ApplicationInfo {
+  id: string;
+  type: number;
+  time: string;
+  remark: string;
+  user_id: string;
+  user_name: string;
+  status: number;
+}
