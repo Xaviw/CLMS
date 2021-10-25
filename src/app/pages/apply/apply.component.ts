@@ -1,3 +1,5 @@
+import { LabInfo } from '@app/shared/types/commonTypes';
+import { LabManageService } from './../lab-manage/lab-manage.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ApplicationListService } from './../application-list/application-list.service';
@@ -8,14 +10,16 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-apply',
   templateUrl: './apply.component.html',
   styleUrls: ['./apply.component.scss'],
-  providers: [ApplicationListService],
+  providers: [ApplicationListService, LabManageService],
 })
 export class ApplyComponent implements OnInit {
   form?: FormGroup;
+  labList: LabInfo[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private service: ApplicationListService,
+    private labService: LabManageService,
     private fb: FormBuilder,
     private message: NzMessageService,
     private router: Router,
@@ -34,16 +38,24 @@ export class ApplyComponent implements OnInit {
         user: [null, Validators.required],
         remark: [null, Validators.required],
       });
-      if (params.type === 0) {
-        this.form.addControl('time', this.fb.control([null, Validators.required]));
-      }
-      if (params.type === 0 || params.type === 1) {
-        this.form.addControl('lab', this.fb.control([null, Validators.required]));
-        this.form.addControl('seat', this.fb.control([null, Validators.required]));
-      }
-      if (params.type === 2) {
-        this.form.addControl('list', this.fb.control([null, Validators.required]));
-      }
+      // if (params.type === 0) {
+      this.form.addControl('time', this.fb.control(null, Validators.required));
+      // }
+      // if (params.type === 0 || params.type === 1) {
+      this.form.addControl('lab', this.fb.control(null, Validators.required));
+      this.form.addControl('seat', this.fb.control(null, Validators.required));
+      this.getLabList();
+      // }
+      // if (params.type === 2) {
+      this.form.addControl('list', this.fb.control(null, Validators.required));
+      // }
+    });
+  }
+
+  // 获取机房列表
+  getLabList() {
+    this.labService.getLabList().subscribe((res) => {
+      this.labList = res as LabInfo[];
     });
   }
 }

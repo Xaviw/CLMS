@@ -2,40 +2,46 @@
   <div class="left view">
     <h4 nz-typography>申请信息</h4>
     <div class="view flex-center">
-      <form nz-form [formGroup]="form!">
+      <form nz-form [formGroup]="form!" class="form">
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="user">姓名</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="姓名不能为空">
+          <nz-form-label nzRequired nzFor="user">姓名</nz-form-label>
+          <nz-form-control nzErrorTip="姓名不能为空">
             <input nz-input formControlName="user" id="user" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="lab">机房</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="机房不能为空">
-            <input nz-input formControlName="lab" id="lab" />
+          <nz-form-label nzRequired nzFor="lab">机房</nz-form-label>
+          <nz-form-control nzErrorTip="机房不能为空">
+            <nz-select ormControlName="lab" id="lab">
+              <nz-option
+                *ngFor="let lab of labList"
+                [nzValue]="lab.id"
+                [nzLabel]="lab.name + '-' + lab.description"
+              ></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="seat">座位</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="机房不能为空">
+          <nz-form-label nzRequired nzFor="seat">座位</nz-form-label>
+          <nz-form-control nzErrorTip="机房不能为空">
             <input nz-input formControlName="seat" id="seat" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="time">申请时间</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="申请时间不能为空">
+          <nz-form-label nzRequired nzFor="time">申请时间</nz-form-label>
+          <nz-form-control nzErrorTip="申请时间不能为空">
             <input nz-input formControlName="time" id="time" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="list">采购清单</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="采购清单不能为空">
+          <nz-form-label nzRequired nzFor="list">采购清单</nz-form-label>
+          <nz-form-control nzErrorTip="采购清单不能为空">
             <input nz-input formControlName="list" id="list" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label nzSpan="8" nzRequired nzFor="remark">备注</nz-form-label>
-          <nz-form-control nzSpan="16" nzErrorTip="备注不能为空">
+          <nz-form-label nzRequired nzFor="remark">备注</nz-form-label>
+          <nz-form-control nzErrorTip="备注不能为空">
             <input nz-input formControlName="remark" id="remark" />
           </nz-form-control>
         </nz-form-item>
