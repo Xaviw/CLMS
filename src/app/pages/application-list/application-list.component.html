@@ -42,7 +42,7 @@
             <td>{{ type[data.type].text }}</td>
             <td>{{ data.user_id }}-{{ data.user_name }}</td>
             <td>{{ data.time }}</td>
-            <td>{{ data.remark }}</td>
+            <td nz-typography nzEllipsis>{{ data.remark }}</td>
             <td nzAlign="center">
               <button nz-button nzType="link" (click)="redirectDetail(data.type, data.id)">查看详细</button>
               <button

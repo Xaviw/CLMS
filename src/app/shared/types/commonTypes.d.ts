@@ -166,8 +166,24 @@ declare interface ApplicationInfo {
   id: string;
   type: number;
   time: string;
+  date: string;
   remark: string;
   user_id: string;
   user_name: string;
   status: number;
+  lab_id?: string;
+  apply_all: boolean;
+  seat_row?: number;
+  seat_column?: number;
+  course?: number[];
+  list?: string;
+}
+
+// 申请历史
+declare interface ApplicationHistory {
+  time: string;
+  status: number;
+  remark?: string;
+  user_id: string;
+  user_name: string;
 }

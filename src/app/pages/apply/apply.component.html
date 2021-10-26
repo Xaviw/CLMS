@@ -1,18 +1,25 @@
 <div class="view padding container">
   <div class="left view">
-    <h4 nz-typography>申请信息</h4>
+    <div>
+      <h4 nz-typography style="display: inline-block; margin-right: 10px">
+        {{type?.[paramsType]?.text ?? '申请信息'}}
+      </h4>
+      <nz-tag [nzColor]="applicationInfo ? status[applicationInfo.status]?.color : ''" *ngIf="applicationInfo"
+        >{{ applicationInfo ? status[applicationInfo.status]?.text : null }}
+      </nz-tag>
+    </div>
     <div class="view flex-center">
-      <form nz-form [formGroup]="form!" class="form">
+      <form nz-form [formGroup]="form" class="form">
         <nz-form-item>
           <nz-form-label nzRequired nzFor="user">姓名</nz-form-label>
-          <nz-form-control nzErrorTip="姓名不能为空">
+          <nz-form-control nzErrorTip="姓名不能为空！">
             <input nz-input formControlName="user" id="user" />
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="lab">机房</nz-form-label>
-          <nz-form-control nzErrorTip="机房不能为空">
-            <nz-select ormControlName="lab" id="lab">
+        <nz-form-item *ngIf="form?.controls?.lab_id">
+          <nz-form-label nzRequired nzFor="lab_id">机房</nz-form-label>
+          <nz-form-control nzErrorTip="请选择机房！">
+            <nz-select formControlName="lab_id" id="lab_id">
               <nz-option
                 *ngFor="let lab of labList"
                 [nzValue]="lab.id"
@@ -21,38 +28,132 @@
             </nz-select>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="seat">座位</nz-form-label>
-          <nz-form-control nzErrorTip="机房不能为空">
-            <input nz-input formControlName="seat" id="seat" />
+        <nz-form-item *ngIf="form?.controls?.apply_all">
+          <nz-form-label nzRequired nzFor="apply_all">申请整间教室</nz-form-label>
+          <nz-form-control>
+            <nz-switch formControlName="apply_all" id="apply_all" (ngModelChange)="applyAllChange($event)"></nz-switch>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="time">申请时间</nz-form-label>
-          <nz-form-control nzErrorTip="申请时间不能为空">
-            <input nz-input formControlName="time" id="time" />
+        <nz-form-item *ngIf="form?.controls?.seat_row && form?.controls?.seat_column">
+          <nz-form-label nzRequired>座位</nz-form-label>
+          <nz-form-control nzErrorTip="请输入申请座位行标！">
+            <nz-input-number
+              style="width: calc(100% - 24px)"
+              [nzMin]="1"
+              [nzMax]="100"
+              [nzStep]="1"
+              formControlName="seat_row"
+            ></nz-input-number>
+            <span style="padding: 0 5px">行</span>
+          </nz-form-control>
+          <nz-form-control nzErrorTip="请输入申请座位列标！">
+            <nz-input-number
+              style="width: calc(100% - 24px)"
+              [nzMin]="1"
+              [nzMax]="100"
+              [nzStep]="1"
+              formControlName="seat_column"
+            ></nz-input-number>
+            <span style="padding: 0 5px">列</span>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item *ngIf="form?.controls?.date">
+          <nz-form-label nzRequired nzFor="date">申请时间</nz-form-label>
+          <nz-form-control nzErrorTip="请选择申请时间！">
+            <nz-date-picker style="width: 100%" formControlName="date" id="date"></nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="form?.controls?.course">
+          <nz-form-label nzRequired nzFor="course">申请节次</nz-form-label>
+          <nz-form-control nzErrorTip="请选择申请节次！">
+            <nz-select nzMode="multiple" formControlName="course">
+              <nz-option [nzValue]="1" nzLabel="1"></nz-option>
+              <nz-option [nzValue]="2" nzLabel="2"></nz-option>
+              <nz-option [nzValue]="3" nzLabel="3"></nz-option>
+              <nz-option [nzValue]="4" nzLabel="4"></nz-option>
+              <nz-option [nzValue]="5" nzLabel="5"></nz-option>
+              <nz-option [nzValue]="6" nzLabel="6"></nz-option>
+              <nz-option [nzValue]="7" nzLabel="7"></nz-option>
+              <nz-option [nzValue]="8" nzLabel="8"></nz-option>
+              <nz-option [nzValue]="9" nzLabel="9"></nz-option>
+              <nz-option [nzValue]="10" nzLabel="10"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="form?.controls?.list">
           <nz-form-label nzRequired nzFor="list">采购清单</nz-form-label>
           <nz-form-control nzErrorTip="采购清单不能为空">
-            <input nz-input formControlName="list" id="list" />
+            <textarea nz-input formControlName="list" id="list" nzAutosize></textarea>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <nz-form-label nzRequired nzFor="remark">备注</nz-form-label>
-          <nz-form-control nzErrorTip="备注不能为空">
-            <input nz-input formControlName="remark" id="remark" />
+        <nz-form-item *ngIf="form?.controls?.remark">
+          <nz-form-label nzFor="remark">备注</nz-form-label>
+          <nz-form-control>
+            <textarea nz-input formControlName="remark" id="remark" nzAutosize></textarea>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
-          <button nz-button nzType="primary">test</button>
+        <nz-form-item class="flex-evenly" style="padding-left: 90px">
+          <button
+            nz-button
+            (click)="cancelApply()"
+            *ngIf="applicationInfo?.status !== 3 && applicationInfo?.status !== 5 && applicationInfo?.status !== 4"
+          >
+            取消申请
+          </button>
+          <button nz-button nzType="primary" *ngIf="!disabled && applicationInfo?.status !== 3" (click)="apply()">
+            {{ !disabled && paramsId ? '修改申请' : '提交申请' }}
+          </button>
+          <button nz-button nzType="primary" *ngIf="disabled && applicationInfo?.status === 0" (click)="examine.open()">
+            审核申请
+          </button>
+          <button
+            nz-button
+            nzType="primary"
+            *ngIf="applicationInfo?.type === 2 && applicationInfo?.status === 1"
+            (click)="repairFinish()"
+          >
+            维修完成
+          </button>
         </nz-form-item>
       </form>
     </div>
   </div>
-  <div class="right view padding">
+  <div class="right history padding">
     <h4 nz-typography>历史记录</h4>
-    <div></div>
+    <nz-timeline>
+      <nz-timeline-item *ngFor="let item of history" [nzColor]="status[item.status].color">
+        <p>{{ item.time | date: 'yyyy-MM-dd hh:mm:ss' }}</p>
+        <p *ngIf="item.status !== 0; else start">
+          {{ item.user_id + '-' + item.user_name }} 修改申请状态为：{{ status[item.status].text }}
+        </p>
+        <ng-template #start>
+          <p>{{ item.user_id + '-' + item.user_name }} 发起申请</p>
+        </ng-template>
+        <p *ngIf="item?.remark">审核信息：{{ item.remark }}</p>
+      </nz-timeline-item>
+    </nz-timeline>
   </div>
 </div>
+
+<!-- 审核Modal -->
+<nz-modal [(nzVisible)]="examine.visible" nzTitle="审核申请" (nzOnCancel)="examine.close()" (nzOnOk)="examine.submit()">
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="examine.examineForm">
+      <nz-form-item>
+        <nz-form-label nzSpan="4" nzRequired nzFor="status">审核状态</nz-form-label>
+        <nz-form-control nzSpan="20" nzErrorTip="姓名不能为空">
+          <nz-radio-group formControlName="status">
+            <label nz-radio [nzValue]="true">通过</label>
+            <label nz-radio [nzValue]="false">不通过</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzSpan="4" nzFor="remark">审批信息</nz-form-label>
+        <nz-form-control nzSpan="20">
+          <textarea nz-input formControlName="remark" id="remark" nzAutosize></textarea>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

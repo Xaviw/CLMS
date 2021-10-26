@@ -1,6 +1,8 @@
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { LabManageService } from './../../lab-manage/lab-manage.service';
 import { Component, Input, OnInit } from '@angular/core';
+import { getType } from '@shared/utils/utils';
 import * as _ from 'lodash';
 
 @Component({
@@ -26,9 +28,9 @@ export class SeatingChartComponent implements OnInit {
   freeTimeRange: number[] = []; // 空闲时间段
   selectedTime: number = -1; // 选中的时间段
   courseTimes: number[] = []; // 选中的节次
-  selectedSeat: number[] = [];
+  selectedSeat: (number | string)[] = [];
   originalChart: Array<Array<number>> = []; // 原始座位表
-  seatingChart: Array<Array<number>> = []; // 座位表，包含预约信息
+  seatingChart: Array<Array<number | { status: number; id: string }>> = []; // 座位表，包含预约信息
   chartCopy: Array<Array<number>> = []; // 修改座位表
   color = [
     null,
@@ -107,7 +109,7 @@ export class SeatingChartComponent implements OnInit {
     },
   };
 
-  constructor(private service: LabManageService, private message: NzMessageService) {}
+  constructor(private service: LabManageService, private message: NzMessageService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -150,21 +152,47 @@ export class SeatingChartComponent implements OnInit {
         time: value,
       };
       this.service.getFreeTimeChart(param).subscribe((res) => {
-        this.seatingChart = res as Array<Array<number>>;
+        this.seatingChart = res as Array<Array<number | { status: number; id: string }>>;
         if (this.selectedSeat.length) {
-          this.selectedSeat[0] = (res as Array<Array<number>>)[this.selectedSeat[1] - 1][this.selectedSeat[2] - 1];
+          let target = (res as Array<Array<number | { status: number; id: string }>>)[
+            (this.selectedSeat[1] as number) - 1
+          ][(this.selectedSeat[2] as number) - 1];
+          if (getType(target) === 'Object') {
+            this.selectedSeat[0] = (target as { status: number; id: string }).status;
+          } else if (getType(target) === 'Number') {
+            this.selectedSeat[0] = target as number;
+          }
         }
       });
     }
   }
 
   // 点击座位
-  clickSeat(status: number, isEdit: boolean, isSeat: boolean, data: any, row?: number, column?: number) {
+  clickSeat(
+    status: number | { status: number; id: string },
+    isEdit: boolean,
+    isSeat: boolean,
+    data: any,
+    row?: number,
+    column?: number,
+  ) {
     if (isEdit && data && row !== undefined && column !== undefined) {
       isSeat ? (data[row][column] = 0) : (data[row][column] = 1);
     } else {
-      if (isSeat) this.selectedSeat = [status, ...data];
+      if (isSeat)
+        this.selectedSeat = [
+          (status as { status: number; id: string })?.status ?? status,
+          ...data,
+          (status as { status: number; id: string })?.id,
+        ];
     }
+  }
+
+  // 跳转已有申请
+  redirectToApplication() {
+    this.router.navigate(['/apply'], {
+      queryParams: { id: this.selectedSeat[3] },
+    });
   }
 
   // 校验座位表

@@ -1,17 +1,31 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 350px;
-
+  .left {
+    height: 100%;
+  }
   .right {
+    height: 100%;
     border-left: 1px #eee solid;
   }
 }
 
 .form {
-  width: 40%;
+  width: 50%;
   max-width: 500px;
-  min-width: 300px;
+  min-width: 400px;
   nz-form-label {
-    width: 90px;
+    width: 110px;
+  }
+}
+
+.history {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 48px 1fr;
+  gap: 0px;
+  nz-timeline {
+    overflow: auto;
+    padding-top: 10px;
   }
 }
