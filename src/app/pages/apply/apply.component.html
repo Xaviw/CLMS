@@ -1,7 +1,7 @@
 <div class="view padding container">
   <div class="left view">
     <div>
-      <h4 nz-typography style="display: inline-block; margin-right: 10px">
+      <h4 nz-typography style="display: inline-block; margin: 0 10px 0 0">
         {{type?.[paramsType]?.text ?? '申请信息'}}
       </h4>
       <nz-tag [nzColor]="applicationInfo ? status[applicationInfo.status]?.color : ''" *ngIf="applicationInfo"

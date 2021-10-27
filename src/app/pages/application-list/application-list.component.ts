@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApplicationInfo, ApplicationParam } from '@app/shared/types/commonTypes';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ApplicationType, ApplicationStatus } from '@app/shared/enum/enum';
+import * as base64 from 'js-base64';
+import { base64Filter } from '@app/shared/utils/utils';
 
 @Component({
   selector: 'app-application-list',
@@ -26,7 +28,6 @@ export class ApplicationListComponent implements OnInit {
 
   // 表格参数
   onQueryParamsChange(e: NzTableQueryParams) {
-    console.log(e);
     this.param = e as unknown as ApplicationParam;
     this.getApplicationList(e as unknown as ApplicationParam);
   }
@@ -50,6 +51,7 @@ export class ApplicationListComponent implements OnInit {
 
   // 跳转详细
   redirectDetail(type: number, id?: string) {
-    this.router.navigate(['/apply'], { queryParams: { type, id } });
+    const param = base64Filter(base64.encodeURI(JSON.stringify({ type, id })));
+    this.router.navigate(['/apply'], { queryParams: { param } });
   }
 }

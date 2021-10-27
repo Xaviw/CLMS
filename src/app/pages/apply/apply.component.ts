@@ -1,13 +1,14 @@
 import { ApplicationType, ApplicationStatus } from '@app/shared/enum/enum';
 import { validateForm } from '@shared/utils/utils';
 import { CacheService } from '@app/core/services/cache.service';
-import { LabInfo, ApplicationInfo, ApplicationHistory } from '@app/shared/types/commonTypes';
+import { LabInfo, ApplicationInfo, ApplicationHistory, apply } from '@app/shared/types/commonTypes';
 import { LabManageService } from './../lab-manage/lab-manage.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { ApplicationListService } from './../application-list/application-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import * as base64 from 'js-base64';
 
 @Component({
   selector: 'app-apply',
@@ -66,31 +67,63 @@ export class ApplyComponent implements OnInit {
       user: [{ value: null, disabled: true }, Validators.required],
     });
     this.activatedRoute.queryParams.subscribe((params: any) => {
-      if (params.type) {
-        this.paramsType = Number(params.type);
-        // 类型错误，返回列表
-        if (!['0', '1', '2'].includes(params.type)) {
-          this.message.error('错误的申请类型！');
-          this.router.navigateByUrl('/application-list');
+      if (params.param) {
+        let data = JSON.parse(base64.decode(params.param));
+        console.log('data: ', data);
+        if (data.type !== undefined) {
+          this.paramsType = Number(data.type);
+          // 类型错误，返回列表
+          if (![0, 1, 2].includes(data.type)) {
+            this.message.error('错误的申请类型！');
+            this.router.navigateByUrl('/application-list');
+          }
         }
-      }
-      if (params.id) {
-        this.paramsId = params.id;
-        this.getHistory();
-        this.service.getApplicationInfo(params.id).subscribe((res) => {
-          this.applicationInfo = res as ApplicationInfo;
-          this.paramsType = (res as ApplicationInfo).type;
-          // 判断是否是本人，决定表单是否禁用
-          this.disabled = (res as ApplicationInfo).user_id === this.cache.userInfo.account ? false : true;
-          // 构建表单，有值
-          this.buildForm(res as ApplicationInfo);
-        });
-      } else {
-        this.form.patchValue({
-          user: this.cache.userInfo.account + '-' + this.cache.userInfo.name,
-        });
-        // 构建表单，无值
-        this.buildForm();
+        if (data.id) {
+          this.paramsId = data.id;
+          this.getHistory();
+          this.service.getApplicationInfo(data.id).subscribe((res) => {
+            this.applicationInfo = res as ApplicationInfo;
+            this.paramsType = (res as ApplicationInfo).type;
+            // 判断是否是本人，决定表单是否禁用
+            this.disabled = (res as ApplicationInfo).user_id === this.cache.userInfo.account ? false : true;
+            // 构建表单，有值
+            this.buildForm(res as ApplicationInfo);
+          });
+        } else {
+          this.form.patchValue({
+            user: this.cache.userInfo.account + '-' + this.cache.userInfo.name,
+          });
+          // 构建表单，无值
+          this.buildForm();
+        }
+        // 维修申请且带有参数
+        if (data.type === 2 && data.labId && data.seatRow && data.seatColumn) {
+          this.form.patchValue({
+            lab_id: data.labId,
+            seat_row: data.seatRow,
+            seat_column: data.seatColumn,
+          });
+        }
+        // 机房申请且带有参数
+        if (data.type === 0 && data.labId && data.applyAll !== undefined) {
+          if (data.applyAll) {
+            this.applyAllChange(true);
+            this.form.patchValue({
+              apply_all: true,
+              lab_id: data.labId,
+              date: data.date,
+            });
+          } else {
+            this.form.patchValue({
+              apply_all: false,
+              lab_id: data.labId,
+              course: data.course,
+              seat_row: data.seatRow,
+              seat_column: data.seatColumn,
+              date: data.date,
+            });
+          }
+        }
       }
     });
   }

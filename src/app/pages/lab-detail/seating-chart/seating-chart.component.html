@@ -37,12 +37,12 @@
         >
           编辑座位表
         </button>
-        <button nz-button nzType="primary" nzSize="small">申请使用整间教室</button>
+        <button nz-button nzType="primary" nzSize="small" (click)="redirectToLabApply(true)">申请使用整间教室</button>
       </div>
       <div *ngIf="selectedSeat.length && selectedSeat[0] === 1">
         <div class="flex-between border-bottom">
           <span nz-typography nzType="danger" class="mr10">该座位设备不能正常使用？</span>
-          <button nz-button nzSize="small" nzDanger>设备报修</button>
+          <button nz-button nzSize="small" nzDanger (click)="redirectToRepair()">设备报修</button>
         </div>
         <div class="padding-y">
           {{ date | date: 'yyyy年MM月dd日' }}，第
@@ -57,7 +57,7 @@
           >节<br />
           <div class="flex-between mt10">
             <span>座位：{{selectedSeat?.[1]}} - {{selectedSeat?.[2]}}</span>
-            <button nz-button nzType="primary" nzSize="small">申请使用</button>
+            <button nz-button nzType="primary" nzSize="small" (click)="redirectToLabApply()">申请使用</button>
           </div>
         </div>
       </div>

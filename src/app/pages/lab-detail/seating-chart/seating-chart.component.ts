@@ -2,8 +2,9 @@ import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { LabManageService } from './../../lab-manage/lab-manage.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { getType } from '@shared/utils/utils';
+import { base64Filter, getType } from '@shared/utils/utils';
 import * as _ from 'lodash';
+import * as base64 from 'js-base64';
 
 @Component({
   selector: 'seating-chart',
@@ -190,8 +191,46 @@ export class SeatingChartComponent implements OnInit {
 
   // 跳转已有申请
   redirectToApplication() {
+    let param = base64.encodeURI(JSON.stringify({ id: this.selectedSeat[3] }));
+    param = base64Filter(param);
     this.router.navigate(['/apply'], {
-      queryParams: { id: this.selectedSeat[3] },
+      queryParams: { param },
+    });
+  }
+
+  // 跳转设备报修
+  redirectToRepair() {
+    let param = base64.encodeURI(
+      JSON.stringify({ type: 2, labId: this.labId, seatRow: this.selectedSeat[1], seatColumn: this.selectedSeat[2] }),
+    );
+    param = base64Filter(param);
+    this.router.navigate(['/apply'], {
+      queryParams: { param },
+    });
+  }
+
+  // 跳转机房申请
+  redirectToLabApply(applyAll = false) {
+    let param;
+    if (applyAll) {
+      param = { type: 0, labId: this.labId, applyAll, date: this.date };
+    } else {
+      if (!this.courseTimes.length) {
+        this.message.warning('请选择时间段！');
+        return;
+      }
+      param = {
+        type: 0,
+        labId: this.labId,
+        applyAll,
+        course: this.courseTimes,
+        date: this.date,
+        seatRow: this.selectedSeat[1],
+        seatColumn: this.selectedSeat[2],
+      };
+    }
+    this.router.navigate(['/apply'], {
+      queryParams: { param: base64Filter(base64.encodeURI(JSON.stringify(param))) },
     });
   }
 
