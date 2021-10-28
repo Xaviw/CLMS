@@ -16,23 +16,23 @@ export class CacheService {
   // 启动轮询
   public startCheckInInterval() {
     // 已登录且未启动轮询，每十分钟请求一次是否需要签到
+    console.log(this.userInfo, _session.get('userInfo'), this.checkInInterval);
     if (this.userInfo && !this.checkInInterval) {
       // 先请求一次，等到整10分钟时开启轮询
       this.getCheckInInfo();
-      const timeDiff = 600000 - (Date.now() % 600000);
-      console.log('timeDiff: ', timeDiff);
+      // const timeDiff = 600000 - (Date.now() % 600000);
+      const timeDiff = 5000 - (Date.now() % 5000);
       setTimeout(() => {
-        console.log('timeOut', new Date().getMinutes());
         this.getCheckInInfo();
-        this.checkInInterval = setInterval(this.getCheckInInfo, 600000);
+        this.checkInInterval = setInterval(this.getCheckInInfo, 5000);
       }, timeDiff);
     }
   }
 
   // 请求签到信息
   public getCheckInInfo = () => {
-    console.log('轮询执行', new Date().getMinutes());
     this.common.needCheckIn().subscribe((res) => {
+      console.log('++++++++++++++++++++++');
       this.checkIn = (res as CheckInInfo) || null;
     });
   };

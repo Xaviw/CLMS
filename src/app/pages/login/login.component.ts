@@ -43,8 +43,6 @@ export class LoginComponent implements OnInit {
       this.service.login({ code, password }).subscribe((res: any) => {
         _local.set('token', res.token, res.expires);
 
-        this.cache.startCheckInInterval();
-
         this.router.navigateByUrl('/index');
       });
     }

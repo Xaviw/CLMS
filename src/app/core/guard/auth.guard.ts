@@ -1,3 +1,4 @@
+import { CacheService } from '@app/core/services/cache.service';
 import { environment } from './../../../environments/environment.mock';
 import { clearCache } from '@app/shared/utils/utils';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -11,7 +12,12 @@ import { Title } from '@angular/platform-browser';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivateChild {
-  constructor(private router: Router, private message: NzMessageService, private title: Title) {}
+  constructor(
+    private router: Router,
+    private message: NzMessageService,
+    private title: Title,
+    private cache: CacheService,
+  ) {}
 
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -41,6 +47,9 @@ export class AuthGuard implements CanActivateChild {
       // 未登录，跳转登录页
       this.message.error('登录信息已失效，请重新登录！');
       clearCache();
+      console.log(this.cache.checkInInterval);
+      this.cache.stopCheckInInterval();
+      console.log(this.cache.checkInInterval);
       return this.router.parseUrl('/blank/login');
     } else {
       this.title.setTitle(title);

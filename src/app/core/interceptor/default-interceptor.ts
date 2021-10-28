@@ -44,6 +44,10 @@ export class DefaultInterceptor implements HttpInterceptor {
         // 错误code统一处理
         (res) => {
           if (res instanceof HttpResponse && res.body?.code && ![0, 2].includes(res.body.code)) {
+            if (res.url === '/checkIn') {
+              this.cache.stopCheckInInterval();
+              return;
+            }
             this.message.error(res.body.msg);
             throw new Error('new Error');
           }
@@ -58,9 +62,14 @@ export class DefaultInterceptor implements HttpInterceptor {
               case 401:
                 this.message.error('登录信息已失效，请重新登录！');
                 clearCache();
+                this.cache.stopCheckInInterval();
                 this.router.navigate(['/blank/login']);
                 break;
               case 403:
+                if (error.url === '/checkIn') {
+                  this.cache.stopCheckInInterval();
+                  return;
+                }
                 this.message.error('禁止访问！');
                 break;
               case 404:

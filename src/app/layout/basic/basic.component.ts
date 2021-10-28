@@ -73,6 +73,7 @@ export class LayoutBasicComponent implements OnInit {
         this.userInfo = res.userInfo;
         _session.set('userInfo', res.userInfo);
         _session.set('routes', res.routes);
+        this.cache.startCheckInInterval();
       });
     }
   }
