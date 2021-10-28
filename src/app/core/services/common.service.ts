@@ -14,6 +14,18 @@ export class CommonService {
     return this.http.post(url, {});
   }
 
+  // 获取是否需要签到
+  needCheckIn() {
+    const url = '/checkIn';
+    return this.http.get(url);
+  }
+
+  // 签到
+  checkIn(id: string) {
+    const url = '/';
+    this.http.post(url, { id });
+  }
+
   // 获取所有页面
   getAllPages() {
     const url = '/page/getAllRouterInfo';

@@ -1,3 +1,5 @@
+import { CacheService } from './../../core/services/cache.service';
+import { CommonService } from '@app/core/services/common.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +8,7 @@ import { validateForm } from '@shared/utils/utils';
 import { LoginService } from './login.service';
 import { environment } from '@env/environment';
 import { _local } from '@app/shared/utils/Storage';
+import { CheckInInfo } from '@app/shared/types/commonTypes';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -21,7 +24,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private service: LoginService,
     private router: Router,
-    private message: NzMessageService,
+    private common: CommonService,
+    private cache: CacheService,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +42,9 @@ export class LoginComponent implements OnInit {
       const { code, password } = this.loginForm.value;
       this.service.login({ code, password }).subscribe((res: any) => {
         _local.set('token', res.token, res.expires);
+
+        this.cache.startCheckInInterval();
+
         this.router.navigateByUrl('/index');
       });
     }

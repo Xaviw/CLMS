@@ -5,7 +5,9 @@
       <span>机房管理系统</span>
     </div>
     <div class="right flex-center">
-      <i nz-icon nzType="bell" nzTheme="outline"></i>
+      <span class="check-in" *ngIf="cache.checkIn" (click)="checkInModal.open()">
+        <img src="../../../assets/images/签到.svg" alt="签到" />
+      </span>
       <span nz-dropdown [nzDropdownMenu]="menu" class="flex-center">
         {{ userInfo?.name }}
         <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="userInfo?.avatar"></nz-avatar>
@@ -64,3 +66,21 @@
 </nz-layout>
 
 <modify-profile #ProfileEl></modify-profile>
+
+<!-- 签到Modal -->
+<nz-modal
+  [(nzVisible)]="checkInModal.visible"
+  nzTitle="签到"
+  (nzOnCancel)="checkInModal.close()"
+  [nzFooter]="modalFooter"
+>
+  <ng-container *nzModalContent>
+    机房：{{ cache.checkIn?.lab_name }}, {{ cache.checkIn?.seat_row }}排
+    {{ cache.checkIn?.seat_column }}
+    座可以使用了，请在十分钟内签到！
+  </ng-container>
+  <ng-template #modalFooter>
+    <button nz-button nzType="default" (click)="checkInModal.viewApplication()">查看申请</button>
+    <button nz-button nzType="primary" (click)="checkInModal.checkIn()">签到</button>
+  </ng-template>
+</nz-modal>

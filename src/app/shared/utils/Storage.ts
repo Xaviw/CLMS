@@ -13,21 +13,22 @@ const _local = {
     }
   },
   //取出
-  get(key: string) {
+  get(key: string): string | object | undefined {
     let item = localStorage.getItem(key);
-    let res: { value: string; expires?: number; startTime?: string } = JSON.parse(item!);
+    if (!item) return;
+    let res: any = JSON.parse(item);
     // 如果有startTime的值，说明设置了失效时间
     if (res && res.startTime) {
       let date = new Date().getTime();
       // 如果大于就是过期了，如果小于或等于就还没过期
       if (date - Number(res.startTime) > res.expires!) {
         localStorage.removeItem(key);
-        return false;
+        return;
       } else {
         return res.value;
       }
     } else {
-      return item;
+      return res;
     }
   },
   // 删除

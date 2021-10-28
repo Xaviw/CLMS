@@ -187,3 +187,11 @@ declare interface ApplicationHistory {
   user_id: string;
   user_name: string;
 }
+
+// 签到信息
+declare interface CheckInInfo {
+  id: string;
+  lab_name: string;
+  seat_row: number;
+  seat_column: number;
+}

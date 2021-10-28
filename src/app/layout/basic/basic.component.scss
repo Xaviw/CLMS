@@ -19,6 +19,23 @@ nz-header {
     }
   }
   .right {
+    .check-in {
+      position: relative;
+      margin-right: 40px;
+      cursor: pointer;
+      img {
+        width: 30px;
+        height: 30px;
+      }
+      &::before {
+        content: '签到';
+        position: absolute;
+        color: #fece0a;
+        top: 3px;
+        left: -31px;
+        font-size: 0.9rem;
+      }
+    }
     span {
       font-size: 1rem;
       margin-left: 20px;
