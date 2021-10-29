@@ -1,7 +1,10 @@
+import { base64Filter } from '@shared/utils/utils';
+import { Router } from '@angular/router';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import * as echarts from 'echarts';
+import * as base64 from 'js-base64';
 
 interface chart {
   name: string;
@@ -17,7 +20,7 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
   // 标题
   @Input() title: string = '';
   // 详细地址
-  @Input() viewDetail: string | undefined;
+  @Input() detailParam: string | undefined;
   // 数据
   _chartData: chart[] | undefined;
   @Input()
@@ -34,7 +37,7 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
   @ViewChild('chartElement') element!: ElementRef;
   Chart!: echarts.ECharts;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
 
@@ -44,6 +47,16 @@ export class ApplyChartComponent implements OnInit, AfterViewInit {
       .subscribe((event) => {
         this.Chart.resize();
       });
+  }
+
+  redirectToDetail() {
+    let type;
+    if (this.title === '机房申请') type = 0;
+    else if (this.title === '采购申请') type = 1;
+    else if (this.title === '报修申请') type = 2;
+    this.router.navigate(['/application-list'], {
+      queryParams: { param: base64Filter({ type }) },
+    });
   }
 
   init() {

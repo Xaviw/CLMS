@@ -78,8 +78,8 @@ declare interface apply {
 }
 
 declare interface pagination {
-  start: number;
-  count: number;
+  pageIndex: number;
+  pageSize: number;
 }
 
 // 课程卡片
@@ -194,4 +194,14 @@ declare interface CheckInInfo {
   lab_name: string;
   seat_row: number;
   seat_column: number;
+}
+
+// 公告信息
+declare interface BulletinInfo {
+  id: string;
+  title: string;
+  content?: string;
+  createTime: string;
+  publisher_name?: string;
+  views: number;
 }

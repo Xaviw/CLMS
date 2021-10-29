@@ -191,10 +191,9 @@ export class SeatingChartComponent implements OnInit {
 
   // 跳转已有申请
   redirectToApplication() {
-    let param = base64.encodeURI(JSON.stringify({ id: this.selectedSeat[3] }));
-    param = base64Filter(param);
+    let param = { id: this.selectedSeat[3] };
     this.router.navigate(['/apply'], {
-      queryParams: { param },
+      queryParams: { param: base64Filter(param) },
     });
   }
 
@@ -230,7 +229,7 @@ export class SeatingChartComponent implements OnInit {
       };
     }
     this.router.navigate(['/apply'], {
-      queryParams: { param: base64Filter(base64.encodeURI(JSON.stringify(param))) },
+      queryParams: { param: base64Filter(param) },
     });
   }
 

@@ -115,6 +115,13 @@ const routes: Routes = [
           skipPermission: true,
         },
       },
+      {
+        path: 'bulletin',
+        loadChildren: () => import('./bulletin-list/bulletin-list.module').then((m) => m.BulletinListModule),
+        data: {
+          skipPermission: true,
+        },
+      },
     ],
   },
   // Blank Layout 空白布局../shared/components/modify-profile/modify-profile.module

@@ -4,7 +4,6 @@ import { IndexService } from './index.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
 import { apply, statistic } from '@app/shared/types/commonTypes';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-index',

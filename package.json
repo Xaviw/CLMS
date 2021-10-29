@@ -25,6 +25,7 @@
     "ng-zorro-antd": "^12.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
+    "wangeditor": "^4.7.9",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

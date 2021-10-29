@@ -93,7 +93,6 @@ export class CommonService {
         URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
       } else {
-        console.log('error', res);
         this.message.error('下载失败，请尝试重新下载！');
       }
     });

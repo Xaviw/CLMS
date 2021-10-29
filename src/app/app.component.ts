@@ -13,8 +13,6 @@ export class AppComponent implements AfterViewInit {
   constructor(public cache: CacheService) {}
 
   ngAfterViewInit() {
-    console.log('app——afterViewInit');
-    console.log(this.cache.checkInInterval);
     this.cache.startCheckInInterval();
   }
 }

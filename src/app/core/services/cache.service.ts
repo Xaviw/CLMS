@@ -16,15 +16,14 @@ export class CacheService {
   // 启动轮询
   public startCheckInInterval() {
     // 已登录且未启动轮询，每十分钟请求一次是否需要签到
-    console.log(this.userInfo, _session.get('userInfo'), this.checkInInterval);
-    if (this.userInfo && !this.checkInInterval) {
+    if (!this.checkInInterval && _local.get('token')) {
       // 先请求一次，等到整10分钟时开启轮询
       this.getCheckInInfo();
-      // const timeDiff = 600000 - (Date.now() % 600000);
-      const timeDiff = 5000 - (Date.now() % 5000);
-      setTimeout(() => {
-        this.getCheckInInfo();
-        this.checkInInterval = setInterval(this.getCheckInInfo, 5000);
+      // 计算整距10分钟时间差
+      const timeDiff = 600000 - (Date.now() % 600000);
+      // 记录setTimeout或setInterval，用于清除
+      this.checkInInterval = setTimeout(() => {
+        this.checkInInterval = setInterval(this.getCheckInInfo(), 600000);
       }, timeDiff);
     }
   }
@@ -32,9 +31,9 @@ export class CacheService {
   // 请求签到信息
   public getCheckInInfo = () => {
     this.common.needCheckIn().subscribe((res) => {
-      console.log('++++++++++++++++++++++');
       this.checkIn = (res as CheckInInfo) || null;
     });
+    return this.getCheckInInfo;
   };
 
   // 关闭轮询
@@ -70,6 +69,13 @@ export class CacheService {
       this._userInfo = _session.get('userInfo');
     }
     return this._userInfo;
+  }
+
+  // 清空缓存
+  public clearCache() {
+    _local.clear();
+    _session.clear();
+    clearInterval(this.checkInInterval);
   }
 
   constructor(private common: CommonService) {}

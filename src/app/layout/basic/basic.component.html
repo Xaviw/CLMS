@@ -55,7 +55,7 @@
     </nz-sider>
     <nz-layout>
       <nz-breadcrumb nzSeparator=">" [nzAutoGenerate]="true" nzRouteLabel="title">
-        <nz-breadcrumb-item><a>返回</a></nz-breadcrumb-item>
+        <nz-breadcrumb-item><a (click)="back()">返回</a></nz-breadcrumb-item>
       </nz-breadcrumb>
       <nz-content>
         <router-outlet></router-outlet>

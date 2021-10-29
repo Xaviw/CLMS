@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationListService } from './application-list.service';
 import { Component, OnInit } from '@angular/core';
 import { ApplicationInfo, ApplicationParam } from '@app/shared/types/commonTypes';
@@ -22,9 +22,28 @@ export class ApplicationListComponent implements OnInit {
   total = 0;
   param?: ApplicationParam;
 
-  constructor(private service: ApplicationListService, private router: Router) {}
+  constructor(
+    private service: ApplicationListService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params: any) => {
+      if (params.param) {
+        const data = JSON.parse(base64.decode(params.param));
+        if (data.type !== undefined) {
+          this.type = ApplicationType.map((item) => {
+            item.byDefault = item.value === data.type;
+            return item;
+          });
+        }
+        // if(param.status){
+        //   this.status = this.status.filter((item) => item.value === param.status);
+        // }
+      }
+    });
+  }
 
   // 表格参数
   onQueryParamsChange(e: NzTableQueryParams) {
@@ -51,7 +70,7 @@ export class ApplicationListComponent implements OnInit {
 
   // 跳转详细
   redirectDetail(type: number, id?: string) {
-    const param = base64Filter(base64.encodeURI(JSON.stringify({ type, id })));
+    const param = base64Filter({ type, id });
     this.router.navigate(['/apply'], { queryParams: { param } });
   }
 }

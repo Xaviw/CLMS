@@ -33,8 +33,8 @@ export class RankListComponent implements OnInit {
   activeItem: number = -1;
   // 请求参数
   param = {
-    start: 0,
-    count: 10,
+    pageIndex: 1,
+    pageSize: 10,
   };
 
   constructor(private service: IndexService, private scrollDispatcher: ScrollDispatcher) {}
@@ -50,7 +50,7 @@ export class RankListComponent implements OnInit {
         if (scrollable) {
           let offset = this.rankScroll.measureScrollOffset('bottom');
           if (offset < 50) {
-            this.param.start += this.param.count;
+            this.param.pageIndex++;
             this.getRankList(this.param);
           }
         }
@@ -79,7 +79,7 @@ export class RankListComponent implements OnInit {
   // 获取自己自习排名
   getOwnRank() {
     if (this.userIndex) {
-      // 减去不在列表中的前三项（下表从0开始，所以减4）
+      // 减去不在列表中的前三项（下标从0开始，所以减4）
       this.rankScroll.scrollToIndex(this.userIndex - 4);
       this.activeItem = (this.userIndex as number) - 4;
     } else {
@@ -91,8 +91,8 @@ export class RankListComponent implements OnInit {
           this.activeItem = (this.userIndex as number) - 4;
         } else {
           const param = {
-            start: this.rankList.length + 3,
-            count: (res as number) - this.rankList.length + 13,
+            pageIndex: this.rankList.length / this.param.pageSize + 1,
+            pageSize: this.param.pageSize,
           };
           await this.getRankList(param);
           this.rankScroll.scrollToIndex((res as number) - 4);

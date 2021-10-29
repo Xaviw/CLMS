@@ -69,7 +69,6 @@ export class ApplyComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: any) => {
       if (params.param) {
         let data = JSON.parse(base64.decode(params.param));
-        console.log('data: ', data);
         if (data.type !== undefined) {
           this.paramsType = Number(data.type);
           // 类型错误，返回列表

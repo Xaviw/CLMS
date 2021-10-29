@@ -1,25 +1,21 @@
-import { IndexService } from '../index.service';
+import { BulletinService } from './../../bulletin-list/bulletin.service';
 import { Component, OnInit } from '@angular/core';
+import { BulletinInfo } from '@app/shared/types/commonTypes';
 
 interface bulletin {
   total: number;
-  data: Array<{
-    title: string;
-    id: string;
-    createTime: string;
-    views: number;
-  }>;
+  data: Array<BulletinInfo>;
 }
 
 @Component({
   selector: 'bulletin',
   templateUrl: './bulletin.component.html',
   styleUrls: ['./bulletin.component.scss', '../index.component.scss'],
-  providers: [IndexService],
+  providers: [BulletinService],
 })
 export class BulletinComponent implements OnInit {
   data: bulletin | undefined;
-  constructor(private service: IndexService) {}
+  constructor(private service: BulletinService) {}
 
   ngOnInit() {
     this.getBulletin();
@@ -27,7 +23,7 @@ export class BulletinComponent implements OnInit {
 
   // 获取公告
   getBulletin() {
-    const param = { start: 0, count: 5 };
+    const param = { pageIndex: 1, pageSize: 5 };
     this.service.getBulletin(param).subscribe((res) => {
       this.data = res as bulletin;
     });

@@ -1,5 +1,6 @@
 import { _local, _session } from '@app/shared/utils/Storage';
 import { FormControls } from '@app/shared/types/commonTypes';
+import * as base64 from 'js-base64';
 
 // 校验表单
 export function validateForm(form: FormControls): void {
@@ -11,12 +12,6 @@ export function validateForm(form: FormControls): void {
   }
 }
 
-// 清空缓存
-export function clearCache() {
-  _local.clear();
-  _session.clear();
-}
-
 // 获取类型
 export function getType(v: any) {
   const type = Object.prototype.toString.call(v);
@@ -24,8 +19,9 @@ export function getType(v: any) {
 }
 
 // Base64字符串过滤
-export function base64Filter(str: string) {
-  return str
+export function base64Filter(str: any) {
+  return base64
+    .encodeURI(JSON.stringify(str))
     .replace(/\+/g, '%2B')
     .replace(/\=/g, '&3D')
     .replace(/\&/g, '%26')

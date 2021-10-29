@@ -1,5 +1,5 @@
 <div class="header">
   <span class="title">{{ title }}</span>
-  <button nz-button nzType="link" nzSize="small" [routerLink]="viewDetail">查看详细</button>
+  <button nz-button nzType="link" nzSize="small" (click)="redirectToDetail()">查看详细</button>
 </div>
 <div #chartElement class="flex-center padding width"></div>

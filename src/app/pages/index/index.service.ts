@@ -41,12 +41,6 @@ export class IndexService {
     return this.http.get(url);
   }
 
-  // 获取公告
-  getBulletin(param: pagination) {
-    const url = '/bulletin';
-    return this.http.post(url, param);
-  }
-
   // 获取自习排行榜
   getRankList(param: pagination) {
     const url = '/rank';
@@ -79,8 +73,8 @@ export class IndexService {
 
   // 获取评论回复
   getReply(id: string) {
-    const url = '/comments/' + id;
-    return this.http.get(url);
+    const url = '/comments/id';
+    return this.http.post(url, { id: id });
   }
 
   // 发布留言

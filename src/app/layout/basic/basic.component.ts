@@ -1,7 +1,6 @@
 import { CacheService } from './../../core/services/cache.service';
 import { ModifyProfileComponent } from './../../shared/components/modify-profile/modify-profile.component';
 import { Router } from '@angular/router';
-import { clearCache } from '@app/shared/utils/utils';
 import * as base64 from 'js-base64';
 import { base64Filter } from '@app/shared/utils/utils';
 import { LayoutService } from './../layout.service';
@@ -35,7 +34,7 @@ export class LayoutBasicComponent implements OnInit {
     viewApplication: () => {
       if (this.cache.checkIn?.id) {
         this.checkInModal.close();
-        const param = base64Filter(base64.encodeURI(JSON.stringify({ id: this.cache.checkIn.id })));
+        const param = base64Filter({ id: this.cache.checkIn.id });
         this.router.navigate(['/apply'], { queryParams: { param } });
       } else {
         this.message.warning('签到时间已过，请在申请列表中查看');
@@ -80,10 +79,13 @@ export class LayoutBasicComponent implements OnInit {
 
   logout() {
     this.service.logout().subscribe(() => {
-      clearCache();
-      this.cache.stopCheckInInterval();
+      this.cache.clearCache();
       this.router.navigate(['/blank/login']);
     });
+  }
+
+  back() {
+    history.back();
   }
 
   menuClick(e: any) {}

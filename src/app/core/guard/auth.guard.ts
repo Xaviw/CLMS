@@ -1,6 +1,5 @@
 import { CacheService } from '@app/core/services/cache.service';
 import { environment } from './../../../environments/environment.mock';
-import { clearCache } from '@app/shared/utils/utils';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
@@ -23,6 +22,8 @@ export class AuthGuard implements CanActivateChild {
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    // 不判断查询参数
+    state.url = state.url.split('?')[0];
     // 是否需要登陆
     const needLogin = Boolean(childRoute.data?.needLogin);
     // 是否已登录
@@ -46,10 +47,7 @@ export class AuthGuard implements CanActivateChild {
     } else if (!isLogin && needLogin) {
       // 未登录，跳转登录页
       this.message.error('登录信息已失效，请重新登录！');
-      clearCache();
-      console.log(this.cache.checkInInterval);
-      this.cache.stopCheckInInterval();
-      console.log(this.cache.checkInInterval);
+      this.cache.clearCache();
       return this.router.parseUrl('/blank/login');
     } else {
       this.title.setTitle(title);
