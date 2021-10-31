@@ -40,7 +40,7 @@ export class CommonService {
 
   // 获取课程表
   getCourseSchedule(param: any) {
-    const url = '/courseSchedule';
+    const url = '/course/getSelfCourse';
     return this.http.post(url, param);
   }
 

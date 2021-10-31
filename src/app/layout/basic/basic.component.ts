@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import * as base64 from 'js-base64';
 import { base64Filter } from '@app/shared/utils/utils';
 import { LayoutService } from './../layout.service';
-import { environment } from './../../../environments/environment.mock';
+import { environment } from './../../../environments/environment.dev';
 import { CommonService } from '../../core/services/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PageRoute, User } from '@app/shared/types/commonTypes';
@@ -19,7 +19,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class LayoutBasicComponent implements OnInit {
   @ViewChild('ProfileEl') ProfileEl!: ModifyProfileComponent;
-  avatarPath = environment.avatarPath;
+  avatarPath = environment.api;
   menus: PageRoute[] = [];
   userInfo: User | undefined;
 
@@ -62,6 +62,7 @@ export class LayoutBasicComponent implements OnInit {
   ngOnInit() {
     this.menus = _session.get('routes');
     this.userInfo = this.cache.userInfo;
+    console.log('this.userInfo: ', this.userInfo);
     if (!this.menus || !this.userInfo) {
       this.commonService.getUserInfo().subscribe((res: any) => {
         // 如果有头像，拼接头像完整地址

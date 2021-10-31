@@ -14,7 +14,7 @@
   <tbody>
     <ng-container *ngIf="!editable">
       <tr *ngFor="let item of scheduleTable.data; let i = index">
-        <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
+        <td nzAlign="center" nzWidth="80px">{{ i + 1 }}节</td>
         <td nzAlign="center" *ngFor="let class of item" style="position: relative">
           <ng-container *ngIf="class && !singleCourse">
             <div class="course">
