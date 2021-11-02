@@ -99,6 +99,8 @@ export class AddCourseComponent implements OnInit {
   selectOpen(e: boolean) {
     if (e) this.keyWord = null;
   }
+
+  // TODO
   selectChange(value: null | string) {
     if (value === null) return;
     // const data = {};

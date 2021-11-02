@@ -1,3 +1,4 @@
+import { CommonService } from '@app/core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LabManageService } from './lab-manage.service';
@@ -33,7 +34,7 @@ export class LabManageComponent implements OnInit {
     },
   };
 
-  constructor(private service: LabManageService, private fb: FormBuilder) {}
+  constructor(private service: LabManageService, private fb: FormBuilder, private common: CommonService) {}
 
   ngOnInit() {
     this.getLabList();
@@ -41,7 +42,7 @@ export class LabManageComponent implements OnInit {
 
   // 获取机房列表
   getLabList() {
-    this.service.getLabList().subscribe((res) => {
+    this.common.getLabList().subscribe((res) => {
       this.labList = res as LabInfo[];
     });
   }

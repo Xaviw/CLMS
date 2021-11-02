@@ -6,12 +6,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LabManageService {
   constructor(private http: HttpClient, private message: NzMessageService) {}
 
-  // 获取机房列表
-  getLabList(id?: string) {
-    const url = `/lab/infoList`;
-    return this.http.get(url);
-  }
-
   // 获取机房基础信息
   getLabInfo(id: string) {
     const url = '/lab/detailInfo';

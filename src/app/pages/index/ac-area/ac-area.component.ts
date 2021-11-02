@@ -14,8 +14,6 @@ interface comment {
   children?: comment[];
   expand?: boolean;
   loading?: boolean;
-  likes: number;
-  isLike: boolean;
 }
 
 interface comments {
@@ -85,22 +83,10 @@ export class AcAreaComponent implements OnInit {
   }
 
   // 发布留言
+  // TODO
   postMessage() {}
 
   // 发布回复
+  // TODO
   postReply() {}
-
-  like(item: comment): void {
-    if (item.isLike) {
-      this.service.cancelLike(item.id).subscribe((res) => {
-        item.isLike = false;
-        item.likes -= 1;
-      });
-    } else {
-      this.service.like(item.id).subscribe((res) => {
-        item.isLike = true;
-        item.likes += 1;
-      });
-    }
-  }
 }

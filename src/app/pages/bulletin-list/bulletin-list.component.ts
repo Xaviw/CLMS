@@ -41,7 +41,7 @@ export class BulletinListComponent implements OnInit {
         this.pageIndex = 1;
       }
       param = { pageIndex: this.pageIndex, pageSize: this.pageSize, key: this.previousKey };
-      this.service.searchBulletin(param!).subscribe((res) => {
+      this.service.getBulletin(param!).subscribe((res) => {
         this.total = (res as { total: number; data: BulletinInfo[] }).total;
         this.listData = (res as { total: number; data: BulletinInfo[] }).data;
       });

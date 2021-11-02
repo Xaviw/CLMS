@@ -1,3 +1,4 @@
+import { CommonService } from './../../../core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CacheService } from './../../../core/services/cache.service';
@@ -5,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'modify-profile',
@@ -47,7 +49,13 @@ export class ModifyProfileComponent implements OnInit {
   // 密码formGroup
   pwdForm!: FormGroup;
 
-  constructor(private msg: NzMessageService, public cache: CacheService, private fb: FormBuilder) {}
+  constructor(
+    private msg: NzMessageService,
+    public cache: CacheService,
+    private fb: FormBuilder,
+    private common: CommonService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.pwdForm = this.fb.group({
@@ -80,10 +88,17 @@ export class ModifyProfileComponent implements OnInit {
     validateForm(this.pwdForm.controls);
     if (this.pwdForm.valid) {
       this.isOkLoading = true;
-      setTimeout(() => {
-        this.visible = false;
-        this.isOkLoading = false;
-      }, 3000);
+      this.common
+        .modifyPassword({
+          new_password: this.pwdForm.get('pwd')?.value,
+          confirm_password: this.pwdForm.get('confirmPwd')?.value,
+        })
+        .subscribe((res) => {
+          this.common.logout().subscribe(() => {
+            this.cache.clearCache();
+            this.router.navigate(['/blank/login']);
+          });
+        });
     }
   }
 

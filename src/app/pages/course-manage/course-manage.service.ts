@@ -33,7 +33,7 @@ export class CourseManageService {
 
   // 教师搜索获取课程卡片
   getCourseCardBySearchTeacher(param: { keyword: string }) {
-    const url = '/course/searchTeacher';
+    const url = '/course/getCourseByKey';
     return this.http.post(url, param);
   }
 
@@ -73,7 +73,7 @@ export class CourseManageService {
 
   // 获取课程学生
   getCourseStudent(id: string) {
-    const url = `/course/getStudentById`;
+    const url = `/course/getStudentByCourse`;
     return this.http.post(url, { courseId: id });
   }
 

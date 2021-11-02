@@ -1,3 +1,4 @@
+import { CommonService } from '@app/core/services/common.service';
 import { ApplicationType, ApplicationStatus } from '@app/shared/enum/enum';
 import { validateForm } from '@shared/utils/utils';
 import { CacheService } from '@app/core/services/cache.service';
@@ -55,6 +56,7 @@ export class ApplyComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private service: ApplicationListService,
     private labService: LabManageService,
+    private common: CommonService,
     private fb: FormBuilder,
     private message: NzMessageService,
     private router: Router,
@@ -129,7 +131,7 @@ export class ApplyComponent implements OnInit {
 
   // 获取机房列表
   getLabList() {
-    this.labService.getLabList().subscribe((res) => {
+    this.common.getLabList().subscribe((res) => {
       this.labList = res as LabInfo[];
     });
   }

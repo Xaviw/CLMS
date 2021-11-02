@@ -55,7 +55,6 @@ export class PublishBulletinComponent implements OnInit, AfterViewInit {
     this.service
       .publishBulletin({ title: this.title, content: JSON.stringify(this.editor.txt.getJSON()) })
       .subscribe((res) => {
-        console.log('res: ', res);
         this.router.navigateByUrl('/bulletin/' + (res as string));
       });
   }

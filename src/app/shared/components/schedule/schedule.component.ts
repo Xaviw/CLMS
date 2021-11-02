@@ -1,5 +1,5 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { FilterType } from '@app/shared/types/commonTypes';
+import { FilterType, LabInfo } from '@app/shared/types/commonTypes';
 import { CommonService } from './../../../core/services/common.service';
 import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
@@ -126,7 +126,7 @@ export class ScheduleComponent implements OnInit {
 
   // 获取课表
   getCourseSchedule() {
-    return this.common.getCourseSchedule(this.param).subscribe((res) => {
+    this.common.getCourseSchedule(this.param).subscribe((res) => {
       this.schedule = res as Array<schedule[]>;
     });
   }
@@ -134,7 +134,7 @@ export class ScheduleComponent implements OnInit {
   // 获取机房列表
   getLabList() {
     this.common.getLabList().subscribe((res) => {
-      this.labList = res as FilterType[];
+      this.labList = res as LabInfo[];
     });
   }
 

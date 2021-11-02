@@ -1,9 +1,7 @@
 import { CacheService } from './../../core/services/cache.service';
 import { ModifyProfileComponent } from './../../shared/components/modify-profile/modify-profile.component';
 import { Router } from '@angular/router';
-import * as base64 from 'js-base64';
 import { base64Filter } from '@app/shared/utils/utils';
-import { LayoutService } from './../layout.service';
 import { environment } from './../../../environments/environment.dev';
 import { CommonService } from '../../core/services/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -15,7 +13,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   selector: 'layout-basic',
   templateUrl: './basic.component.html',
   styleUrls: ['./basic.component.scss'],
-  providers: [LayoutService],
 })
 export class LayoutBasicComponent implements OnInit {
   @ViewChild('ProfileEl') ProfileEl!: ModifyProfileComponent;
@@ -53,7 +50,6 @@ export class LayoutBasicComponent implements OnInit {
 
   constructor(
     public commonService: CommonService,
-    private service: LayoutService,
     private router: Router,
     public cache: CacheService,
     private message: NzMessageService,
@@ -79,7 +75,7 @@ export class LayoutBasicComponent implements OnInit {
   }
 
   logout() {
-    this.service.logout().subscribe(() => {
+    this.commonService.logout().subscribe(() => {
       this.cache.clearCache();
       this.router.navigate(['/blank/login']);
     });

@@ -19,12 +19,6 @@
         <p>{{ item.content }}</p>
       </nz-comment-content>
       <nz-comment-action>
-        <span class="like" (click)="like(item)">
-          <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [nzTheme]="item.isLike ? 'twotone' : 'outline'"> </i
-          >{{ item.likes ? item.likes : ' ' }}
-        </span>
-      </nz-comment-action>
-      <nz-comment-action>
         <span (click)="getReply(item)">
           <i nz-icon nzType="loading" nzTheme="outline" *ngIf="item.loading"></i>
           {{ item?.expand ? '收起回复' : '查看回复(' + item.comments + '条)' }}

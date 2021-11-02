@@ -9,7 +9,7 @@ export class IndexService {
 
   // 获取机房统计信息
   getLabStatistic() {
-    const url = '/lab';
+    const url = '/lab/getAllLabStatus';
     return this.http.get(url);
   }
 
@@ -21,7 +21,7 @@ export class IndexService {
 
   // 获取用户统计信息
   getUserStatistic() {
-    const url = '/user';
+    const url = '/user/getAllUser';
     return this.http.get(url);
   }
 
@@ -43,61 +43,43 @@ export class IndexService {
 
   // 获取自习排行榜
   getRankList(param: pagination) {
-    const url = '/rank';
+    const url = '/user/getApplyRank';
     return this.http.post(url, param).toPromise();
   }
 
   // 获取自己自习排名
   getOwnRank() {
-    const url = '/rank/own';
+    const url = '/user/getSelfApplyRank';
     return this.http.get(url);
   }
 
   // 获取自习统计数据
   getHistoryStatistic(param: { startTime: string; endTime: string }) {
-    const url = '/rank/history';
+    const url = '/user/getApplyInfo';
     return this.http.post(url, param);
   }
 
   // 获取课程表
   getCourseSchedule() {
-    const url = '/courseSchedule';
+    const url = '/course/getSelfCourse';
     return this.http.get(url);
   }
 
   // 获取评论列表
   getComments(param: { pageIndex: number; pageSize: number }) {
-    const url = '/comments';
+    const url = '/ann/getAnnInRange';
     return this.http.post(url, param);
   }
 
   // 获取评论回复
   getReply(id: string) {
-    const url = '/comments/id';
+    const url = '/ann/getAnnByParent';
     return this.http.post(url, { id: id });
   }
 
-  // 发布留言
-  postMessage(param: string) {
-    const url = '/comments/post';
+  // 发布/回复留言
+  postMessage(param: { content: string; id?: string }) {
+    const url = '/ann/addAnn';
     return this.http.post(url, param);
-  }
-
-  // 发布回复
-  postReply(param: string) {
-    const url = '/comments/replay';
-    return this.http.post(url, param);
-  }
-
-  // 点赞
-  like(param: string) {
-    const url = '/comments/like';
-    return this.http.post(url, { comment_id: param });
-  }
-
-  // 取消点赞
-  cancelLike(param: string) {
-    const url = '/comments/cancelLike';
-    return this.http.post(url, { comment_id: param });
   }
 }

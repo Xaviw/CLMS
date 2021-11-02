@@ -7,26 +7,20 @@ export class BulletinService {
   constructor(private http: HttpClient) {}
 
   // 获取公告
-  getBulletin(param: pagination) {
-    const url = '/bulletin';
-    return this.http.post(url, param);
-  }
-
-  // 搜索公告
-  searchBulletin(param: { key: string; pageIndex: number; pageSize: number }) {
-    const url = '/bulletin/search';
+  getBulletin(param: { key?: string; pageIndex: number; pageSize: number }) {
+    const url = '/ann/getMessage';
     return this.http.post(url, param);
   }
 
   // 发布公告
   publishBulletin(param: { title: string; content: string }) {
-    const url = '/bulletin/publish';
+    const url = '/ann/addMessage';
     return this.http.post(url, param);
   }
 
   // 获取公告详细
   getBulletinDetail(id: string) {
-    const url = `/bulletin/detail`;
+    const url = `/ann/getMessageById`;
     return this.http.post(url, { id });
   }
 }

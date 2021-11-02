@@ -14,6 +14,12 @@ export class CommonService {
     return this.http.post(url, {});
   }
 
+  // 修改密码
+  modifyPassword(param: { confirm_password: string; new_password: string }) {
+    const url = '/user/updateUserPassword';
+    return this.http.post(url, param);
+  }
+
   // 获取是否需要签到
   needCheckIn() {
     const url = '/checkIn';
@@ -50,9 +56,9 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  // 获取机房列表（id--name)
+  // 获取机房列表
   getLabList() {
-    const url = '/lab/list';
+    const url = `/lab/getAllLab`;
     return this.http.get(url);
   }
 
@@ -66,6 +72,12 @@ export class CommonService {
   setLabStatus(param: { labIds: string[]; status: number }) {
     const url = '/lab/setLabStatus';
     return this.http.post(url, param);
+  }
+
+  // 退出登录
+  logout() {
+    const url = '/user/logout';
+    return this.http.post(url, {});
   }
 
   // 下载文件

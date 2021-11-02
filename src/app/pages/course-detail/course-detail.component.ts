@@ -50,9 +50,14 @@ export class CourseDetailComponent implements OnInit {
       this.addStudent.instance = instance;
     },
     handleOk: () => {
-      // this.service.addCourseStudent().subscribe(res => {
-      //   this.getCourseDetail();
-      // })
+      this.service
+        .addCourseStudent({
+          course_id: this.params.courseId,
+          user_id: this.addStudent.instance.checkedList,
+        })
+        .subscribe((res) => {
+          this.getCourseDetail();
+        });
     },
   };
 
