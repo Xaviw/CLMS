@@ -38,15 +38,29 @@
             <th nzAlign="center" nzWidth="200px">发布时间</th>
             <th nzAlign="center">标题</th>
             <th nzAlign="center" nzWidth="100px">浏览量</th>
+            <th nzAlign="center" nzWidth="100px">操作</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of basicTable.data">
             <td nzAlign="center">{{ data.createTime }}</td>
             <td nz-typography nzEllipsis>
-              <a [routerLink]="'/bulletin/' + data.id">{{ data.title }}</a>
+              <a [routerLink]="['/bulletin', data.id]">{{ data.title }}</a>
             </td>
             <td nzAlign="center">{{ data.views }}</td>
+            <td nzAlign="center">
+              <button
+                nz-button
+                nzType="primary"
+                nzDanger
+                nz-popconfirm
+                nzPopconfirmTitle="确认删除?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="delete(data.id)"
+              >
+                删除
+              </button>
+            </td>
           </tr>
         </tbody>
       </nz-table>

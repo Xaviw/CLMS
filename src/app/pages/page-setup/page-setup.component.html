@@ -45,23 +45,18 @@
     <div class="right">
       <div class="layout">
         <div class="header padding-x" nz-row nzAlign="middle" nzJustify="end">
-          <button
-            nz-button
-            nzType="primary"
-            [hidden]="!activePage?.origin?.isLeaf"
-            (click)="addFunctionDrawer.insert()"
-          >
+          <button nz-button nzType="primary" [hidden]="!activePage?.origin?.link" (click)="addFunctionDrawer.insert()">
             添加功能
           </button>
         </div>
         <div class="container">
           <!-- 功能列表 -->
-          <div class="view_scroll padding" empty [emptyData]="pageFunctions" emptyInfo="请先选择对应页面">
+          <div class="view_scroll padding" empty [emptyData]="activePage?.origin?.link" emptyInfo="请先选择对应页面">
             <nz-table
               #pageFunctionTable
               [nzData]="pageFunctions"
               nzShowPagination="false"
-              *ngIf="activePage?.origin?.isLeaf"
+              *ngIf="activePage?.origin?.link"
             >
               <thead>
                 <tr>
@@ -120,15 +115,27 @@
         </div>
         <form nz-form [formGroup]="pageAddForm" nzLayout="vertical">
           <nz-form-item>
+            <nz-form-label nzFor="show" nzRequired>是否在菜单中显示：</nz-form-label>
+            <nz-form-control nzErrorTip="页面名称不能为空！">
+              <nz-switch formControlName="show" id="show"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
             <nz-form-label nzFor="title" nzRequired>页面名称：</nz-form-label>
             <nz-form-control nzErrorTip="页面名称不能为空！">
               <input nz-input formControlName="title" id="title" placeholder="请输入页面名称" />
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-label nzFor="link" nzRequired>页面路径：</nz-form-label>
-            <nz-form-control nzErrorTip="页面路径不能为空！">
+            <nz-form-label nzFor="link">页面路径：</nz-form-label>
+            <nz-form-control>
               <input nz-input formControlName="link" id="link" placeholder="请输入页面路径" />
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="key" nzRequired>key：</nz-form-label>
+            <nz-form-control nzErrorTip="key不能为空！">
+              <input nz-input formControlName="key" id="key" placeholder="请输入key" />
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>

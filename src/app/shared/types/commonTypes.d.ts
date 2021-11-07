@@ -15,11 +15,11 @@ declare interface FormControls {
 // 路由表类型
 declare interface PageRoute {
   link?: string;
+  id?: string;
   title: string;
   key: string;
   leaf: boolean;
   icon?: string;
-  function?: string[];
   children?: PageRoute[];
   level: number;
 }

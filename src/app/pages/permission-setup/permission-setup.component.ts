@@ -37,7 +37,9 @@ export class PermissionSetupComponent implements OnInit {
       this.service.addRole(this.roleModel.value).subscribe(
         (res) => {
           this.roleModel.loading = false;
+          this.roleModel.visible = false;
           this.getRoles();
+          this.roleModel.value = '';
         },
         (err) => {
           this.roleModel.loading = false;
@@ -47,10 +49,16 @@ export class PermissionSetupComponent implements OnInit {
     // 修改角色
     modifyRole: () => {
       this.roleModel.loading = true;
-      this.service.modifyRole(this.roleModel.value).subscribe(
+      const param = {
+        role_id: this.activeRole!.key,
+        role_name: this.roleModel.value,
+      };
+      this.service.modifyRole(param).subscribe(
         (res) => {
           this.roleModel.loading = false;
+          this.roleModel.visible = false;
           this.getRoles();
+          this.roleModel.value = '';
         },
         (err) => {
           this.roleModel.loading = false;
@@ -65,9 +73,10 @@ export class PermissionSetupComponent implements OnInit {
 
   // 展开页面触发
   onExpandChange(id: string, checked: boolean, isLeaf: boolean): void {
+    console.log(id, checked, isLeaf, this.pageFunctions);
     if (checked) {
       this.expandSet.add(id);
-      if (!this.pageFunctions.get(id) && isLeaf) {
+      if (!this.pageFunctions.get(id)) {
         this.getPageFunctions(id);
       }
     } else {
@@ -106,6 +115,7 @@ export class PermissionSetupComponent implements OnInit {
   getPageFunctions(param: string) {
     this.common.getPageFunctions(param).subscribe((res) => {
       this.pageFunctions.set(param, res);
+      console.log(this.pageFunctions);
     });
   }
 
@@ -118,7 +128,7 @@ export class PermissionSetupComponent implements OnInit {
 
   // 获取角色功能权限
   getRolePageActions(origin: NzTreeNodeOptions) {
-    this.service.getRolePages(origin.key).subscribe((res) => {
+    this.service.getRolePageFunctions(origin.key).subscribe((res) => {
       origin.actions = res;
     });
   }
@@ -138,26 +148,50 @@ export class PermissionSetupComponent implements OnInit {
 
   // 修改功能权限
   modifyFunctionPermission(e: NzFormatEmitEvent, id: string) {
-    this.service.setFunctionPermission({ roleId: this.activeRole?.key!, functionId: id }).subscribe(
-      (res) => {},
-      (err) => {
-        // 修改出错，重新请求已有权限
-        this.getRolePages(this.activeRole?.origin!);
-        this.getRolePageActions(this.activeRole?.origin!);
-      },
-    );
+    console.log(this.roles, this.pageFunctions);
+    if (e) {
+      this.service.addFunctionPermission({ role_id: this.activeRole?.key!, permissions_id: id }).subscribe(
+        (res) => {},
+        (err) => {
+          // 修改出错，重新请求已有权限
+          this.getRolePages(this.activeRole?.origin!);
+          this.getRolePageActions(this.activeRole?.origin!);
+        },
+      );
+    } else {
+      this.service.cancelFunctionPermission({ role_id: this.activeRole?.key!, permissions_id: id }).subscribe(
+        (res) => {},
+        (err) => {
+          // 修改出错，重新请求已有权限
+          this.getRolePages(this.activeRole?.origin!);
+          this.getRolePageActions(this.activeRole?.origin!);
+        },
+      );
+    }
   }
 
   // 修改页面权限
   modifyPagePermission(e: NzFormatEmitEvent, id: string) {
-    this.service.setPagePermission({ roleId: this.activeRole?.key!, pageId: id }).subscribe(
-      (res) => {},
-      (err) => {
-        // 修改出错，重新请求已有权限
-        this.getRolePages(e.node?.origin!);
-        this.getRolePageActions(e.node?.origin!);
-      },
-    );
+    console.log(this.roles, this.pageFunctions);
+    if (e) {
+      this.service.addPagePermission({ role_id: this.activeRole?.key!, page_id: id }).subscribe(
+        (res) => {},
+        (err) => {
+          // 修改出错，重新请求已有权限
+          this.getRolePages(this.activeRole?.origin!);
+          this.getRolePageActions(this.activeRole?.origin!);
+        },
+      );
+    } else {
+      this.service.cancelPagePermission({ role_id: this.activeRole?.key!, page_id: id }).subscribe(
+        (res) => {},
+        (err) => {
+          // 修改出错，重新请求已有权限
+          this.getRolePages(this.activeRole?.origin!);
+          this.getRolePageActions(this.activeRole?.origin!);
+        },
+      );
+    }
   }
 
   // 删除角色

@@ -1,4 +1,3 @@
-import { catchError, tap } from 'rxjs/operators';
 import { CommonService } from './../../core/services/common.service';
 import { validateForm } from '@shared/utils/utils';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -22,8 +21,10 @@ export class PageSetupComponent implements OnInit {
   pageAddForm: FormGroup = this.fb.group({
     parent_page_id: [null],
     title: [null, [Validators.required]],
-    link: [null, [Validators.required]],
+    link: [null],
     icon: [null],
+    show: [true, [Validators.required]],
+    key: [null, [Validators.required]],
   });
   // 添加功能表单Control
   functionAddForm: FormGroup = this.fb.group({
@@ -44,7 +45,7 @@ export class PageSetupComponent implements OnInit {
     if (v) {
       this.pageAddForm.controls.parent_page_id.patchValue('0');
     } else {
-      this.pageAddForm.controls.parent_page_id.patchValue(this.activePage?.key);
+      this.pageAddForm.controls.parent_page_id.patchValue(this.activePage?.origin.id);
     }
   }
 
@@ -57,8 +58,11 @@ export class PageSetupComponent implements OnInit {
       this.pageAddForm.reset();
       this.addPageDrawer.visible = true;
       this.isUpdate = false;
+      this.pageAddForm.patchValue({
+        show: true,
+      });
       if (this.activePage) {
-        this.pageAddForm.controls.parent_page_id.patchValue(this.activePage?.key);
+        this.pageAddForm.controls.parent_page_id.patchValue(this.activePage?.origin.id);
         this.topLevelDisabled = this.isTopLevel = false;
       } else {
         this.pageAddForm.controls.parent_page_id.patchValue('0');
@@ -68,12 +72,15 @@ export class PageSetupComponent implements OnInit {
     // 修改
     update: () => {
       if (this.activePage) {
+        this.pageAddForm.reset();
         this.addPageDrawer.visible = true;
         this.isUpdate = true;
         this.pageAddForm.patchValue({
           title: this.activePage.origin.title,
           link: this.activePage.origin?.link,
           icon: this.activePage.origin?.icon,
+          show: this.activePage.origin?.show,
+          key: this.activePage.origin?.key,
         });
       }
     },
@@ -82,14 +89,17 @@ export class PageSetupComponent implements OnInit {
       validateForm(this.pageAddForm.controls);
       if (this.pageAddForm.valid) {
         const param = this.pageAddForm.getRawValue();
+        param.id = this.activePage?.origin.id;
+        delete param.parent_page_id;
         this.service.modifyPage(param).subscribe((res) => {
+          this.addPageDrawer.close();
           this.getAllPages();
         });
       }
     },
     // 删除页面
     deletePage: () => {
-      this.service.deletePage(this.activePage!.key).subscribe((res) => {
+      this.service.deletePage(this.activePage!.origin.id).subscribe((res) => {
         this.getAllPages();
       });
     },
@@ -99,6 +109,7 @@ export class PageSetupComponent implements OnInit {
       if (this.pageAddForm.valid) {
         const param = this.pageAddForm.getRawValue();
         this.service.addPage(param).subscribe((res) => {
+          this.addPageDrawer.close();
           this.getAllPages();
         });
       }
@@ -114,11 +125,13 @@ export class PageSetupComponent implements OnInit {
     functionId: '', // 当前操作功能
     // 添加
     insert: () => {
+      this.isUpdate = false;
       this.functionAddForm.reset();
       this.addFunctionDrawer.visible = true;
     },
     // 修改
     update: (item: PageAction) => {
+      this.isUpdate = true;
       this.addFunctionDrawer.functionId = item.id;
       this.functionAddForm.reset();
       this.addFunctionDrawer.visible = true;
@@ -132,9 +145,10 @@ export class PageSetupComponent implements OnInit {
       validateForm(this.functionAddForm.controls);
       if (this.functionAddForm.valid) {
         const param = this.functionAddForm.getRawValue();
-        param.page_id = this.activePage?.key;
+        param.page_id = this.activePage?.origin.id;
         this.service.addFunction(param).subscribe((res) => {
-          this.getPageFunction(this.activePage?.key!);
+          this.addFunctionDrawer.close();
+          this.getPageFunction(this.activePage?.origin.id);
         });
       }
     },
@@ -145,14 +159,15 @@ export class PageSetupComponent implements OnInit {
         const param = this.functionAddForm.getRawValue();
         param.permission_id = this.addFunctionDrawer.functionId;
         this.service.modifyFunction(param).subscribe((res) => {
-          this.getPageFunction(this.activePage?.key!);
+          this.addFunctionDrawer.close();
+          this.getPageFunction(this.activePage?.origin.id);
         });
       }
     },
     // 删除功能
     deleteFunction: (id: string) => {
       this.service.deleteFunction(id).subscribe((res) => {
-        this.getPageFunction(this.activePage?.key!);
+        this.getPageFunction(this.activePage?.origin.id);
       });
     },
   };
@@ -174,8 +189,8 @@ export class PageSetupComponent implements OnInit {
   adjustPageOrder(e: NzFormatEmitEvent) {
     const nodes = e.dragNode?.parentNode?.children || this.pageTreeEl.getTreeNodes();
     const param = {
-      parent_page_id: e.dragNode?.parentNode?.key ?? '0',
-      page_id: e.dragNode?.key!,
+      parent_page_id: e.dragNode?.parentNode?.origin.id ?? '0',
+      page_id: e.dragNode?.origin.id!,
       sort: (nodes as NzTreeNode[]).findIndex((item) => item.key === e.dragNode?.key) + 1,
     };
     this.service.adjustPage(param).subscribe(
@@ -188,15 +203,16 @@ export class PageSetupComponent implements OnInit {
 
   // 单击菜单触发
   pageClick(e: NzFormatEmitEvent) {
+    console.log('e: ', e);
     if (this.activePage !== e.node) {
       this.activePage = e.node!;
-      this.pageAddForm.controls.parent_page_id.patchValue(e.keys?.[0]);
-      if (e.node?.origin.isLeaf) {
+      this.pageAddForm.controls.parent_page_id.patchValue(e.node?.origin.id);
+      if (e.node?.origin.link) {
         // 叶子节点=>加载功能
-        this.getPageFunction(e.node.key);
-      } else if (e.node) {
+        this.getPageFunction(e.node.origin.id);
+      } else if (e.node && !e.node?.origin.link && !e.node?.origin.isLeaf) {
         // 父节点=>展开
-        e.node.isExpanded = !e.node.isExpanded;
+        e.node.isExpanded = true;
         this.pageFunctions = [];
       }
     } else {

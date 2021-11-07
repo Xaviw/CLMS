@@ -74,8 +74,10 @@ export class AddCourseComponent implements OnInit {
   });
   handleOk() {
     validateForm(this.validateForm.controls);
+    console.log('this.validateForm: ', this.validateForm);
     if (this.validateForm.valid) {
       const value = this.validateForm.getRawValue();
+      console.log('value: ', value);
       this.operation.emit(value);
     }
   }
@@ -100,16 +102,6 @@ export class AddCourseComponent implements OnInit {
     if (e) this.keyWord = null;
   }
 
-  // TODO
-  selectChange(value: null | string) {
-    if (value === null) return;
-    // const data = {};
-    // this.service.queryPersonRowNumber(data).subscribe(num = >{
-    // 	table.pageIndex = parseInt(num / table.pageSize + '') + 1;
-    // 	table.selectedRowIndex = num % table.pageSize;
-    // 	table.evtPageChange(false, true);
-    // });
-  }
   open() {
     this.visible = true;
   }

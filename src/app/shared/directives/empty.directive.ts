@@ -1,4 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
+import * as _ from 'lodash';
 
 @Directive({
   selector: '[empty]',
@@ -10,10 +11,10 @@ export class EmptyDirective {
   @Input() emptyInfo = '';
   // 需要校验的值--变化时触发元素修改
   @Input()
-  set emptyData(data: any[]) {
-    if (!data?.length && !this.el.nativeElement.contains(this.node)) {
+  set emptyData(data: any) {
+    if (!this.getBoolean(data) && !this.el.nativeElement.contains(this.node)) {
       this.el.nativeElement.append(this.node);
-    } else if (data?.length && this.el.nativeElement.contains(this.node)) {
+    } else if (this.getBoolean(data) && this.el.nativeElement.contains(this.node)) {
       this.el.nativeElement.removeChild(this.node);
     }
   }
@@ -86,5 +87,16 @@ export class EmptyDirective {
   </svg>
   <span> ${this.emptyInfo} </span>
 `;
+  }
+
+  // 判断真假
+  getBoolean(value: any): boolean {
+    if (value === null) {
+      return false;
+    } else if (typeof value === 'object') {
+      return !_.isEmpty(value);
+    } else {
+      return !!value;
+    }
   }
 }

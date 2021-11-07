@@ -10,7 +10,8 @@
       </span>
       <span nz-dropdown [nzDropdownMenu]="menu" class="flex-center">
         {{ userInfo?.name }}
-        <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="userInfo?.avatar"></nz-avatar>
+        <!-- FIXME -->
+        <!-- <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="userInfo?.avatar"></nz-avatar> -->
       </span>
       <nz-dropdown-menu #menu="nzDropdownMenu">
         <ul nz-menu>
@@ -28,7 +29,7 @@
           <ng-template #menuTpl let-menus>
             <ng-container *ngFor="let menu of menus">
               <li
-                *ngIf="menu.leaf"
+                *ngIf="menu.isLeaf"
                 nz-menu-item
                 [nzPaddingLeft]="menu.level * 24"
                 nzMatchRouter
@@ -38,7 +39,7 @@
                 <span>{{ menu.title }}</span>
               </li>
               <li
-                *ngIf="!menu.leaf"
+                *ngIf="!menu.isLeaf"
                 nz-submenu
                 [nzPaddingLeft]="menu.level * 24"
                 [nzTitle]="menu.title"

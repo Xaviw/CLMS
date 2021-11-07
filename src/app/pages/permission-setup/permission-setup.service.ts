@@ -19,33 +19,45 @@ export class PermissionSetupService {
     return this.http.post(url, { role_id: id });
   }
 
-  // 修改页面权限
-  setPagePermission(param: { roleId: string; pageId: string }) {
-    const url = '/permission/page';
+  // 添加页面权限
+  addPagePermission(param: { role_id: string; page_id: string }) {
+    const url = '/permissions/addPageInRole';
     return this.http.post(url, param);
   }
 
-  // 修改功能权限
-  setFunctionPermission(param: { roleId: string; functionId: string }) {
-    const url = '/permission/function';
+  // 取消页面权限
+  cancelPagePermission(param: { role_id: string; page_id: string }) {
+    const url = '/permissions/cancelPageInRole';
+    return this.http.post(url, param);
+  }
+
+  // 添加功能权限
+  addFunctionPermission(param: { role_id: string; permissions_id: string }) {
+    const url = '/permissions/addPermissionsInRole';
+    return this.http.post(url, param);
+  }
+
+  // 取消功能权限
+  cancelFunctionPermission(param: { role_id: string; permissions_id: string }) {
+    const url = '/permissions/deletePermissionsInRole';
     return this.http.post(url, param);
   }
 
   // 删除角色
   deleteRole(id: string) {
     const url = '/permission/delete';
-    return this.http.post(url, id);
+    return this.http.post(url, { role_id: id });
   }
 
   // 修改角色
-  modifyRole(name: string) {
-    const url = '.permission/modify';
-    return this.http.post(url, name);
+  modifyRole(param: { role_id: string; role_name: string }) {
+    const url = '/permissions/modifyRole';
+    return this.http.post(url, param);
   }
 
   // 添加角色
   addRole(name: string) {
-    const url = '.permission/add';
-    return this.http.post(url, name);
+    const url = '/permissions/addRole';
+    return this.http.post(url, { role_name: name });
   }
 }

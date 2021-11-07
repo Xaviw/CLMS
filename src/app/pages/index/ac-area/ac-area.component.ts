@@ -29,6 +29,7 @@ interface comments {
 })
 export class AcAreaComponent implements OnInit {
   @ViewChild('textArea') textArea: ElementRef | undefined;
+  content?: string;
   // 数据
   commentsData: comment[] = [];
   // 总数
@@ -77,16 +78,27 @@ export class AcAreaComponent implements OnInit {
     this.textArea?.nativeElement.focus();
   }
 
-  // 回复框失去焦点
-  textAreaBlur() {
+  // 取消回复框
+  cancelReply() {
+    this.content = '';
     this.reply = undefined;
   }
 
-  // 发布留言
-  // TODO
-  postMessage() {}
-
-  // 发布回复
-  // TODO
-  postReply() {}
+  // 发布、回复留言
+  postMessage() {
+    const param: any = {
+      content: this.content,
+    };
+    if (this.reply) {
+      param['id'] = this.reply.id;
+    }
+    this.service.postMessage(param).subscribe((res) => {
+      if (this.reply) {
+        this.getReply(this.reply);
+      } else {
+        this.getComments();
+      }
+      this.cancelReply();
+    });
+  }
 }

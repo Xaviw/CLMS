@@ -51,4 +51,11 @@ export class BulletinListComponent implements OnInit {
       this.getList();
     }
   }
+
+  // 删除公告
+  delete(id: string) {
+    this.service.deleteBulletin(id).subscribe(() => {
+      this.getList();
+    });
+  }
 }

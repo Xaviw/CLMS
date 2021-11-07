@@ -14,18 +14,19 @@ export class CacheService {
   public checkInInterval?: any;
 
   // 启动轮询
+  // FIXME
   public startCheckInInterval() {
-    // 已登录且未启动轮询，每十分钟请求一次是否需要签到
-    if (!this.checkInInterval && _local.get('token')) {
-      // 先请求一次，等到整10分钟时开启轮询
-      this.getCheckInInfo();
-      // 计算整距10分钟时间差
-      const timeDiff = 600000 - (Date.now() % 600000);
-      // 记录setTimeout或setInterval，用于清除
-      this.checkInInterval = setTimeout(() => {
-        this.checkInInterval = setInterval(this.getCheckInInfo(), 600000);
-      }, timeDiff);
-    }
+    // // 已登录且未启动轮询，每十分钟请求一次是否需要签到
+    // if (!this.checkInInterval && _local.get('token')) {
+    //   // 先请求一次，等到整10分钟时开启轮询
+    //   this.getCheckInInfo();
+    //   // 计算整距10分钟时间差
+    //   const timeDiff = 600000 - (Date.now() % 600000);
+    //   // 记录setTimeout或setInterval，用于清除
+    //   this.checkInInterval = setTimeout(() => {
+    //     this.checkInInterval = setInterval(this.getCheckInInfo(), 600000);
+    //   }, timeDiff);
+    // }
   }
 
   // 请求签到信息
@@ -69,6 +70,24 @@ export class CacheService {
       this._userInfo = _session.get('userInfo');
     }
     return this._userInfo;
+  }
+
+  // 页面权限信息
+  public _pagePermissions?: string[];
+  get pagePermissions() {
+    if (!this._pagePermissions) {
+      this._pagePermissions = _session.get('pagePermissions');
+    }
+    return this._pagePermissions;
+  }
+
+  // 功能权限信息
+  public _functionPermissions?: string[];
+  get functionPermissions() {
+    if (!this._functionPermissions) {
+      this._functionPermissions = _session.get('functionPermissions');
+    }
+    return this._functionPermissions;
   }
 
   // 清空缓存

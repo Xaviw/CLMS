@@ -11,7 +11,7 @@ export class CommonService {
   // 请求用户信息
   getUserInfo() {
     const url = '/user/info';
-    return this.http.post(url, {});
+    return this.http.get(url);
   }
 
   // 修改密码

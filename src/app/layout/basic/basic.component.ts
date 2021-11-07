@@ -2,7 +2,7 @@ import { CacheService } from './../../core/services/cache.service';
 import { ModifyProfileComponent } from './../../shared/components/modify-profile/modify-profile.component';
 import { Router } from '@angular/router';
 import { base64Filter } from '@app/shared/utils/utils';
-import { environment } from './../../../environments/environment.dev';
+import { environment } from './../../../environments/environment';
 import { CommonService } from '../../core/services/common.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PageRoute, User } from '@app/shared/types/commonTypes';
@@ -58,7 +58,6 @@ export class LayoutBasicComponent implements OnInit {
   ngOnInit() {
     this.menus = _session.get('routes');
     this.userInfo = this.cache.userInfo;
-    console.log('this.userInfo: ', this.userInfo);
     if (!this.menus || !this.userInfo) {
       this.commonService.getUserInfo().subscribe((res: any) => {
         // 如果有头像，拼接头像完整地址
@@ -69,6 +68,8 @@ export class LayoutBasicComponent implements OnInit {
         this.userInfo = res.userInfo;
         _session.set('userInfo', res.userInfo);
         _session.set('routes', res.routes);
+        _session.set('pagePermissions', res.pagePermissions);
+        _session.set('functionsPermissions', res.functionPermissions);
         this.cache.startCheckInInterval();
       });
     }

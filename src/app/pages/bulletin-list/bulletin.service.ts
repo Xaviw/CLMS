@@ -23,4 +23,10 @@ export class BulletinService {
     const url = `/ann/getMessageById`;
     return this.http.post(url, { id });
   }
+
+  // 删除公告
+  deleteBulletin(id: string) {
+    const url = `/ann/deleteMessageById`;
+    return this.http.post(url, { id });
+  }
 }

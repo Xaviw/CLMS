@@ -97,6 +97,7 @@ export class CourseDetailComponent implements OnInit {
 
   // 修改课程基础信息
   editCourse(e: CourseAddInfo) {
+    console.log('e1: ', e);
     this.service.modifyCourseInfo({ ...e, courseId: this.params.courseId }).subscribe((res) => {
       this.getCourseDetail();
     });

@@ -5,11 +5,14 @@
   <textarea
     nz-input
     [placeholder]="reply ? '回复' + reply.name + '：' : '请输入留言...'"
+    [(ngModel)]="content"
     nzAutosize
-    (blur)="textAreaBlur()"
     #textArea
   ></textarea>
-  <button nz-button nzType="primary" style="margin-left: 5px">{{ reply ? '发布回复' : '发布留言' }}</button>
+  <button nz-button style="margin-left: 5px" *ngIf="reply" (click)="cancelReply()">取消</button>
+  <button nz-button nzType="primary" style="margin-left: 5px" (click)="postMessage()">
+    {{ reply ? '发布回复' : '发布留言' }}
+  </button>
 </div>
 <div class="min-height">
   <div class="padding-x view_scroll" empty [emptyData]="commentsData" emptyInfo="还没有留言...">

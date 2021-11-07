@@ -37,6 +37,6 @@ const route: Routes = [
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild(route)],
-  declarations: [BulletinListComponent, PublishBulletinComponent],
+  declarations: [BulletinListComponent, PublishBulletinComponent, BulletinComponent],
 })
 export class BulletinListModule {}

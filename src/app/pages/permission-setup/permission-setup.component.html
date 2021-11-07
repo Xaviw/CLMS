@@ -42,8 +42,8 @@
                 <tr>
                   <td
                     [ngStyle]="{ 'padding-left.px': page.level - 1 ? (page.level - 1) * 50 : false }"
-                    [nzExpand]="expandSet.has(page.key)"
-                    (nzExpandChange)="onExpandChange(page.key, $event, page.isLeaf)"
+                    [nzExpand]="expandSet.has(page.id)"
+                    (nzExpandChange)="onExpandChange(page.id, $event, page.isLeaf)"
                   ></td>
                   <td><i nz-icon nzType="snippets" nzTheme="outline"></i>{{ page.title }}</td>
                   <td>
@@ -59,20 +59,15 @@
                       nz-checkbox
                       *ngIf="activeRole"
                       [ngModel]="activeRole?.origin?.pages.includes(page.key)"
-                      (ngModelChange)="modifyFunctionPermission($event, page.key)"
+                      (ngModelChange)="modifyFunctionPermission($event, page.id)"
                     ></label>
                   </td>
                 </tr>
-                <tr [nzExpand]="expandSet.has(page.key)">
-                  <table *ngIf="!page.isLeaf">
-                    <tbody>
-                      <ng-container *ngTemplateOutlet="pageTpl; context: { $implicit: page.children }"></ng-container>
-                    </tbody>
-                  </table>
-                  <div *ngIf="page.isLeaf">
+                <tr [nzExpand]="expandSet.has(page.id)">
+                  <div>
                     <table>
                       <tbody>
-                        <tr *ngFor="let item of pageFunctions.get(page.key)">
+                        <tr *ngFor="let item of pageFunctions.get(page.id)">
                           <td
                             [ngStyle]="{ 'padding-left.px': page.level - 1 ? (page.level - 1) * 50 + 60 : 76 }"
                             style="width: auto"
@@ -91,7 +86,7 @@
                             <label
                               nz-checkbox
                               *ngIf="activeRole"
-                              [ngModel]="activeRole.origin?.actions.includes(item.id)"
+                              [ngModel]="activeRole.origin?.actions.includes(item.code)"
                               (ngModelChange)="modifyFunctionPermission($event, item.id)"
                             ></label>
                           </td>
@@ -99,6 +94,11 @@
                       </tbody>
                     </table>
                   </div>
+                  <table>
+                    <tbody>
+                      <ng-container *ngTemplateOutlet="pageTpl; context: { $implicit: page.children }"></ng-container>
+                    </tbody>
+                  </table>
                 </tr>
               </ng-container>
             </ng-template>

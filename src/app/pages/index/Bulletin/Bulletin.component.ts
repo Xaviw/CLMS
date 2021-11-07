@@ -2,10 +2,10 @@ import { BulletinService } from './../../bulletin-list/bulletin.service';
 import { Component, OnInit } from '@angular/core';
 import { BulletinInfo } from '@app/shared/types/commonTypes';
 
-interface bulletin {
+type Bulletin = {
   total: number;
-  data: Array<BulletinInfo>;
-}
+  data: BulletinInfo[];
+};
 
 @Component({
   selector: 'bulletin',
@@ -14,7 +14,7 @@ interface bulletin {
   providers: [BulletinService],
 })
 export class BulletinComponent implements OnInit {
-  data: bulletin | undefined;
+  data: BulletinInfo[] = [];
   constructor(private service: BulletinService) {}
 
   ngOnInit() {
@@ -25,7 +25,7 @@ export class BulletinComponent implements OnInit {
   getBulletin() {
     const param = { pageIndex: 1, pageSize: 5 };
     this.service.getBulletin(param).subscribe((res) => {
-      this.data = res as bulletin;
+      this.data = (res as Bulletin).data;
     });
   }
 }

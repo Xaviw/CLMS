@@ -47,6 +47,7 @@ export class CourseManageComponent implements OnInit {
 
   // 添加课程
   addCourse(e: CourseAddInfo) {
+    console.log('e2: ', e);
     this.service.addCourse(e).subscribe((res) => {
       this.addCourseEl.reset();
       this.addCourseEl.close();
