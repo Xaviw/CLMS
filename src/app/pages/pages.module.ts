@@ -20,8 +20,7 @@ const routes: Routes = [
         loadChildren: () => import('./index/index.module').then((m) => m.IndexModule),
         data: {
           title: '首页', // 页面标题，默认系统名字
-          needLogin: true, // 访问是否需要登录，true才设置
-          skipPermission: true, // 访问是否无需鉴权，true才设置
+          key: 'index',
         },
       },
       {
@@ -29,7 +28,7 @@ const routes: Routes = [
         loadChildren: () => import('./page-setup/page-setup.module').then((m) => m.PageSetupModule),
         data: {
           title: '页面设置',
-          needLogin: true,
+          key: 'pageSetup',
         },
       },
       {
@@ -37,7 +36,7 @@ const routes: Routes = [
         loadChildren: () => import('./permission-setup/permission-setup.module').then((m) => m.PermissionSetupModule),
         data: {
           title: '权限设置',
-          needLogin: true,
+          key: 'permissionSetup',
         },
       },
       {
@@ -45,7 +44,7 @@ const routes: Routes = [
         loadChildren: () => import('./user-manage/user-manage.module').then((m) => m.UserManageModule),
         data: {
           title: '教师管理',
-          needLogin: true,
+          key: 'teacherManage',
         },
       },
       {
@@ -53,7 +52,7 @@ const routes: Routes = [
         loadChildren: () => import('./user-manage/user-manage.module').then((m) => m.UserManageModule),
         data: {
           title: '学生管理',
-          needLogin: true,
+          key: 'studentManage',
         },
       },
       {
@@ -61,7 +60,7 @@ const routes: Routes = [
         loadChildren: () => import('./course-manage/course-manage.module').then((m) => m.CourseManageModule),
         data: {
           title: '课程管理',
-          needLogin: true,
+          key: 'courseManage',
         },
       },
       {
@@ -69,8 +68,7 @@ const routes: Routes = [
         loadChildren: () => import('./course-detail/course-detail.module').then((m) => m.CourseDetailModule),
         data: {
           title: '课程详细',
-          needLogin: true,
-          skipPermission: true,
+          key: 'courseDetail',
         },
       },
       {
@@ -78,7 +76,7 @@ const routes: Routes = [
         loadChildren: () => import('./course-schedule/course-schedule.module').then((m) => m.CourseScheduleModule),
         data: {
           title: '课程表',
-          needLogin: true,
+          key: 'courseSchedule',
         },
       },
       {
@@ -86,7 +84,7 @@ const routes: Routes = [
         loadChildren: () => import('./lab-manage/lab-manage.module').then((m) => m.LabManageModule),
         data: {
           title: '机房列表',
-          needLogin: true,
+          key: 'labManage',
         },
       },
       {
@@ -94,8 +92,7 @@ const routes: Routes = [
         loadChildren: () => import('./lab-detail/lab-detail.module').then((m) => m.LabDetailModule),
         data: {
           title: '机房详细',
-          needLogin: true,
-          skipPermission: true,
+          key: 'labDetail',
         },
       },
       {
@@ -103,7 +100,7 @@ const routes: Routes = [
         loadChildren: () => import('./application-list/application-list.module').then((m) => m.ApplicationListModule),
         data: {
           title: '申请列表',
-          needLogin: true,
+          key: 'applicationList',
         },
       },
       {
@@ -111,15 +108,14 @@ const routes: Routes = [
         loadChildren: () => import('./apply/apply.module').then((m) => m.ApplyModule),
         data: {
           title: '申请详细',
-          needLogin: true,
-          skipPermission: true,
+          key: 'apply',
         },
       },
       {
         path: 'bulletin',
         loadChildren: () => import('./bulletin-list/bulletin-list.module').then((m) => m.BulletinListModule),
         data: {
-          skipPermission: true,
+          skipAuth: true,
         },
       },
     ],
@@ -136,6 +132,7 @@ const routes: Routes = [
         loadChildren: () => import('@pages/login/login.module').then((m) => m.LoginModule),
         data: {
           title: '登录',
+          noLoginRequired: true,
         },
       },
     ],

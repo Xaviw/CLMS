@@ -2,6 +2,7 @@ import { BulletinService } from './bulletin.service';
 import { Component, OnInit } from '@angular/core';
 import { BulletinInfo } from '@app/shared/types/commonTypes';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'app-bulletin-list',
@@ -18,7 +19,7 @@ export class BulletinListComponent implements OnInit {
   searchKey?: string;
   previousKey?: string;
 
-  constructor(private service: BulletinService) {}
+  constructor(private service: BulletinService, public cache: CacheService) {}
 
   ngOnInit() {
     this.getList();

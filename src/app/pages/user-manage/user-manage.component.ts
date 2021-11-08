@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { User, Role, FilterType } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'user-manage',
@@ -47,7 +48,7 @@ export class UserManageComponent implements OnInit {
   constructor(
     private service: UserManageService,
     private commonService: CommonService,
-    private message: NzMessageService,
+    public cache: CacheService,
     private router: Router,
   ) {}
 

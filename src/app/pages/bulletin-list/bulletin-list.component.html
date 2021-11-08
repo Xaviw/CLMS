@@ -15,7 +15,14 @@
       </ng-template>
     </nz-input-group>
     <div class="right">
-      <button nz-button nzType="primary" routerLink="/bulletin/publish">发布公告</button>
+      <button
+        nz-button
+        nzType="primary"
+        routerLink="/bulletin/publish"
+        *ngIf="cache.functionPermissions?.includes('publishBulletin')"
+      >
+        发布公告
+      </button>
     </div>
   </div>
   <div class="container">
@@ -38,7 +45,7 @@
             <th nzAlign="center" nzWidth="200px">发布时间</th>
             <th nzAlign="center">标题</th>
             <th nzAlign="center" nzWidth="100px">浏览量</th>
-            <th nzAlign="center" nzWidth="100px">操作</th>
+            <th nzAlign="center" nzWidth="100px" *ngIf="cache.functionPermissions?.includes('deleteBulletin')">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +55,7 @@
               <a [routerLink]="['/bulletin', data.id]">{{ data.title }}</a>
             </td>
             <td nzAlign="center">{{ data.views }}</td>
-            <td nzAlign="center">
+            <td nzAlign="center" *ngIf="cache.functionPermissions?.includes('deleteBulletin')">
               <button
                 nz-button
                 nzType="primary"

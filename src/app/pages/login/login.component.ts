@@ -1,14 +1,12 @@
 import { CacheService } from './../../core/services/cache.service';
 import { CommonService } from '@app/core/services/common.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { validateForm } from '@shared/utils/utils';
 import { LoginService } from './login.service';
 import { environment } from '@env/environment';
-import { _local } from '@app/shared/utils/Storage';
-import { CheckInInfo } from '@app/shared/types/commonTypes';
+import { _local, _session } from '@app/shared/utils/Storage';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,6 +17,7 @@ export class LoginComponent implements OnInit {
   systemName = environment.systemName;
   loginForm!: FormGroup;
   showPwd: Boolean = false;
+  avatarPath = environment.api;
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +42,18 @@ export class LoginComponent implements OnInit {
       this.service.login({ code, password }).subscribe((res: any) => {
         _local.set('token', res.token, res.expires);
 
-        this.router.navigateByUrl('/index');
+        this.common.getUserInfo().subscribe((res: any) => {
+          // 如果有头像，拼接头像完整地址
+          if (res.userInfo?.avatar) {
+            res.userInfo.avatar = this.avatarPath + res.userInfo.avatar;
+          }
+          _session.set('userInfo', res.userInfo);
+          _session.set('routes', res.routes);
+          _session.set('pagePermissions', res.pagePermissions);
+          _session.set('functionPermissions', res.functionPermissions);
+          this.cache.startCheckInInterval();
+          this.router.navigateByUrl('/index');
+        });
       });
     }
   }

@@ -1,6 +1,14 @@
 <div class="view_scroll padding">
   <div class="my10" style="overflow: auto">
-    <button nz-button nzType="primary" style="float: right" (click)="addLabDrawer.visible = true">添加机房</button>
+    <button
+      nz-button
+      nzType="primary"
+      style="float: right"
+      (click)="addLabDrawer.visible = true"
+      *ngIf="cache.functionPermissions?.includes('addLab')"
+    >
+      添加机房
+    </button>
   </div>
   <div class="card-area" empty [emptyData]="labList" emptyInfo="没有机房信息...">
     <lab-card class="card" *ngFor="let lab of labList" [labInfo]="lab" (refresh)="getLabList()"></lab-card>

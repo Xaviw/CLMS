@@ -5,6 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { base64Filter, getType } from '@shared/utils/utils';
 import * as _ from 'lodash';
 import * as base64 from 'js-base64';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'seating-chart',
@@ -110,7 +111,12 @@ export class SeatingChartComponent implements OnInit {
     },
   };
 
-  constructor(private service: LabManageService, private message: NzMessageService, private router: Router) {}
+  constructor(
+    private service: LabManageService,
+    private message: NzMessageService,
+    private router: Router,
+    public cache: CacheService,
+  ) {}
 
   ngOnInit() {}
 

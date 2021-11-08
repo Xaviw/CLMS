@@ -2,6 +2,7 @@ import { CommonService } from '@app/core/services/common.service';
 import { CourseDetailInfo } from '@app/shared/types/commonTypes';
 import { CourseManageService } from './../course-manage/course-manage.service';
 import { Component, OnInit } from '@angular/core';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'app-course-schedule',
@@ -13,7 +14,7 @@ export class CourseScheduleComponent implements OnInit {
   weekTime = 0;
   param?: any;
 
-  constructor(private courseService: CourseManageService, private common: CommonService) {}
+  constructor(private courseService: CourseManageService, private common: CommonService, public cache: CacheService) {}
 
   ngOnInit() {}
 

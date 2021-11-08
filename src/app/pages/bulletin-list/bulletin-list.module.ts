@@ -11,8 +11,7 @@ const route: Routes = [
     component: BulletinListComponent,
     data: {
       title: '公告列表',
-      needLogin: false,
-      skipPermission: true,
+      key: 'bulletinList',
     },
   },
   {
@@ -20,8 +19,7 @@ const route: Routes = [
     component: PublishBulletinComponent,
     data: {
       title: '发布公告',
-      needLogin: true,
-      skipPermission: true,
+      key: 'publishBulletin',
     },
   },
   {
@@ -29,8 +27,7 @@ const route: Routes = [
     component: BulletinComponent,
     data: {
       title: '公告详情',
-      needLogin: true,
-      skipPermission: true,
+      key: 'bulletinDetail',
     },
   },
 ];

@@ -24,14 +24,16 @@ export class AuthGuard implements CanActivateChild {
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // 不判断查询参数
     state.url = state.url.split('?')[0];
-    // 是否需要登陆
-    const needLogin = Boolean(childRoute.data?.needLogin);
+    // 是否不需要登陆
+    const noLoginRequired = Boolean(childRoute.data?.noLoginRequired);
+    // 是否跳过权限验证
+    const skipAuth = Boolean(childRoute.data?.skipAuth);
     // 是否已登录
     const isLogin = Boolean(_local.get('token'));
-    // 是否不需要校验权限
-    const skipPermission = Boolean(childRoute.data?.skipPermission);
+    // 页面key
+    const key = childRoute.data?.key;
     // 是否拥有页面权限
-    const hasPermission = JSON.stringify(_session.get('routes')).indexOf(state.url) !== -1;
+    const hasPermission = this.cache.pagePermissions?.includes(key);
     // 页面标题
     const title = childRoute.data?.title || environment.systemName;
 
@@ -41,11 +43,17 @@ export class AuthGuard implements CanActivateChild {
       return this.router.parseUrl('/index');
     }
 
-    if (isLogin && !hasPermission && !skipPermission) {
-      // 需要登录，已登录、无权限，跳转首页
-      return this.router.parseUrl('/index');
-    } else if (!isLogin && needLogin) {
-      // 未登录，跳转登录页
+    if (isLogin && !skipAuth && !hasPermission) {
+      // 已登录、需要权限、无权限，跳转首页(无权限跳转登录页)
+      if (this.cache.pagePermissions?.includes('index')) {
+        return this.router.parseUrl('/index');
+      } else {
+        this.message.error('无相关页面权限，请联系管理员！');
+        this.cache.clearCache();
+        return this.router.parseUrl('/blank/login');
+      }
+    } else if (!isLogin && !noLoginRequired) {
+      // 需要登录、未登录，跳转登录页
       this.message.error('登录信息已失效，请重新登录！');
       this.cache.clearCache();
       return this.router.parseUrl('/blank/login');

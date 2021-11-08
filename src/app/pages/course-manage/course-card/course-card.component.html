@@ -2,7 +2,7 @@
   style="width: 100%"
   [nzTitle]="data?.courseName"
   [nzExtra]="extraTemplate"
-  [nzActions]="[viewDetail, delete]"
+  [nzActions]="cache.functionPermissions?.includes('deleteCourse') ? [viewDetail, delete] : [viewDetail]"
   [nzBodyStyle]="{ padding: '10px 24px' }"
   nzHoverable
 >

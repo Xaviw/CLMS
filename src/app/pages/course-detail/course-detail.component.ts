@@ -7,6 +7,7 @@ import { Component, OnInit, EventEmitter, ViewChild, ViewContainerRef, TemplateR
 import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UploadDrawerComponent } from '@app/shared/components/upload-drawer/upload-drawer.component';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -67,6 +68,7 @@ export class CourseDetailComponent implements OnInit {
     private service: CourseManageService,
     private modal: NzModalService,
     private viewContainerRef: ViewContainerRef,
+    public cache: CacheService,
   ) {}
 
   ngOnInit() {

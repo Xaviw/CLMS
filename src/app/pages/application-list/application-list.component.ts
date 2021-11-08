@@ -6,6 +6,7 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ApplicationType, ApplicationStatus } from '@app/shared/enum/enum';
 import * as base64 from 'js-base64';
 import { base64Filter } from '@app/shared/utils/utils';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'app-application-list',
@@ -26,6 +27,7 @@ export class ApplicationListComponent implements OnInit {
     private service: ApplicationListService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    public cache: CacheService,
   ) {}
 
   ngOnInit() {

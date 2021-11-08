@@ -23,8 +23,8 @@
           nz-button
           nzType="primary"
           nzSize="small"
-          *ngIf="!seatingChart?.length"
           (click)="settingChart.open('快速生成座位表')"
+          *ngIf="!seatingChart?.length && cache.functionPermissions?.includes('editSeatingChart')"
         >
           快速生成座位表
         </button>
@@ -32,19 +32,27 @@
           nz-button
           nzType="primary"
           nzSize="small"
-          *ngIf="seatingChart?.length"
           (click)="settingChart.open('编辑座位表')"
+          *ngIf="seatingChart?.length && cache.functionPermissions?.includes('editSeatingChart')"
         >
           编辑座位表
         </button>
-        <button nz-button nzType="primary" nzSize="small" (click)="redirectToLabApply(true)">申请使用整间教室</button>
+        <button
+          nz-button
+          nzType="primary"
+          nzSize="small"
+          (click)="redirectToLabApply(true)"
+          *ngIf="cache.functionPermissions?.includes('applyFullLab')"
+        >
+          申请使用整间教室
+        </button>
       </div>
       <div *ngIf="selectedSeat.length && selectedSeat[0] === 1">
-        <div class="flex-between border-bottom">
+        <div class="flex-between border-bottom" *ngIf="cache.functionPermissions?.includes('applyRepair')">
           <span nz-typography nzType="danger" class="mr10">该座位设备不能正常使用？</span>
           <button nz-button nzSize="small" nzDanger (click)="redirectToRepair()">设备报修</button>
         </div>
-        <div class="padding-y">
+        <div class="padding-y" *ngIf="cache.functionPermissions?.includes('labApply')">
           {{ date | date: 'yyyy年MM月dd日' }}，第
           <nz-select
             nzSize="small"

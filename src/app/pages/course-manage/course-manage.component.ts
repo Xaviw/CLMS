@@ -2,6 +2,7 @@ import { AddCourseComponent } from './../../shared/components/add-course/add-cou
 import { CourseManageService } from './course-manage.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CourseCard, CourseAddInfo } from '@app/shared/types/commonTypes';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'course-manage',
@@ -17,7 +18,7 @@ export class CourseManageComponent implements OnInit {
   // 添加课程抽屉
   @ViewChild('addCourseEl') addCourseEl!: AddCourseComponent;
 
-  constructor(private service: CourseManageService) {}
+  constructor(private service: CourseManageService, public cache: CacheService) {}
 
   ngOnInit() {}
 

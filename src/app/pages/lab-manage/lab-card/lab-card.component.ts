@@ -1,8 +1,9 @@
 import { CommonService } from '@app/core/services/common.service';
 import { LabManageService } from './../lab-manage.service';
-import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { LabInfo } from '@app/shared/types/commonTypes';
 import { LabStatus } from '@app/shared/enum/enum';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'lab-card',
@@ -20,9 +21,24 @@ export class LabCardComponent implements OnInit {
   // 状态枚举
   labStatus = LabStatus;
 
-  constructor(private service: LabManageService, private common: CommonService) {}
+  constructor(private service: LabManageService, private common: CommonService, public cache: CacheService) {}
 
   ngOnInit() {}
+
+  tag(a: TemplateRef<any>, b: TemplateRef<any>, c: TemplateRef<any>): TemplateRef<any>[] {
+    if (
+      this.cache.functionPermissions?.includes('deleteLab') &&
+      this.cache.functionPermissions?.includes('setLabStatus')
+    ) {
+      return [a, b, c];
+    } else if (this.cache.functionPermissions?.includes('deleteLab')) {
+      return [a, b];
+    } else if (this.cache.functionPermissions?.includes('setLabStatus')) {
+      return [a, c];
+    } else {
+      return [a];
+    }
+  }
 
   // 删除机房
   deleteLab() {

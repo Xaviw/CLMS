@@ -5,6 +5,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import E from 'wangeditor';
 import Editor from 'wangeditor';
 import { NodeListType } from 'wangeditor/dist/text/getChildrenJSON';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'app-bulletin',
@@ -16,7 +17,12 @@ export class BulletinComponent implements OnInit, AfterViewInit {
   detailInfo: BulletinInfo = {} as BulletinInfo;
   editor!: Editor;
 
-  constructor(private activatedRoute: ActivatedRoute, private service: BulletinService, private router: Router) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private service: BulletinService,
+    private router: Router,
+    public cache: CacheService,
+  ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {

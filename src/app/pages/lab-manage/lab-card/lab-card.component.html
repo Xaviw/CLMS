@@ -1,4 +1,4 @@
-<nz-card style="width: 100%" [nzCover]="coverTemplate" [nzActions]="[viewDetail, delete, setStatus]">
+<nz-card style="width: 100%" [nzCover]="coverTemplate" [nzActions]="tag(viewDetail, delete, setStatus)">
   <nz-tag nzColor="green" class="status-tag" *ngIf="labInfo?.status === labStatus.open">开放中</nz-tag>
   <nz-tag nzColor="red" class="status-tag" *ngIf="labInfo?.status === labStatus.close">未开放</nz-tag>
   <nz-tag nzColor="gray" class="status-tag" *ngIf="labInfo?.status === labStatus.repair">维修中</nz-tag>

@@ -4,6 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { LabManageService } from './lab-manage.service';
 import { Component, OnInit } from '@angular/core';
 import { LabInfo } from '@app/shared/types/commonTypes';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'lab-manage',
@@ -34,7 +35,12 @@ export class LabManageComponent implements OnInit {
     },
   };
 
-  constructor(private service: LabManageService, private fb: FormBuilder, private common: CommonService) {}
+  constructor(
+    private service: LabManageService,
+    private fb: FormBuilder,
+    private common: CommonService,
+    public cache: CacheService,
+  ) {}
 
   ngOnInit() {
     this.getLabList();

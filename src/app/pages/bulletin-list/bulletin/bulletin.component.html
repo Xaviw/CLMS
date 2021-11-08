@@ -15,6 +15,7 @@
       nzPopconfirmPlacement="left"
       (nzOnConfirm)="deleteBulletin()"
       class="delete-button"
+      *ngIf="cache.functionPermissions?.includes('deleteBulletin')"
     >
       删除
     </button>

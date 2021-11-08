@@ -55,7 +55,6 @@ export class ApplyComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private service: ApplicationListService,
-    private labService: LabManageService,
     private common: CommonService,
     private fb: FormBuilder,
     private message: NzMessageService,
@@ -214,10 +213,12 @@ export class ApplyComponent implements OnInit {
         'course',
         new FormControl({ value: data?.course ?? null, disabled: this.disabled }, Validators.required),
       );
-      this.form.addControl(
-        'apply_all',
-        new FormControl({ value: data?.apply_all ?? false, disabled: this.disabled }, Validators.required),
-      );
+      if (this.cache.functionPermissions?.includes('applyFullLab')) {
+        this.form.addControl(
+          'apply_all',
+          new FormControl({ value: data?.apply_all ?? false, disabled: this.disabled }, Validators.required),
+        );
+      }
     }
     if (this.paramsType === 0 || this.paramsType === 2) {
       this.form.addControl(

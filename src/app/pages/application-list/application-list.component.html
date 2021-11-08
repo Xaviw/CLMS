@@ -1,8 +1,32 @@
 <div class="layout">
   <div class="header">
-    <button nz-button nzType="primary" class="mr10" (click)="redirectDetail(0)">机房申请</button>
-    <button nz-button nzType="primary" class="mr10" (click)="redirectDetail(1)">采购申请</button>
-    <button nz-button nzType="primary" class="mr10" (click)="redirectDetail(2)">报修申请</button>
+    <button
+      nz-button
+      nzType="primary"
+      class="mr10"
+      (click)="redirectDetail(0)"
+      *ngIf="cache.functionPermissions?.includes('labApply')"
+    >
+      机房申请
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      class="mr10"
+      (click)="redirectDetail(1)"
+      *ngIf="cache.functionPermissions?.includes('shopApply')"
+    >
+      采购申请
+    </button>
+    <button
+      nz-button
+      nzType="primary"
+      class="mr10"
+      (click)="redirectDetail(2)"
+      *ngIf="cache.functionPermissions?.includes('repairApply')"
+    >
+      报修申请
+    </button>
   </div>
   <div class="container">
     <div class="view_scroll padding">

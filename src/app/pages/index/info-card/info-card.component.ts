@@ -1,3 +1,4 @@
+import { CacheService } from '@app/core/services/cache.service';
 import { Component, ElementRef, Input, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -60,7 +61,7 @@ export class InfoCardComponent implements OnInit, AfterViewInit {
   @ViewChild('cardElement') element!: ElementRef;
   Chart!: echarts.ECharts;
 
-  constructor() {}
+  constructor(public cache: CacheService) {}
 
   ngOnInit() {}
 

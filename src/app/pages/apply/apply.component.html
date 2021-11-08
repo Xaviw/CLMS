@@ -28,7 +28,7 @@
             </nz-select>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item *ngIf="form?.controls?.apply_all">
+        <nz-form-item *ngIf="form?.controls?.apply_all && cache.functionPermissions?.includes('applyFullLab')">
           <nz-form-label nzRequired nzFor="apply_all">申请整间教室</nz-form-label>
           <nz-form-control>
             <nz-switch formControlName="apply_all" id="apply_all" (ngModelChange)="applyAllChange($event)"></nz-switch>
@@ -103,7 +103,14 @@
           <button nz-button nzType="primary" *ngIf="!disabled && applicationInfo?.status !== 3" (click)="apply()">
             {{ !disabled && paramsId ? '修改申请' : '提交申请' }}
           </button>
-          <button nz-button nzType="primary" *ngIf="disabled && applicationInfo?.status === 0" (click)="examine.open()">
+          <button
+            nz-button
+            nzType="primary"
+            *ngIf="
+              disabled && applicationInfo?.status === 0 && cache.functionPermissions?.includes('examineApplication')
+            "
+            (click)="examine.open()"
+          >
             审核申请
           </button>
           <button

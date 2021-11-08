@@ -1,6 +1,7 @@
 import { CourseManageService } from './../course-manage.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CourseCard } from '@app/shared/types/commonTypes';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'course-card',
@@ -14,7 +15,7 @@ export class CourseCardComponent implements OnInit {
   // 删除后刷新
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
-  constructor(private service: CourseManageService) {}
+  constructor(private service: CourseManageService, public cache: CacheService) {}
 
   ngOnInit() {}
 

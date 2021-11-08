@@ -3,7 +3,14 @@
     <nz-page-header-title>{{ detailInfo?.courseName }}</nz-page-header-title>
     <nz-page-header-subtitle>{{ detailInfo?.isCompulsory ? '必修' : '选修' }}</nz-page-header-subtitle>
     <nz-page-header-extra>
-      <button nz-button nzType="primary" (click)="addCourseEl.open()">编辑</button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="addCourseEl.open()"
+        *ngIf="cache.functionPermissions?.includes('editCourse')"
+      >
+        编辑
+      </button>
       <button
         nz-button
         nzDanger
@@ -13,6 +20,7 @@
         nzOkText="确认"
         nzCancelText="取消"
         (nzOnConfirm)="deleteCourse()"
+        *ngIf="cache.functionPermissions?.includes('deleteCourse')"
       >
         删除
       </button>
@@ -62,8 +70,23 @@
 <ng-template #studentListEl>
   <div class="flex-between my10">
     <span>
-      <button nz-button nzType="primary" (click)="addStudent.create(tplFooter)">添加学生</button>
-      <button nz-button nzType="primary" style="margin-left: 10px" (click)="uploadDrawerEl.open()">导入学生</button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="addStudent.create(tplFooter)"
+        *ngIf="cache.functionPermissions?.includes('addStudent')"
+      >
+        添加学生
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        style="margin-left: 10px"
+        (click)="uploadDrawerEl.open()"
+        *ngIf="cache.functionPermissions?.includes('importStudent')"
+      >
+        导入学生
+      </button>
     </span>
     <span>
       <i
@@ -76,7 +99,14 @@
         class="mr5"
       ></i>
       <span class="reminder mr5" *ngIf="setOfCheckedId.size">已选中{{ setOfCheckedId.size }}人</span>
-      <button nz-button nzDanger nzType="primary" [disabled]="setOfCheckedId.size === 0" (click)="deleteStudent()">
+      <button
+        nz-button
+        nzDanger
+        nzType="primary"
+        [disabled]="setOfCheckedId.size === 0"
+        (click)="deleteStudent()"
+        *ngIf="cache.functionPermissions?.includes('deleteStudent')"
+      >
         删除学生
       </button>
     </span>
@@ -139,7 +169,12 @@
         *ngIf="editable"
       ></i>
       <button nz-button (click)="cancelEdit()" *ngIf="editable" class="mr5">取消</button>
-      <button nz-button nzType="primary" (click)="edit()">
+      <button
+        nz-button
+        nzType="primary"
+        (click)="edit()"
+        *ngIf="cache.functionPermissions?.includes('editCourseSchedule')"
+      >
         {{ editable ? '保存编辑' : '编辑' }}
       </button>
     </span>

@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { validateForm } from '@app/shared/utils/utils';
 import { fromEvent } from 'rxjs';
 import * as dayjs from 'dayjs';
+import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
   selector: 'lab-detail',
@@ -46,6 +47,7 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
     private router: Router,
     private fb: FormBuilder,
     private message: NzMessageService,
+    public cache: CacheService,
   ) {}
 
   ngOnInit() {
@@ -57,13 +59,15 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // 监听照片列表滚动，添加上传按钮阴影
-    fromEvent(document.querySelector('.image-group')!, 'scroll').subscribe((e: Event) => {
-      if ((e.target! as any).scrollLeft > 0) {
-        document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.add('shadow');
-      } else {
-        document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.remove('shadow');
-      }
-    });
+    if (this.cache.functionPermissions?.includes('addLabPicture')) {
+      fromEvent(document.querySelector('.image-group')!, 'scroll').subscribe((e: Event) => {
+        if ((e.target! as any).scrollLeft > 0) {
+          document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.add('shadow');
+        } else {
+          document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.remove('shadow');
+        }
+      });
+    }
   }
 
   // 获取机房基础信息
