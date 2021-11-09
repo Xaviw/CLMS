@@ -27,7 +27,7 @@ export class PermissionSetupService {
 
   // 取消页面权限
   cancelPagePermission(param: { role_id: string; page_id: string }) {
-    const url = '/permissions/cancelPageInRole';
+    const url = '/permissions/deletePageInRole';
     return this.http.post(url, param);
   }
 

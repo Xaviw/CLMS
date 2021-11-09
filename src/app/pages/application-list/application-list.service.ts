@@ -13,7 +13,7 @@ export class ApplicationListService {
     return this.http.post(url, param);
   }
 
-  // 取消申请
+  // FIXME：取消申请
   cancelApply(id: string) {
     const url = '';
     return this.http.post(url, { id });
@@ -25,19 +25,19 @@ export class ApplicationListService {
     return this.http.post(url, { id });
   }
 
-  // 申请
+  // FIXME：申请
   apply(param: ApplicationInfo) {
     const url = '';
     return this.http.post(url, param);
   }
 
-  // 审核
+  // FIXME：审核
   examine(param: { status: boolean; id: string; remark?: string }) {
     const url = '';
     return this.http.post(url, param);
   }
 
-  // 维修完成
+  // FIXME：维修完成
   repairFinish(id: string) {
     const url = '';
     return this.http.post(url, { id });

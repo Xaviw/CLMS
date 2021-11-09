@@ -59,7 +59,7 @@
                       nz-checkbox
                       *ngIf="activeRole"
                       [ngModel]="activeRole?.origin?.pages.includes(page.key)"
-                      (ngModelChange)="modifyFunctionPermission($event, page.id)"
+                      (ngModelChange)="modifyPagePermission($event, page.id)"
                     ></label>
                   </td>
                 </tr>

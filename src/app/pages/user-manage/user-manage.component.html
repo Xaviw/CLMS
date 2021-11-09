@@ -9,7 +9,7 @@
         nz-button
         nzType="primary"
         class="mr5"
-        (click)="userDrawerEl.addOpen()"
+        (click)="addUser()"
         *ngIf="
           type ? cache.functionPermissions?.includes('addTeacher') : cache.functionPermissions?.includes('addStudent')
         "
@@ -29,7 +29,7 @@
       >
         导入用户
       </button>
-      <!-- TODO -->
+      <!-- TODO：导出用户 -->
       <button
         nz-button
         nzType="primary"
@@ -202,6 +202,7 @@
 <user-modify-drawer
   #userModifyDrawer
   [default]="param"
+  [value]="oldValue"
   [type]="type"
   [isAdd]="isAdd"
   (handleOk)="queryUser()"

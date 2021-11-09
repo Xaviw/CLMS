@@ -62,7 +62,7 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  // 修改某课程课表
+  // FIXME：修改某课程课表
   modifyCourseSchedule(param: { courseId: string; weekTime?: number; data: Array<{ labId: string } | null>[] }) {
     const url = '';
     return this.http.post(url, param);

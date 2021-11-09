@@ -29,6 +29,7 @@ export class LabManageComponent implements OnInit {
       validateForm(this.addLabDrawer.formGroup.controls);
       if (this.addLabDrawer.formGroup.valid) {
         this.service.addLab(this.addLabDrawer.formGroup.getRawValue()).subscribe((res) => {
+          this.addLabDrawer.cancel();
           this.getLabList();
         });
       }

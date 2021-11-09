@@ -42,9 +42,10 @@
           freeTime ?? '--'
         }}</nz-descriptions-item>
       </nz-descriptions>
+      <!-- TODO:上传后刷新列表 -->
       <nz-image-group class="image-group">
         <nz-upload
-          nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          nzAction="/lab/upImage"
           nzAccept="image/*"
           [nzMultiple]="true"
           [nzShowUploadList]="false"

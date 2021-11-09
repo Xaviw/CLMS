@@ -167,11 +167,6 @@ export class ApplyComponent implements OnInit {
       params.id = this.paramsId;
     }
     this.service.apply(params).subscribe(() => {
-      if (this.paramsType === 2) {
-        this.message.success('申请已提交，管理员将尽快处理！');
-      } else {
-        this.message.success('申请已提交，请等待管理员审核！');
-      }
       this.router.navigateByUrl('/application-list');
     });
   }

@@ -13,8 +13,7 @@ export class CacheService {
   // 签到轮询
   public checkInInterval?: any;
 
-  // 启动轮询
-  // FIXME
+  // FIXME：启动轮询
   public startCheckInInterval() {
     // // 已登录且未启动轮询，每十分钟请求一次是否需要签到
     // if (!this.checkInInterval && _local.get('token')) {

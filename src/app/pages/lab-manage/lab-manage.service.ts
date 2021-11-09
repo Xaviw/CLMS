@@ -26,13 +26,13 @@ export class LabManageService {
 
   // 修改机房信息
   setLabInfo(param: { labId: string; name: string; description?: string }) {
-    const url = '';
+    const url = '/lab/updateLab';
     return this.http.post(url, param);
   }
 
   // 删除照片
   deletePicture(img: string) {
-    const url = '';
+    const url = '/lab/deleteImage';
     return this.http.post(url, { image: img });
   }
 
@@ -56,7 +56,7 @@ export class LabManageService {
 
   // 编辑座位表
   editSeatingChart(param: { labId: string; chart: Array<Array<number>> }) {
-    const url = '';
+    const url = '/lab/getLabFreeTimeByTime';
     return this.http.post(url, param);
   }
 }

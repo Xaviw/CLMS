@@ -27,7 +27,7 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <nz-form-item *ngIf="formGroup.controls?.grade">
         <nz-form-label nzFor="grade" nzRequired>年级：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="gradeErrorTpl">
           <nz-select id="grade" formControlName="grade">
@@ -49,7 +49,7 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <nz-form-item *ngIf="formGroup.controls.major">
         <nz-form-label nzFor="major" nzRequired>专业：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="majorErrorTpl">
           <nz-select
@@ -65,7 +65,7 @@
           </ng-template>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
+      <nz-form-item *ngIf="formGroup.controls.class">
         <nz-form-label nzFor="class" nzRequired>班级：</nz-form-label>
         <nz-form-control nzHasFeedback [nzErrorTip]="classErrorTpl">
           <nz-select id="class" formControlName="class" nzNotFoundContent="请先选择上层条件">

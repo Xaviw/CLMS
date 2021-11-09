@@ -109,6 +109,7 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
   setLabStatus() {
     if (this.labDrawer.status !== this.labInfo.status) {
       this.common.setLabStatus({ labIds: [this.labInfo?.id], status: this.labDrawer.status }).subscribe((res) => {
+        this.labDrawer.visible = false;
         this.labInfo.status = this.labDrawer.status;
       });
     } else {
@@ -121,12 +122,13 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
     validateForm(this.labDrawer.formGroup.controls);
     if (
       this.labDrawer.formGroup.valid &&
-      this.labInfo.name !== this.labDrawer.formGroup.get('name')?.value &&
-      this.labInfo.description !== this.labDrawer.formGroup.get('description')?.value
+      (this.labInfo.name !== this.labDrawer.formGroup.get('name')?.value ||
+        this.labInfo.description !== this.labDrawer.formGroup.get('description')?.value)
     ) {
       this.service
         .setLabInfo({ labId: this.labInfo.id, ...this.labDrawer.formGroup.getRawValue() })
         .subscribe((res) => {
+          this.labDrawer.visible = false;
           this.getLabInfo();
         });
     } else if (this.labInfo.name === this.labDrawer.formGroup.get('name')?.value) {

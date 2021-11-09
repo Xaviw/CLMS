@@ -77,4 +77,18 @@ export class UserManageService {
     const url = '/user/updateUser';
     return this.http.post(url, param);
   }
+
+  // 添加用户
+  addUser(param: {
+    account: string;
+    class?: string;
+    college: string;
+    grade?: string;
+    major?: string;
+    name: string;
+    role: string[];
+  }) {
+    const url = '/user/addUser';
+    return this.http.post(url, param);
+  }
 }

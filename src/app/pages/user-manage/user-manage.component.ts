@@ -1,12 +1,10 @@
 import { UploadDrawerComponent } from './../../shared/components/upload-drawer/upload-drawer.component';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserModifyDrawerComponent } from '@shared/components/user-modify-drawer/user-modify-drawer.component';
 import { UserManageService } from './user-manage.service';
 import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { User, Role, FilterType } from '@app/shared/types/commonTypes';
 import { CommonService } from '@app/core/services/common.service';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
@@ -31,6 +29,7 @@ export class UserManageComponent implements OnInit {
   param: any;
   type!: number;
   isAdd: boolean = true;
+  oldValue: any;
   // 权限Modal
   roleModal = {
     roles: <Role[]>[],
@@ -78,36 +77,37 @@ export class UserManageComponent implements OnInit {
 
   // 添加用户
   addUser() {
-    this.userDrawerEl.formGroup.reset();
-    this.userDrawerEl.open();
+    this.isAdd = true;
+    this.userDrawerEl.addOpen();
   }
   // 修改用户
   modifyUser(data: any) {
-    const param = {
+    this.oldValue = {
       account: data.account,
       name: data.name,
       grade: data.grade,
       college: data.college_id,
-      major: data.major_id,
-      class: data.class_id,
+      major: data?.major_id,
+      class: data?.class_id,
       role: data.role.map((item: FilterType) => item.id),
     };
-    console.log(param);
+    this.isAdd = false;
     this.userDrawerEl.formGroup.reset();
-    this.userDrawerEl.formGroup.patchValue(param);
     this.userDrawerEl.open();
   }
 
   // 查询用户
   queryUser(isFirst = false) {
-    this.service
-      .queryUser({ ...this.param, pageIndex: this.pageIndex, pageSize: this.pageSize, type: this.type })
-      .subscribe((res: any) => {
-        this.listOfData = res.data as any[];
-        if (isFirst) {
-          this.total = res.total;
-        }
-      });
+    if (this.param) {
+      this.service
+        .queryUser({ ...this.param, pageIndex: this.pageIndex, pageSize: this.pageSize, type: this.type })
+        .subscribe((res: any) => {
+          this.listOfData = res.data as any[];
+          if (isFirst) {
+            this.total = res.total;
+          }
+        });
+    }
   }
 
   // 搜索用户
@@ -159,7 +159,7 @@ export class UserManageComponent implements OnInit {
       this.queryUser(true);
     } else if (param.code === 'userSearch') {
       this.param = {
-        keyword: param.data.userSearch?.value.trim(),
+        keyword: param.data.userSearch.trim(),
       };
       this.searchUser(true);
     }
