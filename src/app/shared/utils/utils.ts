@@ -1,6 +1,7 @@
 import { _local, _session } from '@app/shared/utils/Storage';
 import { FormControls } from '@app/shared/types/commonTypes';
 import * as base64 from 'js-base64';
+import _ from 'lodash';
 
 // 校验表单
 export function validateForm(form: FormControls): void {
@@ -30,4 +31,16 @@ export function base64Filter(str: any) {
     .replace(/\?/g, '%3F')
     .replace(/\s/g, '%20')
     .replace(/\%/g, '%25');
+}
+
+// 对比数据是否相等
+export function isEqual(a: any, descA: string[], b: any, descB: string[]): boolean {
+  if (descA.length !== descB.length) {
+    return false;
+  }
+  for (let i = 0; i < descA.length; i++) {
+    console.log(a[descA[i]], b[descB[i]]);
+    if (!_.isEqual(a[descA[i]], b[descB[i]])) return false;
+  }
+  return true;
 }

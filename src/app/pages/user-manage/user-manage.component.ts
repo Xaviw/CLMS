@@ -30,6 +30,7 @@ export class UserManageComponent implements OnInit {
   setOfCheckedId = new Set<string>(); // 已选中集合
   param: any;
   type!: number;
+  isAdd: boolean = true;
   // 权限Modal
   roleModal = {
     roles: <Role[]>[],
@@ -42,7 +43,16 @@ export class UserManageComponent implements OnInit {
     cancel: () => {
       this.roleModal.visible = false;
     },
-    setRole: () => {},
+    setRole: () => {
+      const param = {
+        roles: this.roleModal.value as unknown as string[],
+        user_ids: Array.from(this.setOfCheckedId),
+      };
+      this.service.setUserRole(param).subscribe((res) => {
+        this.roleModal.cancel();
+        this.getUser();
+      });
+    },
   };
 
   constructor(
@@ -74,9 +84,15 @@ export class UserManageComponent implements OnInit {
   // 修改用户
   modifyUser(data: any) {
     const param = {
-      ...data,
+      account: data.account,
+      name: data.name,
+      grade: data.grade,
+      college: data.college_id,
+      major: data.major_id,
+      class: data.class_id,
       role: data.role.map((item: FilterType) => item.id),
     };
+    console.log(param);
     this.userDrawerEl.formGroup.reset();
     this.userDrawerEl.formGroup.patchValue(param);
     this.userDrawerEl.open();
@@ -178,20 +194,22 @@ export class UserManageComponent implements OnInit {
 
   // 强制下线
   logout() {
-    let param = Array.from(this.setOfCheckedId.keys());
+    let param = Array.from(this.setOfCheckedId);
     this.service.makeOffLine(param).subscribe((res) => {
       this.getUser();
     });
   }
   // 重置密码
   resetPWD() {
-    let param = Array.from(this.setOfCheckedId.keys());
+    let param = Array.from(this.setOfCheckedId);
     this.service.resetDefaultPassword(param).subscribe();
   }
   // 删除用户
   deleteUser() {
-    let param = Array.from(this.setOfCheckedId.keys());
+    let param = Array.from(this.setOfCheckedId);
     this.service.deleteUsers(param).subscribe((res) => {
+      this.setOfCheckedId.clear();
+      this.checked = false;
       this.getUser();
     });
   }

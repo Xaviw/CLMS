@@ -1,6 +1,6 @@
 import { validateForm } from '@shared/utils/utils';
 import { CommonService } from './../../../core/services/common.service';
-import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PermissionSetupService } from '@app/pages/permission-setup/permission-setup.service';
 import { UserManageService } from '@app/pages/user-manage/user-manage.service';
@@ -14,9 +14,14 @@ import * as dayjs from 'dayjs';
   providers: [UserManageService, PermissionSetupService],
 })
 export class UserModifyDrawerComponent implements OnInit, OnChanges {
+  // 添加时默认参数
   @Input() default: any;
+  // 是添加还是修改
+  @Input() isAdd: boolean = true;
+  // 类型，0学生，1教师
+  @Input() type: number = 0;
+  @Output() handleOk: EventEmitter<any> = new EventEmitter();
   visible = false;
-  isAdd = false;
   formGroup = this.fb.group({
     account: [null, [Validators.required]],
     name: [null, [Validators.required]],
@@ -43,31 +48,43 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
     // 初始化当前四个年级
     let maxGrade = dayjs().month() > 8 ? dayjs().year() : dayjs().year() - 1;
     for (let i = 3; i >= 0; i--) {
-      this.grade.push(String(maxGrade - i));
+      this.grade.push(maxGrade - i);
     }
 
     this.getCollege();
     this.getRoles();
   }
 
+  // TODO
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes.default.firstChange) {
-      const param = changes.default.currentValue;
-      if (param.grade !== '0') {
-        this.formGroup.patchValue({ grade: param.grade });
-      }
-      if (param.college !== '0') {
-        this.formGroup.patchValue({ college: param.college });
-        this.getMajor(param.college);
-      }
-      if (param.major !== '0') {
-        this.formGroup.patchValue({ major: param.major });
-        this.getClass(param.major);
-      }
-      if (param.class !== '0') {
-        this.formGroup.patchValue({ class: param.class });
+    if (changes.type) {
+      if (changes.type.currentValue && this.formGroup.controls?.major) {
+        this.formGroup.removeControl('major');
+        this.formGroup.removeControl('class');
+      } else if (!changes.type.currentValue && !this.formGroup.controls?.major) {
+        this.formGroup.addControl('major', this.fb.control(null, [Validators.required]));
+        this.formGroup.addControl('class', this.fb.control(null, [Validators.required]));
       }
     }
+  }
+
+  addOpen() {
+    this.formGroup.reset();
+    if (this.default.grade !== '0') {
+      this.formGroup.patchValue({ grade: +this.default.grade });
+    }
+    if (this.default.college !== '0') {
+      this.formGroup.patchValue({ college: this.default.college });
+      this.getMajor(this.default.college);
+    }
+    if (this.default.major !== '0') {
+      this.formGroup.patchValue({ major: this.default.major });
+      this.getClass(this.default.major);
+    }
+    if (this.default.class !== '0') {
+      this.formGroup.patchValue({ class: this.default.class });
+    }
+    this.open();
   }
 
   // 获取学院信息
@@ -114,6 +131,13 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   update = () => {
     validateForm(this.formGroup.controls);
+    if (!this.formGroup.valid) {
+      return;
+    }
+    this.service.updateUser(this.formGroup.value).subscribe((res) => {
+      this.visible = false;
+      this.handleOk.emit();
+    });
   };
 
   add = () => {

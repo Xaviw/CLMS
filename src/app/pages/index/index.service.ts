@@ -42,7 +42,7 @@ export class IndexService {
   }
 
   // 获取自习排行榜
-  getRankList(param: pagination) {
+  getRankList(param: { offset: number; count: number }) {
     const url = '/user/getApplyRank';
     return this.http.post(url, param).toPromise();
   }

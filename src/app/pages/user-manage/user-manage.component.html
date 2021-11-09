@@ -9,7 +9,7 @@
         nz-button
         nzType="primary"
         class="mr5"
-        (click)="userDrawerEl.open()"
+        (click)="userDrawerEl.addOpen()"
         *ngIf="
           type ? cache.functionPermissions?.includes('addTeacher') : cache.functionPermissions?.includes('addStudent')
         "
@@ -29,6 +29,7 @@
       >
         导入用户
       </button>
+      <!-- TODO -->
       <button
         nz-button
         nzType="primary"
@@ -65,7 +66,7 @@
             : cache.functionPermissions?.includes('setStudentPermission')
         "
       >
-        设置权限
+        设置用户角色
       </button>
       <button
         [disabled]="!setOfCheckedId.size"
@@ -152,9 +153,10 @@
           <th
             nzAlign="center"
             *ngIf="
-              !checkMode && type
+              !checkMode &&
+              (type
                 ? cache.functionPermissions?.includes('editTeacher')
-                : cache.functionPermissions?.includes('editStudent')
+                : cache.functionPermissions?.includes('editStudent'))
             "
           >
             操作
@@ -197,15 +199,21 @@
 </div>
 
 <!-- 用户信息抽屉 -->
-<user-modify-drawer #userModifyDrawer [default]="param"></user-modify-drawer>
+<user-modify-drawer
+  #userModifyDrawer
+  [default]="param"
+  [type]="type"
+  [isAdd]="isAdd"
+  (handleOk)="queryUser()"
+></user-modify-drawer>
 
-<!-- 设置权限 -->
+<!-- 设置用户角色 -->
 <nz-modal
   nzWidth="300px"
   [(nzVisible)]="roleModal.visible"
   [nzMaskClosable]="false"
   [nzKeyboard]="false"
-  [nzTitle]="(setOfCheckedId.size > 1 ? '批量' : '') + '设置权限'"
+  [nzTitle]="(setOfCheckedId.size > 1 ? '批量' : '') + '设置用户角色'"
   (nzOnOk)="roleModal.setRole()"
   (nzOnCancel)="roleModal.cancel()"
   [nzOkLoading]="roleModal.loading"
@@ -218,7 +226,7 @@
   </ng-container>
 </nz-modal>
 
-<!-- 导入用户抽屉 -->
+<!-- HACK:导入用户抽屉 -->
 <upload-drawer
   #uploadDrawerEl
   url="/user/importUser"

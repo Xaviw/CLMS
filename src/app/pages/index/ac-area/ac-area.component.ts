@@ -56,13 +56,13 @@ export class AcAreaComponent implements OnInit {
     });
   }
 
-  // 获取评论回复
+  // HACK:获取评论回复
   getReply(comment: comment) {
-    if (comment?.expand) {
+    if (comment?.expand && comment !== this.reply) {
       comment.expand = false;
-    } else if (comment?.children?.length) {
+    } else if (comment?.children?.length && comment !== this.reply) {
       comment.expand = true;
-    } else if (!comment?.children?.length) {
+    } else if (!comment?.children?.length || comment === this.reply) {
       comment.loading = true;
       this.service.getReply(comment.id).subscribe((res) => {
         comment.expand = true;
@@ -96,6 +96,7 @@ export class AcAreaComponent implements OnInit {
       if (this.reply) {
         this.getReply(this.reply);
       } else {
+        this.param.pageIndex = 1;
         this.getComments();
       }
       this.cancelReply();

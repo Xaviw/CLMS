@@ -33,8 +33,8 @@ export class RankListComponent implements OnInit {
   activeItem: number = -1;
   // 请求参数
   param = {
-    pageIndex: 1,
-    pageSize: 10,
+    offset: 0,
+    count: 50,
   };
 
   constructor(private service: IndexService, private scrollDispatcher: ScrollDispatcher) {}
@@ -50,7 +50,7 @@ export class RankListComponent implements OnInit {
         if (scrollable) {
           let offset = this.rankScroll.measureScrollOffset('bottom');
           if (offset < 50) {
-            this.param.pageIndex++;
+            this.param.offset += this.param.count;
             this.getRankList(this.param);
           }
         }
@@ -63,7 +63,7 @@ export class RankListComponent implements OnInit {
   }
 
   // 获取排行榜
-  async getRankList(param: pagination) {
+  async getRankList(param: { offset: number; count: number }) {
     // 已经到底则停止请求
     if (this.hasNext) {
       await this.service.getRankList(param).then((res) => {
@@ -76,29 +76,30 @@ export class RankListComponent implements OnInit {
     }
   }
 
-  // 获取自己自习排名
-  getOwnRank() {
-    if (this.userIndex) {
+  // HACK 获取自己自习排名
+  async getOwnRank() {
+    // 先获取排名
+    if (!this.userIndex) {
+      await this.service
+        .getOwnRank()
+        .toPromise()
+        .then((res) => {
+          this.userIndex = res as number;
+        });
+    }
+    // 已加载=》跳转
+    if (this.userIndex && this.userIndex <= this.rankList.length + 2) {
       // 减去不在列表中的前三项（下标从0开始，所以减4）
       this.rankScroll.scrollToIndex(this.userIndex - 4);
       this.activeItem = (this.userIndex as number) - 4;
-    } else {
-      this.service.getOwnRank().subscribe(async (res) => {
-        this.userIndex = res as number;
-        // 在列表中直接请求
-        if (res <= this.rankList.length + 2) {
-          this.rankScroll.scrollToIndex((res as number) - 4);
-          this.activeItem = (this.userIndex as number) - 4;
-        } else {
-          const param = {
-            pageIndex: this.rankList.length / this.param.pageSize + 1,
-            pageSize: this.param.pageSize,
-          };
-          await this.getRankList(param);
-          this.rankScroll.scrollToIndex((res as number) - 4);
-          this.activeItem = (this.userIndex as number) - 4;
-        }
-      });
+    } else if (this.userIndex && this.userIndex > this.rankList.length) {
+      // 未加载=》加载
+      const param = {
+        offset: this.rankList.length,
+        count: this.userIndex - this.rankList.length + 10,
+      };
+      await this.getRankList(param);
+      this.getOwnRank();
     }
   }
 }

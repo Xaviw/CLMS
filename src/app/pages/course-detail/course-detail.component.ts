@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { UploadDrawerComponent } from '@app/shared/components/upload-drawer/upload-drawer.component';
 import { CacheService } from '@app/core/services/cache.service';
+import { isEqual } from '@app/shared/utils/utils';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-course-detail',
@@ -30,8 +32,9 @@ export class CourseDetailComponent implements OnInit {
   // 添加学生Modal
   addStudent = {
     instance: <any>null,
+    modalInstance: <any>null,
     create: (tplFooter: TemplateRef<{}>) => {
-      const modal = this.modal.create({
+      this.addStudent.modalInstance = this.modal.create({
         nzTitle: '选择学生',
         nzWidth: '90%',
         nzBodyStyle: {
@@ -47,17 +50,18 @@ export class CourseDetailComponent implements OnInit {
         nzViewContainerRef: this.viewContainerRef,
         nzFooter: tplFooter,
       });
-      const instance = modal.getContentComponent();
+      const instance = this.addStudent.modalInstance.getContentComponent();
       this.addStudent.instance = instance;
     },
     handleOk: () => {
       this.service
         .addCourseStudent({
           course_id: this.params.courseId,
-          user_id: this.addStudent.instance.checkedList,
+          user_id: Array.from(this.addStudent.instance.setOfCheckedId),
         })
         .subscribe((res) => {
-          this.getCourseDetail();
+          this.addStudent.modalInstance.destroy();
+          this.getCourseStudent();
         });
     },
   };
@@ -69,6 +73,7 @@ export class CourseDetailComponent implements OnInit {
     private modal: NzModalService,
     private viewContainerRef: ViewContainerRef,
     public cache: CacheService,
+    private message: NzMessageService,
   ) {}
 
   ngOnInit() {
@@ -99,8 +104,25 @@ export class CourseDetailComponent implements OnInit {
 
   // 修改课程基础信息
   editCourse(e: CourseAddInfo) {
-    console.log('e1: ', e);
+    let old: any = { ...this.detailInfo };
+    old.class = old.class?.map((item: any) => item.id);
+    if (
+      isEqual(e, ['class', 'description', 'endWeek', 'isCompulsory', 'name', 'startWeek', 'teacher', 'weekTime'], old, [
+        'class',
+        'description',
+        'endWeek',
+        'isCompulsory',
+        'courseName',
+        'startWeek',
+        'teacherId',
+        'weekTime',
+      ])
+    ) {
+      this.message.warning('信息未变动！');
+      return;
+    }
     this.service.modifyCourseInfo({ ...e, courseId: this.params.courseId }).subscribe((res) => {
+      this.addCourseEl.close();
       this.getCourseDetail();
     });
   }

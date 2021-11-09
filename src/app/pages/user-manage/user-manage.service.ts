@@ -13,7 +13,7 @@ export class UserManageService {
   }
 
   // 获取专业信息
-  getMajor(param: { grade: string; college: string }) {
+  getMajor(param: { grade: string | Number; college: string }) {
     const url = '/management/getAllProfession';
     return this.http.post(url, param);
   }
@@ -56,5 +56,25 @@ export class UserManageService {
   deleteUsers(ids: string[]) {
     const url = '/user/deleteUser';
     return this.http.post(url, { user_ids: ids });
+  }
+
+  // 设置用户角色
+  setUserRole(param: { user_ids: string[]; roles: string[] }) {
+    const url = '/user/setUserRole';
+    return this.http.post(url, param);
+  }
+
+  // 修改用户
+  updateUser(param: {
+    account: string;
+    class: string;
+    college: string;
+    grade: string;
+    major: string;
+    name: string;
+    role: string[];
+  }) {
+    const url = '/user/updateUser';
+    return this.http.post(url, param);
   }
 }
