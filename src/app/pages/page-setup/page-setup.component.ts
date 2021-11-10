@@ -203,7 +203,6 @@ export class PageSetupComponent implements OnInit {
 
   // 单击菜单触发
   pageClick(e: NzFormatEmitEvent) {
-    console.log('e: ', e);
     if (this.activePage !== e.node) {
       this.activePage = e.node!;
       this.pageAddForm.controls.parent_page_id.patchValue(e.node?.origin.id);

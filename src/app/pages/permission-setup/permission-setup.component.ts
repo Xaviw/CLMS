@@ -73,7 +73,6 @@ export class PermissionSetupComponent implements OnInit {
 
   // 展开页面触发
   onExpandChange(id: string, checked: boolean, isLeaf: boolean): void {
-    console.log(id, checked, isLeaf, this.pageFunctions);
     if (checked) {
       this.expandSet.add(id);
       if (!this.pageFunctions.get(id)) {
@@ -115,7 +114,6 @@ export class PermissionSetupComponent implements OnInit {
   getPageFunctions(param: string) {
     this.common.getPageFunctions(param).subscribe((res) => {
       this.pageFunctions.set(param, res);
-      console.log(this.pageFunctions);
     });
   }
 
@@ -148,7 +146,6 @@ export class PermissionSetupComponent implements OnInit {
 
   // 修改功能权限
   modifyFunctionPermission(e: NzFormatEmitEvent, id: string) {
-    console.log(this.roles, this.pageFunctions);
     if (e) {
       this.service.addFunctionPermission({ role_id: this.activeRole?.key!, permissions_id: id }).subscribe(
         (res) => {},
@@ -172,7 +169,6 @@ export class PermissionSetupComponent implements OnInit {
 
   // 修改页面权限
   modifyPagePermission(e: NzFormatEmitEvent, id: string) {
-    console.log(this.roles, this.pageFunctions);
     if (e) {
       this.service.addPagePermission({ role_id: this.activeRole?.key!, page_id: id }).subscribe(
         (res) => {},

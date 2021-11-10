@@ -135,7 +135,6 @@ export class ModifyProfileComponent implements OnInit {
 
   // 上传头像
   handleChange(info: { file: NzUploadFile }): void {
-    console.log('info: ', info);
     switch (info.file.status) {
       case 'uploading':
         this.avatarLoading = true;

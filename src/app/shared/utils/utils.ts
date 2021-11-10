@@ -39,7 +39,6 @@ export function isEqual(a: any, descA: string[], b: any, descB: string[]): boole
     return false;
   }
   for (let i = 0; i < descA.length; i++) {
-    console.log(a[descA[i]], b[descB[i]]);
     if (!_.isEqual(a[descA[i]], b[descB[i]])) return false;
   }
   return true;

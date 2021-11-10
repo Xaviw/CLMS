@@ -73,20 +73,20 @@ export class CacheService {
 
   // 页面权限信息
   public _pagePermissions?: string[];
-  get pagePermissions() {
+  pagePermissions(key: string) {
     if (!this._pagePermissions) {
       this._pagePermissions = _session.get('pagePermissions');
     }
-    return this._pagePermissions;
+    return this._pagePermissions?.includes(key);
   }
 
   // 功能权限信息
   public _functionPermissions?: string[];
-  get functionPermissions() {
+  functionPermissions(code: string) {
     if (!this._functionPermissions) {
       this._functionPermissions = _session.get('functionPermissions');
     }
-    return this._functionPermissions;
+    return this._functionPermissions?.includes(code);
   }
 
   // 清空缓存

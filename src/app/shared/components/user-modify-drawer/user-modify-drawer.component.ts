@@ -154,7 +154,6 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
     if (!this.formGroup.valid) {
       return;
     }
-    console.log(this.formGroup.value, this.value);
     const field = this.type
       ? ['name', 'college', 'account', 'role']
       : ['name', 'account', 'grade', 'college', 'major', 'class', 'role'];

@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivateChild {
     // 页面key
     const key = childRoute.data?.key;
     // 是否拥有页面权限
-    const hasPermission = this.cache.pagePermissions?.includes(key);
+    const hasPermission = this.cache.pagePermissions(key);
     // 页面标题
     const title = childRoute.data?.title || environment.systemName;
 
@@ -43,25 +43,25 @@ export class AuthGuard implements CanActivateChild {
       return this.router.parseUrl('/index');
     }
 
-    // if (isLogin && !skipAuth && !hasPermission) {
-    //   // 已登录、需要权限、无权限，跳转首页(无权限跳转登录页)
-    //   if (this.cache.pagePermissions?.includes('index')) {
-    //     return this.router.parseUrl('/index');
-    //   } else {
-    //     this.message.error('无相关页面权限，请联系管理员！');
-    //     this.cache.clearCache();
-    //     return this.router.parseUrl('/blank/login');
-    //   }
-    // } else if (!isLogin && !noLoginRequired) {
-    //   // 需要登录、未登录，跳转登录页
-    //   this.message.error('登录信息已失效，请重新登录！');
-    //   this.cache.clearCache();
-    //   return this.router.parseUrl('/blank/login');
-    // } else {
-    //   this.title.setTitle(title);
-    //   return true;
-    // }
-    this.title.setTitle(title);
-    return true;
+    if (isLogin && !skipAuth && !hasPermission) {
+      // 已登录、需要权限、无权限，跳转首页(无权限跳转登录页)
+      if (this.cache.pagePermissions('index')) {
+        return this.router.parseUrl('/index');
+      } else {
+        this.message.error('无相关页面权限，请联系管理员！');
+        this.cache.clearCache();
+        return this.router.parseUrl('/blank/login');
+      }
+    } else if (!isLogin && !noLoginRequired) {
+      // 需要登录、未登录，跳转登录页
+      this.message.error('登录信息已失效，请重新登录！');
+      this.cache.clearCache();
+      return this.router.parseUrl('/blank/login');
+    } else {
+      this.title.setTitle(title);
+      return true;
+    }
+    // this.title.setTitle(title);
+    // return true;
   }
 }

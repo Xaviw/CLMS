@@ -74,10 +74,8 @@ export class AddCourseComponent implements OnInit {
   });
   handleOk() {
     validateForm(this.validateForm.controls);
-    console.log('this.validateForm: ', this.validateForm);
     if (this.validateForm.valid) {
       const value = this.validateForm.getRawValue();
-      console.log('value: ', value);
       this.operation.emit(value);
     }
   }

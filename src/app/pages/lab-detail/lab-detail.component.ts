@@ -59,7 +59,7 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     // 监听照片列表滚动，添加上传按钮阴影
-    if (this.cache.functionPermissions?.includes('addLabPicture')) {
+    if (this.cache.functionPermissions('uploadLabPicture')) {
       fromEvent(document.querySelector('.image-group')!, 'scroll').subscribe((e: Event) => {
         if ((e.target! as any).scrollLeft > 0) {
           document.getElementsByClassName('ant-upload-picture-card-wrapper')[0].classList.add('shadow');

@@ -15,7 +15,7 @@
       nzType="primary"
       (click)="output()"
       style="float: right"
-      *ngIf="cache.functionPermissions?.includes('exportCourseSchedule')"
+      *ngIf="cache.functionPermissions('exportCourseSchedule')"
     >
       导出
     </button>

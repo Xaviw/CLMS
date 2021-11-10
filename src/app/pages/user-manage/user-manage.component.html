@@ -10,9 +10,7 @@
         nzType="primary"
         class="mr5"
         (click)="addUser()"
-        *ngIf="
-          type ? cache.functionPermissions?.includes('addTeacher') : cache.functionPermissions?.includes('addStudent')
-        "
+        *ngIf="type ? cache.functionPermissions('addTeacher') : cache.functionPermissions('addStudent')"
       >
         添加用户
       </button>
@@ -21,11 +19,7 @@
         nzType="primary"
         class="mr5"
         (click)="uploadDrawerEl.open()"
-        *ngIf="
-          type
-            ? cache.functionPermissions?.includes('importTeacher')
-            : cache.functionPermissions?.includes('importStudent')
-        "
+        *ngIf="type ? cache.functionPermissions('importTeacher') : cache.functionPermissions('importStudent')"
       >
         导入用户
       </button>
@@ -34,11 +28,7 @@
         nz-button
         nzType="primary"
         [disabled]="!listOfData?.length"
-        *ngIf="
-          type
-            ? cache.functionPermissions?.includes('exportTeacher')
-            : cache.functionPermissions?.includes('exportStudent')
-        "
+        *ngIf="type ? cache.functionPermissions('exportTeacher') : cache.functionPermissions('exportStudent')"
       >
         导出用户
       </button>
@@ -61,9 +51,7 @@
         class="mr5"
         (click)="roleModal.open()"
         *ngIf="
-          type
-            ? cache.functionPermissions?.includes('setTeacherPermission')
-            : cache.functionPermissions?.includes('setStudentPermission')
+          type ? cache.functionPermissions('setTeacherPermission') : cache.functionPermissions('setStudentPermission')
         "
       >
         设置用户角色
@@ -78,11 +66,7 @@
         nzOkText="确认"
         nzCancelText="取消"
         (nzOnConfirm)="logout()"
-        *ngIf="
-          type
-            ? cache.functionPermissions?.includes('setTeacherOffset')
-            : cache.functionPermissions?.includes('setStudentOffset')
-        "
+        *ngIf="type ? cache.functionPermissions('setTeacherOffset') : cache.functionPermissions('setStudentOffset')"
       >
         强制下线
       </button>
@@ -97,9 +81,7 @@
         nzCancelText="取消"
         (nzOnConfirm)="resetPWD()"
         *ngIf="
-          type
-            ? cache.functionPermissions?.includes('resetTeacherPassword')
-            : cache.functionPermissions?.includes('resetStudentPassword')
+          type ? cache.functionPermissions('resetTeacherPassword') : cache.functionPermissions('resetStudentPassword')
         "
       >
         重置密码
@@ -113,11 +95,7 @@
         nzOkText="确认"
         nzCancelText="取消"
         (nzOnConfirm)="deleteUser()"
-        *ngIf="
-          type
-            ? cache.functionPermissions?.includes('deleteTeacher')
-            : cache.functionPermissions?.includes('deleteStudent')
-        "
+        *ngIf="type ? cache.functionPermissions('deleteTeacher') : cache.functionPermissions('deleteStudent')"
       >
         删除用户
       </button>
@@ -153,10 +131,7 @@
           <th
             nzAlign="center"
             *ngIf="
-              !checkMode &&
-              (type
-                ? cache.functionPermissions?.includes('editTeacher')
-                : cache.functionPermissions?.includes('editStudent'))
+              !checkMode && (type ? cache.functionPermissions('editTeacher') : cache.functionPermissions('editStudent'))
             "
           >
             操作
@@ -183,11 +158,7 @@
               nz-button
               nzType="link"
               (click)="modifyUser(data)"
-              *ngIf="
-                type
-                  ? cache.functionPermissions?.includes('editTeacher')
-                  : cache.functionPermissions?.includes('editStudent')
-              "
+              *ngIf="type ? cache.functionPermissions('editTeacher') : cache.functionPermissions('editStudent')"
             >
               修改用户
             </button>

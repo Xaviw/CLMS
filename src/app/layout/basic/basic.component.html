@@ -1,12 +1,12 @@
 <nz-layout>
   <nz-header nzTheme="light">
     <div class="logo flex-center">
-      <img src="../../assets/images/computer.png" alt="机房管理系统" />
+      <img src="assets/images/computer.png" alt="机房管理系统" />
       <span>机房管理系统</span>
     </div>
     <div class="right flex-center">
       <span class="check-in" *ngIf="cache.checkIn" (click)="checkInModal.open()">
-        <img src="../../../assets/images/签到.svg" alt="签到" />
+        <img src="assets/images/签到.svg" alt="签到" />
       </span>
       <span nz-dropdown [nzDropdownMenu]="menu" class="flex-center">
         {{ userInfo?.name }}

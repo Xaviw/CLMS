@@ -2,10 +2,12 @@
   "name": "clms",
   "version": "0.0.0",
   "scripts": {
-    "start:prod": "ng serve --open",
+    "start:prod": "ng serve --configuration=production --open --host=0.0.0.0 --port=12345",
     "start:dev": "ng serve --configuration=development --open --host=0.0.0.0 --port=12345",
     "start:mock": "ng serve --configuration=mock --open --host=0.0.0.0 --port=12345",
-    "build:prod": "ng build"
+    "build:prod": "ng build --configuration=production",
+    "build:dev": "ng build --configuration=development",
+    "build:mock": "ng build --configuration=mock"
   },
   "private": true,
   "dependencies": {

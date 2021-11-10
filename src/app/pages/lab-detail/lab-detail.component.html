@@ -7,12 +7,7 @@
       <nz-tag nzColor="gray" class="status-tag" *ngIf="labInfo?.status === labStatus.repair">维修中</nz-tag>
     </nz-page-header-subtitle>
     <nz-page-header-extra>
-      <button
-        nz-button
-        nzType="primary"
-        (click)="labDrawer.open()"
-        *ngIf="cache.functionPermissions?.includes('editLab')"
-      >
+      <button nz-button nzType="primary" (click)="labDrawer.open()" *ngIf="cache.functionPermissions('editLab')">
         编辑
       </button>
       <button
@@ -24,7 +19,7 @@
         nzOkText="确认"
         nzCancelText="取消"
         (nzOnConfirm)="deleteLab()"
-        *ngIf="cache.functionPermissions?.includes('deleteLab')"
+        *ngIf="cache.functionPermissions('deleteLab')"
       >
         删除
       </button>
@@ -50,7 +45,7 @@
           [nzMultiple]="true"
           [nzShowUploadList]="false"
           nzListType="picture-card"
-          *ngIf="cache.functionPermissions?.includes('addLabPicture')"
+          *ngIf="cache.functionPermissions('uploadLabPicture')"
         >
           <div>
             <i nz-icon nzType="plus"></i>
@@ -65,11 +60,11 @@
             nzSize="small"
             class="del-pic"
             (click)="deletePicture(img)"
-            *ngIf="cache.functionPermissions?.includes('deleteLabPicture')"
+            *ngIf="cache.functionPermissions('deleteLabPicture')"
           >
             删除
           </button>
-          <img nz-image [nzSrc]="img" alt="机房照片" nzFallback="../../../assets/images/errorImage.png" class="image" />
+          <img nz-image [nzSrc]="img" alt="机房照片" nzFallback="assets/images/errorImage.png" class="image" />
         </div>
       </nz-image-group>
     </nz-page-header-content>

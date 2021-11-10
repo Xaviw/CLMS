@@ -4,12 +4,7 @@
     [showFilter]="['grade', 'course', 'courseUserSearch', 'myCourse', 'courseSearch']"
   ></cascade-condition>
   <div class="my10">
-    <button
-      nz-button
-      nzType="primary"
-      (click)="addCourseEl.open()"
-      *ngIf="cache.functionPermissions?.includes('addCourse')"
-    >
+    <button nz-button nzType="primary" (click)="addCourseEl.open()" *ngIf="cache.functionPermissions('addCourse')">
       添加课程
     </button>
   </div>

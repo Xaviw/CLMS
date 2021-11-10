@@ -8,7 +8,7 @@
     nz-dropdown
     nzTrigger="click"
     [nzDropdownMenu]="menu"
-    *ngIf="settings && cache.functionPermissions?.includes('labFastSetting')"
+    *ngIf="settings && cache.functionPermissions('labFastSetting')"
   >
     快捷设置
   </button>

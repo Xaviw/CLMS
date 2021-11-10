@@ -208,7 +208,7 @@ export class ApplyComponent implements OnInit {
         'course',
         new FormControl({ value: data?.course ?? null, disabled: this.disabled }, Validators.required),
       );
-      if (this.cache.functionPermissions?.includes('applyFullLab')) {
+      if (this.cache.functionPermissions('applyFullLab')) {
         this.form.addControl(
           'apply_all',
           new FormControl({ value: data?.apply_all ?? false, disabled: this.disabled }, Validators.required),

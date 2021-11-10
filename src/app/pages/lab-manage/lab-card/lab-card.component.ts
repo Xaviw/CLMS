@@ -26,14 +26,11 @@ export class LabCardComponent implements OnInit {
   ngOnInit() {}
 
   tag(a: TemplateRef<any>, b: TemplateRef<any>, c: TemplateRef<any>): TemplateRef<any>[] {
-    if (
-      this.cache.functionPermissions?.includes('deleteLab') &&
-      this.cache.functionPermissions?.includes('setLabStatus')
-    ) {
+    if (this.cache.functionPermissions('deleteLab') && this.cache.functionPermissions('setLabStatus')) {
       return [a, b, c];
-    } else if (this.cache.functionPermissions?.includes('deleteLab')) {
+    } else if (this.cache.functionPermissions('deleteLab')) {
       return [a, b];
-    } else if (this.cache.functionPermissions?.includes('setLabStatus')) {
+    } else if (this.cache.functionPermissions('setLabStatus')) {
       return [a, c];
     } else {
       return [a];

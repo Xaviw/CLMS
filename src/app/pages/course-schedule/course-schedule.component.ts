@@ -27,7 +27,6 @@ export class CourseScheduleComponent implements OnInit {
       this.weekTime = 1;
     } else if (e.code === 'myCourse') {
       this.courseService.getCourseDetail(e.data.myCourse.id).subscribe((res) => {
-        console.log('res: ', res);
         this.param = { courseId: e.data.myCourse.id, weekTime: (res as CourseDetailInfo).weekTime };
         this.weekTime = (res as CourseDetailInfo).weekTime;
       });

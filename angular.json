@@ -42,7 +42,8 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/CLMS",
+            "outputPath": "dist",
+            "baseHref": "/dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -59,7 +60,7 @@
             ],
             "styles": ["./node_modules/ng-zorro-antd/ng-zorro-antd.min.css", "src/styles.scss"],
             "scripts": [],
-            "allowedCommonJsDependencies": ["echarts"]
+            "allowedCommonJsDependencies": ["echarts", "dayjs"]
           },
           "configurations": {
             "production": {

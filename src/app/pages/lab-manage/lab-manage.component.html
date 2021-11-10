@@ -5,7 +5,7 @@
       nzType="primary"
       style="float: right"
       (click)="addLabDrawer.visible = true"
-      *ngIf="cache.functionPermissions?.includes('addLab')"
+      *ngIf="cache.functionPermissions('addLab')"
     >
       添加机房
     </button>
