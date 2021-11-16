@@ -5,6 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { base64Filter, getType } from '@shared/utils/utils';
 import * as _ from 'lodash';
 import * as base64 from 'js-base64';
+import dayjs from 'dayjs';
 import { CacheService } from '@app/core/services/cache.service';
 
 @Component({
@@ -157,6 +158,7 @@ export class SeatingChartComponent implements OnInit {
       const param = {
         labId: this.labId!,
         time: value,
+        date: dayjs(this.date).format('YYYY-MM-DD'),
       };
       this.service.getFreeTimeChart(param).subscribe((res) => {
         this.seatingChart = res as Array<Array<number | { status: number; id: string }>>;
