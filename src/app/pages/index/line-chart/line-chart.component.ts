@@ -55,9 +55,10 @@ export class LineChartComponent implements OnInit, AfterViewInit {
 
   // 切换日期
   dateChange(e: Date[]) {
+    console.log('e: ', e);
     const param = {
-      startTime: dayjs(e[0]).format('yyyy-MM-dd'),
-      endTime: dayjs(e[1]).format('yyyy-MM-dd'),
+      startTime: dayjs(e[0]).format('YYYY-MM-DD'),
+      endTime: dayjs(e[1]).format('YYYY-MM-DD'),
     };
     this.getHistoryStatistic(param);
   }

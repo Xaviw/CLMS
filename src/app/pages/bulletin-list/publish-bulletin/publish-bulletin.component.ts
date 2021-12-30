@@ -20,7 +20,7 @@ export class PublishBulletinComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.editor = new E('#toolbar', '#container');
-    this.editor.config.uploadImgServer = '/upload-img';
+    this.editor.config.uploadImgServer = '/ann/addImage';
     this.editor.config.customAlert = (s: string, t: string) => {
       switch (t) {
         case 'success':

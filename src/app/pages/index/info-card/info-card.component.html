@@ -35,8 +35,8 @@
       <ng-container *ngIf="title === '用户信息'">
         <span>{{ item.name }}：{{ item.value }}{{ unit }}</span
         ><br />
-        <span>女：{{ item.women }}{{ unit }}（{{ ((item.women / item.value) * 100).toFixed(2) }}%）</span><br />
-        <span>男：{{ item.men }}{{ unit }}（{{ ((item.men / item.value) * 100).toFixed(2) }}%）</span>
+        <span>女：{{ item.woman }}{{ unit }}（{{ ((item.woman / item.value) * 100).toFixed(2) }}%）</span><br />
+        <span>男：{{ item.man }}{{ unit }}（{{ ((item.man / item.value) * 100).toFixed(2) }}%）</span>
       </ng-container>
       <ng-container *ngIf="title !== '用户信息'">
         <span>{{ item.name }}：{{ item.value }}{{ unit }}</span>

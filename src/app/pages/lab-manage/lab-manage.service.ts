@@ -8,7 +8,7 @@ export class LabManageService {
 
   // 获取机房基础信息
   getLabInfo(id: string) {
-    const url = '/lab/detailInfo';
+    const url = '/lab/getLabById';
     return this.http.post(url, { labId: id });
   }
 
@@ -38,13 +38,13 @@ export class LabManageService {
 
   // 获取机房座位表
   getSeatingChart(id: string) {
-    const url = '/lab/seat';
+    const url = '/lab/getLabSeatById';
     return this.http.post(url, { labId: id });
   }
 
   // 获取某日空闲时段
   getFreeTimeRange(param: { labId: string; date: Date }) {
-    const url = '/lab/time';
+    const url = '/lab/getLabFreeTimeByTime';
     return this.http.post(url, param);
   }
 

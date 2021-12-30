@@ -50,7 +50,6 @@ export class IndexComponent implements OnInit {
 
   ngOnInit() {
     this.getLabStatistic();
-    this.getEquipmentStatistic();
     this.getUserStatistic();
     this.getLabApplyStatistic();
     this.getShopApplyStatistic();
@@ -64,16 +63,6 @@ export class IndexComponent implements OnInit {
         item.color = this.labStatisticColors.pop()!;
       });
       this.labStatistic = res as statistic;
-    });
-  }
-
-  // 获取设备统计数据
-  getEquipmentStatistic() {
-    this.service.getEquipmentStatistic().subscribe((res) => {
-      (res as statistic).data.forEach((item) => {
-        item.color = this.equipmentStatisticColors.pop()!;
-      });
-      this.equipmentStatistic = res as statistic;
     });
   }
 

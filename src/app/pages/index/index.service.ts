@@ -13,31 +13,27 @@ export class IndexService {
     return this.http.get(url);
   }
 
-  // 获取设备统计信息
-  getEquipmentStatistic() {
-    const url = '/equipment';
-    return this.http.get(url);
-  }
-
   // 获取用户统计信息
   getUserStatistic() {
     const url = '/user/getAllUser';
     return this.http.get(url);
   }
 
-  // 获取机房申请统计信息
-  getLabApplyStatistic() {
-    const url = '/apply/lab';
-    return this.http.get(url);
-  }
   // 获取采购申请统计信息
   getShopApplyStatistic() {
-    const url = '/apply/equipment';
+    const url = '/apply/getAllPurchaseStatus';
     return this.http.get(url);
   }
+
+  // 获取机房申请统计信息
+  getLabApplyStatistic() {
+    const url = '/apply/getAllApplyStatus';
+    return this.http.get(url);
+  }
+
   // 获取报修申请统计信息
   getRepairApplyStatistic() {
-    const url = '/apply/repair';
+    const url = '/apply/getAllRepairStatus';
     return this.http.get(url);
   }
 

@@ -14,7 +14,7 @@ interface list {
   account: string;
   avatar: string;
   times: number;
-  class: string;
+  className: string;
   classId: string;
 }
 
@@ -67,7 +67,7 @@ export class RankListComponent implements OnInit {
     // 已经到底则停止请求
     if (this.hasNext) {
       await this.service.getRankList(param).then((res) => {
-        this.rankList.push(...(res as rank).data);
+        this.rankList = [...this.rankList, ...(res as rank).data];
         if (!(res as rank).hasNext) {
           this.hasNext = (res as rank).hasNext;
           this.scrollDispatcher.deregister(this.scrollDispatcher.scrollContainers.keys().next().value);

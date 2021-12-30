@@ -40,7 +40,7 @@ export class BulletinComponent implements OnInit, AfterViewInit {
         this.editor = new E('#toolbar', '#container');
         this.editor.create();
         this.editor.disable();
-        this.editor.txt.setJSON((res as BulletinInfo).content as unknown as NodeListType);
+        this.editor.txt.setJSON(JSON.parse((res as BulletinInfo).content!));
       }
     });
   }

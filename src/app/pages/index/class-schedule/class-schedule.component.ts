@@ -1,7 +1,6 @@
 import { CacheService } from './../../../core/services/cache.service';
 import { Component, OnInit } from '@angular/core';
 import { _session } from '@app/shared/utils/Storage';
-import { User } from '@app/shared/types/commonTypes';
 import { IndexService } from '../index.service';
 
 @Component({
@@ -13,7 +12,7 @@ import { IndexService } from '../index.service';
 export class ClassScheduleComponent implements OnInit {
   week = 1; // 单双周
   param = {
-    userId: this.cache.userInfo?.account,
+    userId: this.cache.userInfo?.userId,
     weekTime: this.week,
   };
 
@@ -23,7 +22,7 @@ export class ClassScheduleComponent implements OnInit {
 
   switchWeek(e: number) {
     this.param = {
-      userId: this.cache.userInfo?.account,
+      userId: this.cache.userInfo?.userId,
       weekTime: this.week,
     };
   }

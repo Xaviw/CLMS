@@ -27,6 +27,7 @@ declare interface PageRoute {
 // 用户
 declare interface User {
   account: string;
+  userId: string;
   name: string;
   avatar?: string;
   gender?: string;

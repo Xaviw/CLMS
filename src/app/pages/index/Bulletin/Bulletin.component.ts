@@ -1,6 +1,7 @@
-import { BulletinService } from './../../bulletin-list/bulletin.service';
+import { BulletinService } from '../../bulletin-list/bulletin.service';
 import { Component, OnInit } from '@angular/core';
 import { BulletinInfo } from '@app/shared/types/commonTypes';
+import * as dayjs from 'dayjs';
 
 type Bulletin = {
   total: number;
@@ -25,7 +26,12 @@ export class BulletinComponent implements OnInit {
   getBulletin() {
     const param = { pageIndex: 1, pageSize: 5 };
     this.service.getBulletin(param).subscribe((res) => {
-      this.data = (res as Bulletin).data;
+      this.data = (res as Bulletin).data.map((item) => {
+        return {
+          ...item,
+          createTime: dayjs(item.createTime).format('YYYY-MM-DD hh:mm:ss'),
+        };
+      });
     });
   }
 }

@@ -29,6 +29,7 @@ export class CourseManageComponent implements OnInit {
       this.service
         .getCourseCardByCascade({ code: param.data.course.id, grade: param.data.grade.id })
         .subscribe((res) => {
+          console.log('res: ', res);
           this.courseCardData = res as CourseCard[];
         });
     } else if (param.code === 'myCourse') {

@@ -5,10 +5,10 @@
   <div *ngFor="let item of rankList.slice(0, 3)">
     <nz-avatar [nzSize]="50" nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
     <span>{{ item.times }}次</span>
-    <span>{{ item.name }}-{{ item.class }}</span>
+    <span>{{ item.name }}-{{ item.className }}</span>
   </div>
 </div>
-<div class="list">
+<div class="list" empty [emptyData]="rankList" emptyInfo="暂无排名...">
   <cdk-virtual-scroll-viewport [itemSize]="50" class="view" cdkScrollable #rankScroll>
     <div
       *cdkVirtualFor="let item of rankList.slice(3); let i = index"
@@ -19,7 +19,7 @@
       <div>
         <span>{{ i + 4 }}</span>
         <span>{{ item.name }}</span>
-        <span>{{ item.class }}</span>
+        <span>{{ item.className }}</span>
       </div>
       <span>{{ item.times }}次</span>
     </div>
