@@ -60,7 +60,7 @@ export class ScheduleComponent implements OnInit {
         }
         for (let j = 0; j < father.length; j++) {
           const child = father[j];
-          this.editList[i].push(child ? true : false);
+          this.editList[i].push(child?.labId ? true : false);
           this.labEditList[i].push(child?.labId ?? null);
         }
       }

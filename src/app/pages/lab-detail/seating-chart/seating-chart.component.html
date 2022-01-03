@@ -100,7 +100,7 @@
       <nz-date-picker nzSize="small" [(ngModel)]="date" (ngModelChange)="dateChange($event)"></nz-date-picker>
     </div>
     <div class="view_scroll content">
-      <ul nz-menu empty [emptyData]="freeTimeRange" emptyInfo="无相关信息...">
+      <ul nz-menu empty [emptyData]="freeTimeRange" emptyInfo="无相关信息..." class="view">
         <li
           nz-menu-item
           [nzSelected]="selectedTime === i"
@@ -157,7 +157,7 @@
         <div
           [ngClass]="{ 'add-border': border }"
           class="seat"
-          *ngIf="col !== 0"
+          *ngIf="col != 0"
           (click)="clickSeat(col, isEdit, true, isEdit ? data : [i + 1, j + 1], i, j)"
         >
           <svg

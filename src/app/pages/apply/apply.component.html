@@ -20,11 +20,7 @@
           <nz-form-label nzRequired nzFor="lab_id">机房</nz-form-label>
           <nz-form-control nzErrorTip="请选择机房！">
             <nz-select formControlName="lab_id" id="lab_id">
-              <nz-option
-                *ngFor="let lab of labList"
-                [nzValue]="lab.id"
-                [nzLabel]="lab.name + '-' + lab.description"
-              ></nz-option>
+              <nz-option *ngFor="let lab of labList" [nzValue]="lab.id" [nzLabel]="lab.name"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -123,18 +119,18 @@
       </form>
     </div>
   </div>
-  <div class="right history padding">
+  <div class="right history padding" *ngIf="history.length">
     <h4 nz-typography>历史记录</h4>
     <nz-timeline>
-      <nz-timeline-item *ngFor="let item of history" [nzColor]="status[item.status].color">
+      <nz-timeline-item *ngFor="let item of history; let i = index" [nzColor]="status[item.status].color">
         <p>{{ item.time | date: 'yyyy-MM-dd hh:mm:ss' }}</p>
         <p *ngIf="item.status !== 0; else start">
           {{ item.user_id + '-' + item.user_name }} 修改申请状态为：{{ status[item.status].text }}
         </p>
         <ng-template #start>
-          <p>{{ item.user_id + '-' + item.user_name }} 发起申请</p>
+          <p>{{ item.user_id + '-' + item.user_name }} {{ i == 0 ? '发起' : '修改' }}申请</p>
         </ng-template>
-        <p *ngIf="item?.remark">审核信息：{{ item.remark }}</p>
+        <p *ngIf="[1, 2, 3].includes(item.status) && item?.remark">审核信息：{{ item.remark }}</p>
       </nz-timeline-item>
     </nz-timeline>
   </div>

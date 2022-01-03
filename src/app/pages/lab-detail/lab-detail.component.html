@@ -37,7 +37,6 @@
           freeTime ?? '--'
         }}</nz-descriptions-item>
       </nz-descriptions>
-      <!-- TODO:上传后刷新列表 -->
       <nz-image-group class="image-group">
         <nz-upload
           nzAction="/lab/upImage"
@@ -46,6 +45,7 @@
           [nzShowUploadList]="false"
           nzListType="picture-card"
           *ngIf="cache.functionPermissions('uploadLabPicture')"
+          (nzChange)="handleUpload($event)"
         >
           <div>
             <i nz-icon nzType="plus"></i>

@@ -22,13 +22,13 @@ export class CommonService {
 
   // 获取是否需要签到
   needCheckIn() {
-    const url = '/checkIn';
+    const url = '/apply/needSign';
     return this.http.get(url);
   }
 
   // 签到
   checkIn(id: string) {
-    const url = '/';
+    const url = '/apply/applySign';
     this.http.post(url, { id });
   }
 
@@ -62,7 +62,7 @@ export class CommonService {
     return this.http.get(url);
   }
 
-  // FIXME：修改某课程课表
+  // TODO：修改某课程课表
   modifyCourseSchedule(param: { courseId: string; weekTime?: number; data: Array<{ labId: string } | null>[] }) {
     const url = '';
     return this.http.post(url, param);

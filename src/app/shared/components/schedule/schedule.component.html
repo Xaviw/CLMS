@@ -23,7 +23,7 @@
               <span>{{ class.teacherName }}</span>
             </div>
           </ng-container>
-          <ng-container *ngIf="class && singleCourse">
+          <ng-container *ngIf="class?.courseId && singleCourse">
             <div class="flex-center check edit-check">
               <i nz-icon nzType="check-circle" nzTheme="outline"></i>
             </div>

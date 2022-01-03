@@ -55,12 +55,6 @@ export class IndexService {
     return this.http.post(url, param);
   }
 
-  // 获取课程表
-  getCourseSchedule() {
-    const url = '/course/getSelfCourse';
-    return this.http.get(url);
-  }
-
   // 获取评论列表
   getComments(param: { pageIndex: number; pageSize: number }) {
     const url = '/ann/getAnnInRange';

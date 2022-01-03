@@ -251,6 +251,9 @@ export class CascadeConditionComponent implements OnInit {
     if (this.grade.show) this.grade.getData!();
     if (this.chargeClass.show) this.chargeClass.getData!();
     if (this.myCourse.show) this.myCourse.getData!();
+    if (this.showFilter?.toString() === ['grade', 'college', 'userSearch'].toString()) {
+      this.college.getData!();
+    }
     // 重设是否有全部选项
     for (const item of this.fields) {
       const field = (this as any)[item];

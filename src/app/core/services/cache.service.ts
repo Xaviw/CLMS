@@ -13,19 +13,19 @@ export class CacheService {
   // 签到轮询
   public checkInInterval?: any;
 
-  // FIXME：启动轮询
+  // 启动轮询
   public startCheckInInterval() {
-    // // 已登录且未启动轮询，每十分钟请求一次是否需要签到
-    // if (!this.checkInInterval && _local.get('token')) {
-    //   // 先请求一次，等到整10分钟时开启轮询
-    //   this.getCheckInInfo();
-    //   // 计算整距10分钟时间差
-    //   const timeDiff = 600000 - (Date.now() % 600000);
-    //   // 记录setTimeout或setInterval，用于清除
-    //   this.checkInInterval = setTimeout(() => {
-    //     this.checkInInterval = setInterval(this.getCheckInInfo(), 600000);
-    //   }, timeDiff);
-    // }
+    // 已登录且未启动轮询，每十分钟请求一次是否需要签到
+    if (!this.checkInInterval && _local.get('token')) {
+      // 先请求一次，等到整10分钟时开启轮询
+      this.getCheckInInfo();
+      // 计算整距10分钟时间差
+      const timeDiff = 600000 - (Date.now() % 600000);
+      // 记录setTimeout或setInterval，用于清除
+      this.checkInInterval = setTimeout(() => {
+        this.checkInInterval = setInterval(this.getCheckInInfo(), 600000);
+      }, timeDiff);
+    }
   }
 
   // 请求签到信息

@@ -46,6 +46,7 @@ export class ApplyComponent implements OnInit {
       }
       let params = this.examine.examineForm.getRawValue();
       params.id = this.paramsId;
+      params.type = this.paramsType;
       this.service.examine(params).subscribe(() => {
         this.router.navigateByUrl('/application-list');
       });
@@ -63,6 +64,7 @@ export class ApplyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getLabList();
     // 初始化表单
     this.form = this.fb.group({
       user: [{ value: null, disabled: true }, Validators.required],
@@ -81,51 +83,64 @@ export class ApplyComponent implements OnInit {
         if (data.id) {
           this.paramsId = data.id;
           this.getHistory();
-          this.service.getApplicationInfo(data.id).subscribe((res) => {
-            this.applicationInfo = res as ApplicationInfo;
-            this.paramsType = (res as ApplicationInfo).type;
-            // 判断是否是本人，决定表单是否禁用
-            this.disabled = (res as ApplicationInfo).user_id === this.cache.userInfo.account ? false : true;
-            // 构建表单，有值
-            this.buildForm(res as ApplicationInfo);
-          });
+          this.service
+            .getApplicationInfo({
+              type: this.paramsType,
+              id: data.id,
+            })
+            .subscribe((res) => {
+              this.applicationInfo = res as ApplicationInfo;
+              this.paramsType = (res as ApplicationInfo).type;
+              // 判断是否是本人，决定表单是否禁用
+              this.disabled = (res as ApplicationInfo).user_id === this.cache.userInfo.account ? false : true;
+              // 构建表单，有值
+              this.buildForm(res as ApplicationInfo);
+              this.patch(res);
+              this.form.patchValue({
+                user: this.applicationInfo.user_id + '-' + this.applicationInfo.user_name,
+              });
+            });
         } else {
           this.form.patchValue({
             user: this.cache.userInfo.account + '-' + this.cache.userInfo.name,
           });
           // 构建表单，无值
-          this.buildForm();
-        }
-        // 维修申请且带有参数
-        if (data.type === 2 && data.labId && data.seatRow && data.seatColumn) {
-          this.form.patchValue({
-            lab_id: data.labId,
-            seat_row: data.seatRow,
-            seat_column: data.seatColumn,
-          });
-        }
-        // 机房申请且带有参数
-        if (data.type === 0 && data.labId && data.applyAll !== undefined) {
-          if (data.applyAll) {
-            this.applyAllChange(true);
-            this.form.patchValue({
-              apply_all: true,
-              lab_id: data.labId,
-              date: data.date,
-            });
-          } else {
-            this.form.patchValue({
-              apply_all: false,
-              lab_id: data.labId,
-              course: data.course,
-              seat_row: data.seatRow,
-              seat_column: data.seatColumn,
-              date: data.date,
-            });
-          }
+          this.buildForm(data);
+          this.patch(data);
         }
       }
     });
+  }
+
+  patch(data: any) {
+    // 维修申请且带有参数
+    if (data.type === 2 && data.labId && data.seat_row && data.seat_column) {
+      this.form.patchValue({
+        lab_id: data.labId,
+        seat_row: data.seat_row,
+        seat_column: data.seat_column,
+      });
+    }
+    // 机房申请且带有参数
+    if (data.type === 0 && data.labId && data.apply_all !== undefined) {
+      if (data.apply_all) {
+        this.applyAllChange(true);
+        this.form.patchValue({
+          apply_all: true,
+          lab_id: data.labId,
+          date: data.time,
+        });
+      } else {
+        this.form.patchValue({
+          apply_all: false,
+          lab_id: data.labId,
+          course: data.course,
+          seat_row: data.seat_row,
+          seat_column: data.seat_column,
+          date: data.time,
+        });
+      }
+    }
   }
 
   // 获取机房列表
@@ -138,16 +153,25 @@ export class ApplyComponent implements OnInit {
   // 获取申请历史
   getHistory() {
     if (this.paramsId) {
-      this.service.getApplicationHistory(this.paramsId).subscribe((res) => {
-        this.history = res as ApplicationHistory[];
-      });
+      this.service
+        .getApplicationHistory({
+          type: this.paramsType,
+          id: this.paramsId,
+        })
+        .subscribe((res) => {
+          this.history = res as ApplicationHistory[];
+        });
     }
   }
 
   // 取消申请
   cancelApply() {
     if (this.paramsId) {
-      this.service.cancelApply(this.paramsId).subscribe(() => {
+      const param = {
+        type: this.paramsType,
+        id: this.paramsId,
+      };
+      this.service.cancelApply(param).subscribe(() => {
         this.router.navigateByUrl('/application-list');
       });
     } else {
@@ -193,7 +217,7 @@ export class ApplyComponent implements OnInit {
   // 构建表单
   buildForm(data?: ApplicationInfo) {
     this.form.addControl('remark', new FormControl({ value: null, disabled: this.disabled }));
-    if (data) {
+    if (data && data.user_id && data.user_name && data.remark) {
       this.form.setValue({
         user: data.user_id + '-' + data.user_name,
         remark: data.remark,
@@ -202,7 +226,7 @@ export class ApplyComponent implements OnInit {
     if (this.paramsType === 0) {
       this.form.addControl(
         'date',
-        new FormControl({ value: data?.date ?? null, disabled: this.disabled }, Validators.required),
+        new FormControl({ value: data?.time ?? null, disabled: this.disabled }, Validators.required),
       );
       this.form.addControl(
         'course',
@@ -230,7 +254,6 @@ export class ApplyComponent implements OnInit {
         'seat_column',
         new FormControl({ value: data?.seat_column ?? null, disabled: this.disabled }, Validators.required),
       );
-      this.getLabList();
     }
     if (this.paramsType === 1) {
       this.form.addControl(

@@ -56,7 +56,7 @@ export class AcAreaComponent implements OnInit {
     });
   }
 
-  // HACK:获取评论回复
+  // 获取评论回复
   getReply(comment: comment) {
     if (comment?.expand && comment !== this.reply) {
       comment.expand = false;

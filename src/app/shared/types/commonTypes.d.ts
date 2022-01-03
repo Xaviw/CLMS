@@ -89,7 +89,7 @@ declare interface CourseCard {
   courseName: string;
   teacherId: string;
   teacherName: string;
-  isCompulsory?: boolean;
+  isCompulsory?: string;
   classes?: string;
   description?: string;
   count: number;
@@ -131,7 +131,7 @@ declare interface CourseDetailInfo {
   courseId: string;
   teacherName: string;
   teacherId: string;
-  isCompulsory: boolean;
+  isCompulsory: string;
   class?: Array<{ id: string; name: string }>;
   description?: string;
   count?: number;

@@ -11,6 +11,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 export class UploadDrawerComponent implements OnInit {
   visible = false;
   text = '';
+  allDone = false;
   loading = false;
 
   @Input() title = '导入用户';
@@ -39,7 +40,8 @@ export class UploadDrawerComponent implements OnInit {
     }
     if (info.file.status === 'done') {
       this.loading = false;
-      this.text = `成功${info.file.response.success}人，失败${info.file.response.failed}人`;
+      this.text = `成功${info.fileList[0].response['成功']}人，失败${info.fileList[0].response['失败']}人`;
+      this.allDone = info.fileList[0].response['失败'] === 0;
     } else if (info.file.status === 'error') {
       this.loading = false;
       this.text = '';

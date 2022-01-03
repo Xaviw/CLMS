@@ -85,8 +85,8 @@ export class CourseDetailComponent implements OnInit {
 
   // 获取课程基础信息
   getCourseDetail(id?: string) {
-    this.service.getCourseDetail(id ?? this.params.courseId).subscribe((res) => {
-      this.detailInfo = res as CourseDetailInfo;
+    this.service.getCourseDetail(id ?? this.params.courseId).subscribe((res: any) => {
+      this.detailInfo = res[0] as CourseDetailInfo;
       this.params = {
         courseId: id ?? this.params.courseId,
         weekTime: this.detailInfo.weekTime,

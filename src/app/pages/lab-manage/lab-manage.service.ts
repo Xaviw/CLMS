@@ -14,13 +14,13 @@ export class LabManageService {
 
   // 删除机房
   deleteLab(id: string) {
-    const url = '/lab/del';
+    const url = '/lab/deleteLab';
     return this.http.post(url, { labId: id });
   }
 
   // 添加机房
   addLab(param: { name: string; description?: string }) {
-    const url = '/lab/add';
+    const url = '/lab/addLab';
     return this.http.post(url, param);
   }
 
@@ -31,9 +31,15 @@ export class LabManageService {
   }
 
   // 删除照片
-  deletePicture(img: string) {
+  deletePicture(param: { labId: string; image: string }) {
     const url = '/lab/deleteImage';
-    return this.http.post(url, { image: img });
+    return this.http.post(url, param);
+  }
+
+  // 上传机房照片
+  uploadPicture(param: { labId: string; names: string[] }) {
+    const url = '/lab/upImageInLabId';
+    return this.http.post(url, param);
   }
 
   // 获取机房座位表
@@ -56,7 +62,7 @@ export class LabManageService {
 
   // 编辑座位表
   editSeatingChart(param: { labId: string; chart: Array<Array<number>> }) {
-    const url = '/lab/getLabFreeTimeByTime';
+    const url = '/lab/editSeat';
     return this.http.post(url, param);
   }
 }

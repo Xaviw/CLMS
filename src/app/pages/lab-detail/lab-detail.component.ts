@@ -10,6 +10,7 @@ import { validateForm } from '@app/shared/utils/utils';
 import { fromEvent } from 'rxjs';
 import * as dayjs from 'dayjs';
 import { CacheService } from '@app/core/services/cache.service';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'lab-detail',
@@ -22,6 +23,7 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
   labStatus = LabStatus; // 机房状态枚举
   courseScheduleParam!: { labId: string; weekTime: number }; // 课程表参数
   freeTime?: string; // 空闲时段
+  labId!: string;
   // 编辑机房抽屉
   labDrawer = {
     visible: false,
@@ -52,7 +54,8 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((res) => {
-      // 从路径获取课程id
+      // 从路径获取机房id
+      this.labId = res.id;
       this.getLabInfo(res.id);
     });
   }
@@ -140,11 +143,27 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
 
   // 删除照片
   deletePicture(img: string) {
-    this.service.deletePicture(img).subscribe((res) => {
+    const param = {
+      labId: this.labId,
+      image: img,
+    };
+    this.service.deletePicture(param).subscribe((res) => {
       if (this.labInfo.image instanceof Array) {
         const index = this.labInfo.image.findIndex((item) => item === img);
         this.labInfo.image.splice(index, 1);
       }
     });
+  }
+
+  handleUpload(e: NzUploadChangeParam) {
+    if (e.file.status === 'done') {
+      const param = {
+        labId: this.labId,
+        names: [e.file.response[0]],
+      };
+      this.service.uploadPicture(param).subscribe((res) => {
+        this.getLabInfo(this.labId);
+      });
+    }
   }
 }

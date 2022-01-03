@@ -11,7 +11,7 @@ import { CacheService } from '@app/core/services/cache.service';
   providers: [CourseManageService],
 })
 export class CourseScheduleComponent implements OnInit {
-  weekTime = 0;
+  weekTime = 1;
   param?: any;
 
   constructor(private courseService: CourseManageService, private common: CommonService, public cache: CacheService) {}
@@ -26,14 +26,14 @@ export class CourseScheduleComponent implements OnInit {
       this.param = { classId: e.data.chargeClass.id, weekTime: 1 };
       this.weekTime = 1;
     } else if (e.code === 'myCourse') {
-      this.courseService.getCourseDetail(e.data.myCourse.id).subscribe((res) => {
-        this.param = { courseId: e.data.myCourse.id, weekTime: (res as CourseDetailInfo).weekTime };
-        this.weekTime = (res as CourseDetailInfo).weekTime;
+      this.courseService.getCourseDetail(e.data.myCourse.id).subscribe((res: any) => {
+        this.param = { courseId: e.data.myCourse.id, weekTime: (res[0] as CourseDetailInfo).weekTime };
+        this.weekTime = (res[0] as CourseDetailInfo).weekTime;
       });
     } else if (e.code === 'courseSearch') {
-      this.courseService.getCourseDetail(e.data.courseSearch.id).subscribe((res) => {
-        this.param = { courseId: e.data.courseSearch.id, weekTime: (res as CourseDetailInfo).weekTime };
-        this.weekTime = (res as CourseDetailInfo).weekTime;
+      this.courseService.getCourseDetail(e.data.courseSearch.id).subscribe((res: any) => {
+        this.param = { courseId: e.data.courseSearch.id, weekTime: (res[0] as CourseDetailInfo).weekTime };
+        this.weekTime = (res[0] as CourseDetailInfo).weekTime;
       });
     } else if (e.code === 'userSearch') {
       this.param = { userId: e.data.userSearch, weekTime: 1 };
@@ -47,6 +47,6 @@ export class CourseScheduleComponent implements OnInit {
   }
 
   output() {
-    this.common.download('', this.param);
+    this.common.download('/course/exportCourse', this.param);
   }
 }

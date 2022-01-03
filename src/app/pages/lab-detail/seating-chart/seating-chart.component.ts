@@ -168,8 +168,8 @@ export class SeatingChartComponent implements OnInit {
           ][(this.selectedSeat[2] as number) - 1];
           if (getType(target) === 'Object') {
             this.selectedSeat[0] = (target as { status: number; id: string }).status;
-          } else if (getType(target) === 'Number') {
-            this.selectedSeat[0] = target as number;
+          } else {
+            this.selectedSeat[0] = Number(target);
           }
         }
       });
@@ -187,13 +187,12 @@ export class SeatingChartComponent implements OnInit {
   ) {
     if (isEdit && data && row !== undefined && column !== undefined) {
       isSeat ? (data[row][column] = 0) : (data[row][column] = 1);
-    } else {
-      if (isSeat)
-        this.selectedSeat = [
-          (status as { status: number; id: string })?.status ?? status,
-          ...data,
-          (status as { status: number; id: string })?.id,
-        ];
+    } else if (isSeat) {
+      this.selectedSeat = [
+        (status as { status: number; id: string })?.status ?? status,
+        ...data,
+        (status as { status: number; id: string })?.id,
+      ];
     }
   }
 
@@ -207,10 +206,12 @@ export class SeatingChartComponent implements OnInit {
 
   // 跳转设备报修
   redirectToRepair() {
-    let param = base64.encodeURI(
-      JSON.stringify({ type: 2, labId: this.labId, seatRow: this.selectedSeat[1], seatColumn: this.selectedSeat[2] }),
-    );
-    param = base64Filter(param);
+    let param = base64Filter({
+      type: 2,
+      labId: this.labId,
+      seat_row: this.selectedSeat[1],
+      seat_column: this.selectedSeat[2],
+    });
     this.router.navigate(['/apply'], {
       queryParams: { param },
     });
@@ -220,7 +221,7 @@ export class SeatingChartComponent implements OnInit {
   redirectToLabApply(applyAll = false) {
     let param;
     if (applyAll) {
-      param = { type: 0, labId: this.labId, applyAll, date: this.date };
+      param = { type: 0, labId: this.labId, apply_all: applyAll, time: this.date };
     } else {
       if (!this.courseTimes.length) {
         this.message.warning('请选择时间段！');
@@ -229,11 +230,11 @@ export class SeatingChartComponent implements OnInit {
       param = {
         type: 0,
         labId: this.labId,
-        applyAll,
+        apply_all: applyAll,
         course: this.courseTimes,
-        date: this.date,
-        seatRow: this.selectedSeat[1],
-        seatColumn: this.selectedSeat[2],
+        time: this.date,
+        seat_row: this.selectedSeat[1],
+        seat_column: this.selectedSeat[2],
       };
     }
     this.router.navigate(['/apply'], {

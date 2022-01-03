@@ -1,7 +1,11 @@
 <div class="view_scroll padding">
   <cascade-condition
     (cascadeEmitter)="getConditions($event)"
-    [showFilter]="['grade', 'college', 'major', 'class', 'chargeClass', 'userSearch']"
+    [showFilter]="
+      type === 1
+        ? ['grade', 'college', 'userSearch']
+        : ['grade', 'college', 'major', 'class', 'chargeClass', 'userSearch']
+    "
   ></cascade-condition>
   <div class="flex-between mt10" *ngIf="!checkMode">
     <div>
@@ -23,12 +27,12 @@
       >
         导入用户
       </button>
-      <!-- TODO：导出用户 -->
       <button
         nz-button
         nzType="primary"
         [disabled]="!listOfData?.length"
         *ngIf="type ? cache.functionPermissions('exportTeacher') : cache.functionPermissions('exportStudent')"
+        (click)="output()"
       >
         导出用户
       </button>
@@ -152,7 +156,7 @@
           <td *ngIf="type === 0">{{ data.class }}</td>
           <td *ngIf="type === 0">{{ data.chargeTeacher }}</td>
           <td *ngIf="!checkMode">{{ data.role | textFrom }}</td>
-          <td *ngIf="!checkMode">{{ data.status }}</td>
+          <td *ngIf="!checkMode">{{ data.status ? '在线' : '离线' }}</td>
           <td *ngIf="!checkMode" nzAlign="center">
             <button
               nz-button
@@ -198,7 +202,6 @@
   </ng-container>
 </nz-modal>
 
-<!-- HACK:导入用户抽屉 -->
 <upload-drawer
   #uploadDrawerEl
   url="/user/importUser"

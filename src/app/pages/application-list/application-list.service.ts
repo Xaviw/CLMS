@@ -9,43 +9,42 @@ export class ApplicationListService {
 
   // 获取申请列表
   getApplicationList(param: ApplicationParam) {
-    const url = '/application/list';
+    const url = '/apply/getApplyList';
     return this.http.post(url, param);
   }
 
-  // FIXME：取消申请
-  cancelApply(id: string) {
-    const url = '';
-    return this.http.post(url, { id });
+  cancelApply(param: { id: string; type: number }) {
+    const url = '/apply/cancelApply';
+    return this.http.post(url, param);
   }
 
   // 获取申请信息
-  getApplicationInfo(id: string) {
-    const url = '/application/info';
-    return this.http.post(url, { id });
+  getApplicationInfo(param: { id: string; type: number }) {
+    const url = '/apply/getApplyById';
+    return this.http.post(url, param);
   }
 
-  // FIXME：申请
+  // 申请
   apply(param: ApplicationInfo) {
-    const url = '';
+    const url = '/apply/updateApply';
     return this.http.post(url, param);
   }
 
-  // FIXME：审核
-  examine(param: { status: boolean; id: string; remark?: string }) {
-    const url = '';
+  // 审核
+  examine(param: { status: boolean; id: string; remark?: string; type: number }) {
+    const url = '/apply/passApply';
     return this.http.post(url, param);
   }
 
-  // FIXME：维修完成
+  // 维修完成
   repairFinish(id: string) {
-    const url = '';
+    const url = '/apply/repairDone';
     return this.http.post(url, { id });
   }
 
   // 获取申请历史
-  getApplicationHistory(id: string) {
-    const url = '/application/history';
-    return this.http.post(url, { id });
+  getApplicationHistory(param: { id: string; type: number }) {
+    const url = '/apply/getLog';
+    return this.http.post(url, param);
   }
 }

@@ -40,9 +40,6 @@ export class ApplicationListComponent implements OnInit {
             return item;
           });
         }
-        // if(param.status){
-        //   this.status = this.status.filter((item) => item.value === param.status);
-        // }
       }
     });
   }
@@ -62,8 +59,12 @@ export class ApplicationListComponent implements OnInit {
   }
 
   // 取消申请
-  cancelApply(id: string) {
-    this.service.cancelApply(id).subscribe((res) => {
+  cancelApply(id: string, type: number) {
+    const data = {
+      id,
+      type,
+    };
+    this.service.cancelApply(data).subscribe((res) => {
       if (this.param) {
         this.getApplicationList(this.param);
       }

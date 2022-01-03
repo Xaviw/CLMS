@@ -19,7 +19,7 @@ export class DefaultInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     // 请求开始，开启Loading动画
-    setTimeout(() => {
+    Promise.resolve().then(() => {
       this.cache.loading.next(true);
     });
 

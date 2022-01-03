@@ -29,6 +29,7 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
   visible = false;
 
   formGroup = this.fb.group({
+    gender: [null, [Validators.required]],
     account: [null, [Validators.required]],
     name: [null, [Validators.required]],
     grade: [null, [Validators.required]],
@@ -103,6 +104,35 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
     this.open();
   }
 
+  // 修改年级
+  resetSub(flag: boolean = true) {
+    if (flag && this.formGroup.controls?.major) {
+      this.formGroup.controls.major.reset();
+      this.major = [];
+      this.getMajor(this.formGroup.controls.college.value);
+    }
+    if (this.formGroup.controls?.class) {
+      this.formGroup.controls.class.reset();
+      this.class = [];
+      this.getClass(this.formGroup.controls.major.value);
+    }
+  }
+
+  // 修改年级
+  gradeChange() {}
+
+  // 修改学院
+  collegeChange(id: string) {
+    this.resetSub();
+    this.getMajor(id);
+  }
+
+  // 修改专业
+  majorChange(id: string) {
+    this.resetSub(false);
+    this.getClass(id);
+  }
+
   // 获取学院信息
   getCollege() {
     this.service.getCollege().subscribe((res) => {
@@ -112,7 +142,7 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   // 获取专业信息
   getMajor(id: string) {
-    if (this.type === 0) {
+    if (this.type === 0 && id) {
       this.service.getMajor({ grade: this.formGroup.controls.grade.value as string, college: id }).subscribe((res) => {
         this.major = res as any[];
       });
@@ -121,7 +151,7 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
 
   // 获取班级信息
   getClass(id: string) {
-    if (this.type === 0) {
+    if (this.type === 0 && id) {
       this.service
         .getClass({
           grade: this.formGroup.controls.grade.value as string,
@@ -155,8 +185,8 @@ export class UserModifyDrawerComponent implements OnInit, OnChanges {
       return;
     }
     const field = this.type
-      ? ['name', 'college', 'account', 'role']
-      : ['name', 'account', 'grade', 'college', 'major', 'class', 'role'];
+      ? ['gender', 'name', 'college', 'account', 'role']
+      : ['gender', 'name', 'account', 'grade', 'college', 'major', 'class', 'role'];
     if (isEqual(this.value, field, this.formGroup.value, field)) {
       this.message.warning('未做任何修改');
       return;

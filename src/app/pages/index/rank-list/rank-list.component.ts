@@ -76,7 +76,17 @@ export class RankListComponent implements OnInit {
     }
   }
 
-  // HACK 获取自己自习排名
+  // 重排前三名
+  calTopThree() {
+    if (this.rankList.length) {
+      let data = this.rankList.slice(0, 3);
+      return [data[1], data[0], data[2]];
+    } else {
+      return [];
+    }
+  }
+
+  // 获取自己自习排名
   async getOwnRank() {
     // 先获取排名
     if (!this.userIndex) {

@@ -74,8 +74,9 @@
                 nzType="link"
                 nz-popconfirm
                 nzPopconfirmTitle="确认取消申请?"
-                (nzOnConfirm)="cancelApply(data.id)"
+                (nzOnConfirm)="cancelApply(data.id, data.type)"
                 nzPopconfirmPlacement="bottom"
+                *ngIf="data.status !== 5"
               >
                 取消申请
               </button>

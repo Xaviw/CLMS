@@ -83,6 +83,7 @@ export class UserManageComponent implements OnInit {
   // 修改用户
   modifyUser(data: any) {
     this.oldValue = {
+      gender: data.gender,
       account: data.account,
       name: data.name,
       grade: data.grade,
@@ -145,12 +146,15 @@ export class UserManageComponent implements OnInit {
     }
     this.pageIndex = 1;
     if (['grade', 'college', 'major', 'class'].includes(param.code)) {
-      this.param = {
-        major: param.data.major.id,
-        grade: param.data.grade.id,
-        college: param.data.college.id,
-        class: param.data.class.id,
-      };
+      this.param =
+        this.type === 1
+          ? { college: param.data.college.id }
+          : {
+              major: param.data.major.id,
+              grade: param.data.grade.id,
+              college: param.data.college.id,
+              class: param.data.class.id,
+            };
       this.queryUser(true);
     } else if (param.code === 'chargeClass') {
       this.param = {
@@ -216,6 +220,6 @@ export class UserManageComponent implements OnInit {
 
   // 导出用户
   output() {
-    this.commonService.download('/user/exportUser', this.param);
+    this.commonService.download('/user/exportUser', { ...this.param, type: this.type });
   }
 }

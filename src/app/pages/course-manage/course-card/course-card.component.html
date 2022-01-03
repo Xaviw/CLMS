@@ -16,8 +16,8 @@
   </div>
 </nz-card>
 <ng-template #extraTemplate>
-  <nz-tag nzColor="blue" *ngIf="data?.isCompulsory">必修</nz-tag>
-  <nz-tag nzColor="green" *ngIf="!data?.isCompulsory">选修</nz-tag>
+  <nz-tag nzColor="blue" *ngIf="data?.isCompulsory === '是'">必修</nz-tag>
+  <nz-tag nzColor="green" *ngIf="data?.isCompulsory === '否'">选修</nz-tag>
 </ng-template>
 <ng-template #viewDetail>
   <button nz-button nzType="link" nzSize="small" [routerLink]="['/course-manage', data.courseId]">查看详细</button>
