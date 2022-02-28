@@ -44,17 +44,17 @@
           <tr>
             <th nzAlign="center" nzWidth="200px">发布时间</th>
             <th nzAlign="center">标题</th>
-            <th nzAlign="center" nzWidth="100px">浏览量</th>
+            <!-- <th nzAlign="center" nzWidth="100px">浏览量</th> -->
             <th nzAlign="center" nzWidth="100px" *ngIf="cache.functionPermissions('deleteBulletin')">操作</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let data of basicTable.data">
             <td nzAlign="center">{{ data.createTime }}</td>
-            <td nz-typography nzEllipsis>
+            <td nz-typography nzEllipsis nzAlign="center">
               <a [routerLink]="['/bulletin', data.id]">{{ data.title }}</a>
             </td>
-            <td nzAlign="center">{{ data.views }}</td>
+            <!-- <td nzAlign="center">{{ data.views }}</td> -->
             <td nzAlign="center" *ngIf="cache.functionPermissions('deleteBulletin')">
               <button
                 nz-button
