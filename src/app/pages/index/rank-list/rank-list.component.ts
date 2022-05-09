@@ -79,8 +79,12 @@ export class RankListComponent implements OnInit {
   // 重排前三名
   calTopThree() {
     if (this.rankList.length) {
-      let data = this.rankList.slice(0, 3);
-      return [data[1], data[0], data[2]];
+      if (this.rankList.length < 3) {
+        return [...this.rankList];
+      } else {
+        let data = this.rankList.slice(0, 3);
+        return [data[1], data[0], data[2]];
+      }
     } else {
       return [];
     }

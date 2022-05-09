@@ -26,10 +26,16 @@ export class CommonService {
     return this.http.get(url);
   }
 
+  // 获取通知信息
+  getNotification() {
+    const url = '/apply/getPassApply';
+    return this.http.get(url);
+  }
+
   // 签到
   checkIn(id: string) {
     const url = '/apply/applySign';
-    this.http.post(url, { id });
+    return this.http.post(url, { id });
   }
 
   // 获取所有页面
@@ -64,7 +70,7 @@ export class CommonService {
 
   // TODO：修改某课程课表
   modifyCourseSchedule(param: { courseId: string; weekTime?: number; data: Array<{ labId: string } | null>[] }) {
-    const url = '';
+    const url = '/lab/editClassSchedule';
     return this.http.post(url, param);
   }
 

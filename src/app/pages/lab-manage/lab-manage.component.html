@@ -46,6 +46,33 @@
           <input nz-input formControlName="description" id="description" placeholder="请输入机房描述" />
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="adminId" nzRequired>机房管理员：</nz-form-label>
+        <nz-form-control nzErrorTip="管理员不能为空！">
+          <nz-select
+            #teacherSearchEl
+            nzAllowClear
+            nzShowSearch
+            nzServerSearch
+            formControlName="adminId"
+            (nzOpenChange)="selectOpen($event)"
+            (compositionstart)="flag = false"
+            (compositionend)="flag = true"
+            (keyup)="selectSearch($event)"
+            nzPlaceHolder="请输入关键字搜索"
+          >
+            <ng-container *ngFor="let item of teacherList">
+              <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+            </ng-container>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="phone" nzRequired>管理员电话：</nz-form-label>
+        <nz-form-control>
+          <input nz-input formControlName="phone" id="phone" placeholder="请输入管理员电话" />
+        </nz-form-control>
+      </nz-form-item>
     </form>
   </ng-container>
   <ng-template #footerTpl>

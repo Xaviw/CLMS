@@ -12,6 +12,11 @@ export class LabManageService {
     return this.http.post(url, { labId: id });
   }
 
+  exportUseList() {
+    const url = '/lab/exportLabApplyInfo';
+    return this.http.get(url);
+  }
+
   // 删除机房
   deleteLab(id: string) {
     const url = '/lab/deleteLab';

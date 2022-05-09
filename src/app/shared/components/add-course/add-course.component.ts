@@ -50,7 +50,7 @@ export class AddCourseComponent implements OnInit {
     // 删除表单中班级tag，同步删除组件中tag
     tagChange: (e: string[]) => {
       for (let i = 0; i < this.class.list.length; i++) {
-        if (!e.some((item) => item === this.class.list[i].id)) {
+        if (!e.some((item) => item == this.class.list[i].id)) {
           this.class.list.splice(i, 1);
         }
       }
@@ -65,7 +65,7 @@ export class AddCourseComponent implements OnInit {
   validateForm = this.fb.group({
     name: [null, [Validators.required]],
     teacher: [null, [Validators.required]],
-    isCompulsory: [true, [Validators.required]],
+    isCompulsory: [false, [Validators.required]],
     class: [null, [Validators.required]],
     startWeek: [null, [Validators.required]],
     endWeek: [null, [Validators.required]],
@@ -74,10 +74,11 @@ export class AddCourseComponent implements OnInit {
   });
   handleOk() {
     validateForm(this.validateForm.controls);
-    if (this.validateForm.valid) {
-      const value = this.validateForm.getRawValue();
-      this.operation.emit(value);
-    }
+    // if (this.validateForm.valid) {
+    const value = this.validateForm.getRawValue();
+    console.log('value: ', value);
+    this.operation.emit(value);
+    // }
   }
   requiredChange(e: Event) {
     if (e) {
@@ -86,15 +87,9 @@ export class AddCourseComponent implements OnInit {
       this.validateForm.removeControl('class');
     }
   }
-  selectSearch(e: KeyboardEvent) {
-    if (this.flag && e.key !== 'process') {
-      const keyWord = this.teacherSearchEl.originElement.nativeElement.children[0]
-        .getAttribute('ng-reflect-value')
-        .trim();
-      if (keyWord.trim()) {
-        this.searchSubject.next(keyWord);
-      }
-    }
+  selectSearch(e: any) {
+    console.log('输入的值: ', e);
+    this.searchSubject.next(e);
   }
   selectOpen(e: boolean) {
     if (e) this.keyWord = null;
@@ -116,9 +111,9 @@ export class AddCourseComponent implements OnInit {
       this.defaultPatch(this._default);
     } else {
       // 默认选中自己
-      const user = this.cache.userInfo;
-      this.teacherList = [{ value: user.account, label: user.name + '-' + user.account }];
-      this.validateForm.get('teacher')?.patchValue(user.account);
+      // const user = this.cache.userInfo;
+      // this.teacherList = [{ value: user.account, label: user.name + '-' + user.account }];
+      // this.validateForm.get('teacher')?.patchValue(user.account);
     }
   }
 
@@ -128,7 +123,9 @@ export class AddCourseComponent implements OnInit {
     this.reset();
     // 添加课程--搜索教师触发
     this.searchSubject.pipe(debounceTime(300), distinctUntilChanged()).subscribe((keyword) => {
+      console.log('搜索接收到的值: ', keyword);
       this.service.queryTeacherList(keyword).subscribe((result) => {
+        console.log('请求结果: ', result);
         this.teacherList = result as { value: string; label: string }[];
       });
     });

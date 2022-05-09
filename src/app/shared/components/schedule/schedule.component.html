@@ -34,7 +34,7 @@
     </ng-container>
     <ng-container *ngIf="editable">
       <tr class="select-none" *ngFor="let item of editList; let i = index">
-        <td nzAlign="center" nzWidth="80px">{{ (i + 1) * 2 - 1 }}-{{ (i + 1) * 2 }}节</td>
+        <td nzAlign="center" nzWidth="80px">{{ i + 1 }}节</td>
         <td nzAlign="center" *ngFor="let class of item; let j = index" style="position: relative">
           <div
             class="flex-center check edit-check"

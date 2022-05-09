@@ -152,6 +152,8 @@ declare interface LabInfo {
   isFree?: boolean;
   startFreeTime?: string;
   endFreeTime?: string;
+  phone?: string;
+  admin?: string;
 }
 
 // 申请列表请求参数

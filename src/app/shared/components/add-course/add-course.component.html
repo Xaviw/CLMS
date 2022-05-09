@@ -24,10 +24,8 @@
             nzShowSearch
             nzServerSearch
             formControlName="teacher"
-            (nzOpenChange)="selectOpen($event)"
-            (compositionstart)="flag = false"
-            (compositionend)="flag = true"
-            (keyup)="selectSearch($event)"
+            (nzOnSearch)="selectSearch($event)"
+            nzPlaceHolder="请输入关键字搜索"
           >
             <ng-container *ngFor="let item of teacherList">
               <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>

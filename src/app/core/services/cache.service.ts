@@ -33,6 +33,9 @@ export class CacheService {
     this.common.needCheckIn().subscribe((res) => {
       this.checkIn = (res as CheckInInfo) || null;
     });
+    this.common.getNotification().subscribe((res) => {
+      this.notification = res;
+    });
     return this.getCheckInInfo;
   };
 
@@ -61,6 +64,9 @@ export class CacheService {
       _local.remove('checkIn');
     }
   }
+
+  // 公告信息
+  public notification: any = null;
 
   // 用户信息
   public _userInfo!: User;

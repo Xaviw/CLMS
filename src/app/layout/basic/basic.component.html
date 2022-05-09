@@ -8,6 +8,31 @@
       <span class="check-in" *ngIf="cache.checkIn" (click)="checkInModal.open()">
         <img src="assets/images/签到.svg" alt="签到" />
       </span>
+      <i
+        nz-icon
+        nzType="bell"
+        nzTheme="outline"
+        nz-popover
+        nzPopoverTitle="通知消息"
+        [nzPopoverContent]="contentTemplate"
+        nzPopoverTrigger="click"
+        style="cursor: pointer"
+      >
+      </i>
+      <ng-template #contentTemplate>
+        <nz-list nzItemLayout="horizontal" style="width: 250px">
+          <nz-list-item *ngFor="let item of cache?.notification">
+            <nz-list-item-meta
+              nzDescription="{{ item.type == 0 ? '机房申请' : item.type == 1 ? '采购申请' : '维修申请' }}--{{
+                item.date
+              }}"
+            >
+              <nz-list-item-meta-title> 申请已审核通过--{{ item.approver }} </nz-list-item-meta-title>
+            </nz-list-item-meta>
+          </nz-list-item>
+          <nz-list-empty *ngIf="cache?.notification?.length === 0"></nz-list-empty>
+        </nz-list>
+      </ng-template>
       <span nz-dropdown [nzDropdownMenu]="menu" class="flex-center">
         {{ userInfo?.name }}
         <nz-avatar nzSize="large" nzIcon="user" [nzSrc]="userInfo?.avatar"></nz-avatar>

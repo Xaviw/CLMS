@@ -40,7 +40,10 @@ export class LayoutBasicComponent implements OnInit {
     },
     checkIn: () => {
       if (this.cache.checkIn?.id) {
-        this.commonService.checkIn(this.cache.checkIn.id);
+        this.commonService.checkIn(this.cache.checkIn.id).subscribe(() => {
+          this.checkInModal.close();
+          this.cache.checkIn = null;
+        });
       } else {
         this.message.warning('签到时间已过，请在申请列表中查看');
         this.checkInModal.close();

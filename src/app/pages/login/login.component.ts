@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       code: [null, [Validators.required]],
       password: [_local.get('password'), [Validators.required]],
+      type: [false, [Validators.required]],
       remember: [true],
     });
   }
@@ -38,8 +39,9 @@ export class LoginComponent implements OnInit {
   login(): void {
     validateForm(this.loginForm.controls);
     if (this.loginForm.valid) {
-      const { code, password } = this.loginForm.value;
-      this.service.login({ code, password }).subscribe((res: any) => {
+      let { code, password, type } = this.loginForm.value;
+      type = type ? 1 : 0;
+      this.service.login({ code, password, type }).subscribe((res: any) => {
         _local.set('token', res.token, res.expires);
 
         this.common.getUserInfo().subscribe((res: any) => {

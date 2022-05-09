@@ -7,6 +7,7 @@
       <nz-tag nzColor="gray" class="status-tag" *ngIf="labInfo?.status === labStatus.repair">维修中</nz-tag>
     </nz-page-header-subtitle>
     <nz-page-header-extra>
+      <button nz-button nzType="primary" (click)="exportUseInfo()">导出机房使用信息</button>
       <button nz-button nzType="primary" (click)="labDrawer.open()" *ngIf="cache.functionPermissions('editLab')">
         编辑
       </button>
@@ -36,6 +37,8 @@
         <nz-descriptions-item nzTitle="空闲时段" [nzSpan]="1" *ngIf="freeTime">{{
           freeTime ?? '--'
         }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="管理员" [nzSpan]="1">{{ labInfo?.admin ?? '--' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="管理员电话" [nzSpan]="1">{{ labInfo?.phone ?? '--' }}</nz-descriptions-item>
       </nz-descriptions>
       <nz-image-group class="image-group">
         <nz-upload
@@ -83,7 +86,7 @@
 
 <!-- 座位表 -->
 <ng-template #seatingChartEl>
-  <seating-chart [labId]="labInfo?.id"></seating-chart>
+  <seating-chart [labId]="labId"></seating-chart>
 </ng-template>
 
 <!-- 课程表 -->
@@ -130,6 +133,33 @@
           <nz-form-label nzFor="description">机房描述：</nz-form-label>
           <nz-form-control>
             <input nz-input formControlName="description" id="description" placeholder="请输入机房描述" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="adminId" nzRequired>机房管理员：</nz-form-label>
+          <nz-form-control nzErrorTip="管理员不能为空！">
+            <nz-select
+              #teacherSearchEl
+              nzAllowClear
+              nzShowSearch
+              nzServerSearch
+              formControlName="adminId"
+              (nzOpenChange)="selectOpen($event)"
+              (compositionstart)="flag = false"
+              (compositionend)="flag = true"
+              (keyup)="selectSearch($event)"
+              nzPlaceHolder="请输入关键字搜索"
+            >
+              <ng-container *ngFor="let item of teacherList">
+                <nz-option [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+              </ng-container>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="phone" nzRequired>管理员电话：</nz-form-label>
+          <nz-form-control>
+            <input nz-input formControlName="phone" id="phone" placeholder="请输入管理员电话" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item nz-row>

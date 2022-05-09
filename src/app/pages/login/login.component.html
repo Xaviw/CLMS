@@ -29,7 +29,22 @@
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
-        <div nz-row nzJustify="end">
+        <nz-form-item class="flex-between">
+          <nz-form-control>
+            <nz-switch formControlName="type" nzCheckedChildren="管理员" nzUnCheckedChildren="用户"></nz-switch>
+          </nz-form-control>
+          <span
+            class="reminder"
+            nzTooltipTitle="请联系管理员重置密码"
+            nzTooltipPlacement="bottom"
+            nz-tooltip
+            style="margin-bottom: 0"
+          >
+            <i nz-icon nzType="question-circle" nzTheme="twotone"></i>
+            忘记密码？
+          </span>
+        </nz-form-item>
+        <!-- <div nz-row nzJustify="end">
           <span
             class="reminder flex-center"
             nzTooltipTitle="请联系管理员重置密码"
@@ -39,7 +54,7 @@
             <i nz-icon nzType="question-circle" nzTheme="twotone"></i>
             忘记密码？
           </span>
-        </div>
+        </div> -->
         <button nz-button class="login-form-button" [nzType]="'primary'" (click)="login()">登录</button>
       </form>
     </div>
