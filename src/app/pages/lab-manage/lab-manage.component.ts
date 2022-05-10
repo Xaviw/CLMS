@@ -67,15 +67,15 @@ export class LabManageComponent implements OnInit {
     });
   }
 
-  selectSearch(e: KeyboardEvent) {
-    if (this.flag && e.key !== 'process') {
-      const keyWord = this.teacherSearchEl.originElement.nativeElement.children[0]
-        .getAttribute('ng-reflect-value')
-        .trim();
-      if (keyWord.trim()) {
-        this.searchSubject.next(keyWord);
-      }
-    }
+  selectSearch(e: string) {
+    // if (this.flag && e.key !== 'process') {
+    //   const keyWord = this.teacherSearchEl.originElement.nativeElement.children[0]
+    //     .getAttribute('ng-reflect-value')
+    //     .trim();
+    //   if (keyWord.trim()) {
+    this.searchSubject.next(e);
+    // }
+    // }
   }
   selectOpen(e: boolean) {
     if (e) this.keyWord = null;
