@@ -14,6 +14,7 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NzSelectComponent } from 'ng-zorro-antd/select';
 import { CourseManageService } from '../course-manage/course-manage.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'lab-detail',
@@ -60,6 +61,7 @@ export class LabDetailComponent implements OnInit, AfterViewInit {
     public cache: CacheService,
   ) {}
 
+  avatarPath = environment.api;
   searchSubject = new Subject<string>();
   keyWord = null;
   // 教师搜索框
